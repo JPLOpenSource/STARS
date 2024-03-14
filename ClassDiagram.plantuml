@@ -1,0 +1,32 @@
+@startuml ClassDiagram
+'skinparam Style strictuml
+
+' Set global class color
+skinparam class {
+    BackgroundColor LightBlue
+    BorderColor Black
+}
+
+interface SimpleIf <<interface>> {
+
+}
+
+class SignalGen <<component>> {
+
+}
+
+class Simple <<state-machine>> {
+
+}
+
+
+class SignalGenBase {
+
+}
+
+SignalGenBase <|-- SignalGen : Inheritance
+SignalGen .right.|> SimpleIf : Implements
+SignalGen *-- Simple : Composition
+Simple ---> SignalGen : Association
+
+@enduml

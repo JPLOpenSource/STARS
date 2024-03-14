@@ -1,0 +1,60 @@
+        
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include "Simple.h"
+#include "SimpleImpl.h"
+#include "sendEvent.h"
+#include "testDrv.h"
+
+void receiveCmd(char *cmdBuf);
+
+enum {
+    SOCK_BUFF_SIZE = 100
+};
+
+
+
+// Instantiate the state-machine
+SimpleImpl impl;
+
+int main(void) {
+
+    printf("State-machine driver\n");
+
+    char cmdBuf[SOCK_BUFF_SIZE];
+
+
+    // Initialize the state-machine
+    SimpleStateInit(&impl);
+
+    // Initialize the sendEvent with the implementation
+    sendEvent_init(&impl);
+
+
+    for (;;)
+    {
+        receiveCmd(cmdBuf);
+
+        char *word;
+        word = strtok(cmdBuf, " ");
+        int signal = strtoul(word, NULL, 10);
+        sendEvent_send(signal);
+    }
+
+
+    // Drive the state-machine
+    //testDrv(&impl);
+
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// @fn receiveCmd()
+// @brief Read the next command from the socket
+// @param sockfd
+// @return None
+////////////////////////////////////////////////////////////////////////////////
+void receiveCmd(char *cmdBuf)
+{
+  scanf("%s", cmdBuf);
+}

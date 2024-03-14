@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model version="5.1.1" links="0">
+ <framework name="qpc"/>
+ <package name="package1" stereotype="0x00">
+  <class name="Complex_Composite" superclass="qpc::QHsm">
+   <statechart properties="0x01">
+    <initial target="../1">
+     <action brief="init1()"/>
+     <initial_glyph conn="13,7,5,0,15,3">
+      <action box="0,-2,10,2"/>
+     </initial_glyph>
+    </initial>
+    <state name="S1">
+     <entry brief="s1Entry()"/>
+     <exit brief="s1Exit()"/>
+     <initial target="../2">
+      <initial_glyph conn="34,26,5,0,2,7">
+       <action box="0,-2,10,2"/>
+      </initial_glyph>
+     </initial>
+     <tran trig="Ev1" target="../../2">
+      <tran_glyph conn="168,15,1,3,18,1,11">
+       <action box="9,-2,10,2"/>
+      </tran_glyph>
+     </tran>
+     <state name="S11">
+      <entry brief="s11Entry()"/>
+      <exit brief="s11Exit()"/>
+      <initial target="../1">
+       <initial_glyph conn="45,40,5,0,4,6">
+        <action box="0,-2,10,2"/>
+       </initial_glyph>
+      </initial>
+      <state name="S111">
+       <entry brief="s111Entry()"/>
+       <exit brief="s111Exit()"/>
+       <initial target="../2">
+        <initial_glyph conn="52,57,5,0,4,6">
+         <action box="0,-2,10,2"/>
+        </initial_glyph>
+       </initial>
+       <tran trig="Ev1" target="../../../3">
+        <tran_glyph conn="82,53,1,3,6,-16,31">
+         <action box="3,-2,10,2"/>
+        </tran_glyph>
+       </tran>
+       <state name="s1111">
+        <entry brief="s1111Entry()"/>
+        <exit brief="s1111Exit()"/>
+        <tran trig="Ev2" target="../../../../../2/2">
+         <tran_glyph conn="67,89,2,2,15,158,-26">
+          <action box="56,13,10,2"/>
+         </tran_glyph>
+        </tran>
+        <tran trig="Ev3" target="../../../../3/2">
+         <tran_glyph conn="74,75,1,3,56">
+          <action box="30,-2,10,2"/>
+         </tran_glyph>
+        </tran>
+        <state_glyph node="53,63,21,26">
+         <entry box="1,2,14,2"/>
+         <exit box="1,4,12,2"/>
+        </state_glyph>
+       </state>
+       <state_glyph node="42,46,40,65">
+        <entry box="1,2,17,4"/>
+        <exit box="1,6,22,3"/>
+       </state_glyph>
+      </state>
+      <state_glyph node="30,33,68,85">
+       <entry box="1,2,12,2"/>
+       <exit box="1,4,11,2"/>
+      </state_glyph>
+     </state>
+     <state name="S12">
+      <entry brief="s12Entry()"/>
+      <exit brief="s12Exit()"/>
+      <initial target="../2">
+       <initial_glyph conn="132,40,5,0,5,6">
+        <action box="0,-2,10,2"/>
+       </initial_glyph>
+      </initial>
+      <tran trig="Ev2" target="../../2">
+       <tran_glyph conn="119,44,3,1,-21">
+        <action box="-10,-2,10,2"/>
+       </tran_glyph>
+      </tran>
+      <state name="S121">
+       <entry brief="s121Entry()"/>
+       <exit brief="s121Exit()"/>
+       <tran trig="Ev4" target="../../../2/1">
+        <tran_glyph conn="130,70,3,1,-48">
+         <action box="-19,-2,10,2"/>
+        </tran_glyph>
+       </tran>
+       <state_glyph node="130,46,22,33">
+        <entry box="1,2,17,3"/>
+        <exit box="1,5,17,3"/>
+       </state_glyph>
+      </state>
+      <state_glyph node="119,34,40,53">
+       <entry box="1,2,11,2"/>
+       <exit box="1,4,8,3"/>
+      </state_glyph>
+     </state>
+     <state_glyph node="21,10,147,118">
+      <entry box="1,2,19,3"/>
+      <exit box="1,5,14,3"/>
+     </state_glyph>
+    </state>
+    <state name="S2">
+     <entry brief="s2Entry()"/>
+     <exit brief="s2Exit()"/>
+     <initial target="../2">
+      <initial_glyph conn="209,29,5,0,8,11">
+       <action box="0,-2,10,2"/>
+      </initial_glyph>
+     </initial>
+     <tran trig="Ev1" target="../../1">
+      <tran_glyph conn="197,34,3,1,-18,-1,-11">
+       <action box="-12,-2,16,2"/>
+      </tran_glyph>
+     </tran>
+     <state name="S21">
+      <entry brief="s21Entry()"/>
+      <exit brief="s21Exit()"/>
+      <state_glyph node="212,40,25,38">
+       <entry box="1,2,15,2"/>
+       <exit box="1,4,15,4"/>
+      </state_glyph>
+     </state>
+     <state_glyph node="197,12,52,111">
+      <entry box="1,2,16,2"/>
+      <exit box="1,4,13,3"/>
+     </state_glyph>
+    </state>
+    <state_diagram size="258,137"/>
+   </statechart>
+  </class>
+ </package>
+</model>

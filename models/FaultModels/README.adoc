@@ -1,0 +1,2 @@
+State-machine models that have errors. Used for checking the autocoder's capability to perform machine semantics checking.
+See the README in models

@@ -1,0 +1,14 @@
+
+--> TOGGLECMD_SIG
+
+--> RTI_SIG
+SignalSmImpl_generateSignal()
+SignalSmImpl_generateTlm()
+
+--> SKIPCMD_SIG
+SignalSmImpl_clearSignal()
+
+--> RTI_SIG
+SignalSmImpl_generateTlm()
+
+--> TOGGLECMD_SIG

@@ -1,0 +1,6 @@
+ROOT = $(shell cd ../../.. && pwd)
+export ROOT
+autocode:
+	@printf "**** Running the state-machine autocoder ****\n"
+	$(ROOT)/autocoder/QMAutocoder.py c $(MODEL).qm
+

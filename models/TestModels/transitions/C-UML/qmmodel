@@ -1,0 +1,50 @@
+<model>
+  <package name="TransitionsPackage">
+    <class name="Transitions">
+      <statechart>
+        <state name="S1">
+          <entry brief="s1Entry()"/>
+          <exit brief="s1Exit()"/>
+          <state name="S11">
+            <entry brief="s11Entry()"/>
+            <exit brief="s11Exit()"/>
+            <tran trig="Ev4" target="../../../1">
+              <action brief="a3()"/>
+            </tran>
+          </state>
+          <initial target="../1"/>
+          <tran trig="Ev2">
+            <action brief="a1()"/>
+          </tran>
+          <tran trig="Ev3">
+            <choice>
+              <guard brief="g1()"/>
+              <action brief="a2()"/>
+            </choice>
+          </tran>
+          <tran trig="Ev7" target="../../2"/>
+          <tran trig="Ev6">
+            <choice target="../../../1">
+              <guard brief="g3()"/>
+              <action brief="a4()"/>
+            </choice>
+          </tran>
+          <tran trig="Ev5">
+            <choice target="../../../1">
+              <guard brief="g2()"/>
+            </choice>
+          </tran>
+          <tran trig="Ev1" target="../../1"/>
+        </state>
+        <state name="S2">
+          <entry brief="s2Entry()"/>
+          <exit brief="s2Exit()"/>
+          <tran trig="Ev7" target="../../1"/>
+        </state>
+        <initial target="../1">
+          <action brief="init1();init2()"/>
+        </initial>
+      </statechart>
+    </class>
+  </package>
+</model>

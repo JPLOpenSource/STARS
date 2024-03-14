@@ -1,0 +1,29 @@
+MODEL = Device
+GOLDY = goldy.txt
+BACK-END = c 
+IMPL = $(MODEL)Impl
+
+all: autocode build
+
+autocode:
+	@printf "**** Running the state-machine autocoder ****\n"
+	../../../autocoder/QMAutocoder.py $(BACK-END) ../$(MODEL).qm
+
+build:
+	@printf "**** Building an executable model ****\n"
+	gcc -c -Wall $(MODEL).c -o $(MODEL).o
+	gcc -c -Wall $(IMPL).c -o $(IMPL).o
+	gcc -c -Wall testDrv.c -o testDrv.o
+	gcc -c -Wall sendEvent.c -o sendEvent.o
+	gcc -Wall main.c $(MODEL).o $(IMPL).o testDrv.o sendEvent.o -o test
+
+run:
+	@printf "**** Running the executable model ****\n"
+	./test
+
+ut:
+	@./../../../autocoder/test/run.py $(MODEL) $(GOLDY) $(BACK-END)
+
+clean:
+	rm -rf test
+	rm -rf *.o

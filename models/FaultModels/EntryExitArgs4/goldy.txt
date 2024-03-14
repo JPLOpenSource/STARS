@@ -1,0 +1,7 @@
+[91m
+
+*** Error parsing the state-machine: 'EntryExitArgs4' 
+[93m
+ Entry/Exit action badly specified:  
+    Entry/Exit function ' s1Exit2(e)' in state s1: Needs to be specified as: '<function_name>()' with no arguments
+[0m

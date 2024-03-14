@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model version="5.2.2" links="0">
+ <framework name="qpc"/>
+ <package name="package1" stereotype="0x00">
+  <class name="Complex_Junction" superclass="qpc::QHsm">
+   <statechart properties="0x01">
+    <initial target="../2">
+     <initial_glyph conn="105,29,5,0,4,11">
+      <action box="0,-2,10,2"/>
+     </initial_glyph>
+    </initial>
+    <state name="ON">
+     <entry brief="OnEntry()"/>
+     <exit brief="OnExit()"/>
+     <initial target="../2">
+      <initial_glyph conn="107,80,5,0,10,8">
+       <action box="0,-2,10,2"/>
+      </initial_glyph>
+     </initial>
+     <tran trig="Ev1" target="../../2">
+      <tran_glyph conn="143,93,1,1,13,-44,-19">
+       <action box="1,-3,14,4"/>
+      </tran_glyph>
+     </tran>
+     <state name="Init">
+      <entry brief="InitEntry()"/>
+      <exit brief="InitExit()"/>
+      <state_glyph node="109,88,17,14">
+       <entry box="1,2,15,4"/>
+       <exit box="1,6,16,6"/>
+      </state_glyph>
+     </state>
+     <state_glyph node="93,74,50,40">
+      <entry box="1,2,14,3"/>
+      <exit box="1,5,16,3"/>
+     </state_glyph>
+    </state>
+    <state name="OFF">
+     <entry brief="OffEntry()"/>
+     <exit brief="OffExit()"/>
+     <initial target="../2">
+      <initial_glyph conn="120,44,5,0,2,4">
+       <action box="0,-2,10,2"/>
+      </initial_glyph>
+     </initial>
+     <tran trig="Ev1">
+      <choice target="../..">
+       <guard brief="g1()"/>
+       <action brief="a1()"/>
+       <choice_glyph conn="71,49,4,3,-6,29">
+        <action box="7,-9,14,3"/>
+       </choice_glyph>
+      </choice>
+      <choice>
+       <action brief="a2()"/>
+       <choice target="../../../../1">
+        <guard brief="g2()"/>
+        <action brief="a5()"/>
+        <choice_glyph conn="47,49,4,3,59,46">
+         <action box="2,28,14,3"/>
+        </choice_glyph>
+       </choice>
+       <choice>
+        <action brief="a3()"/>
+        <choice target="../../../../../1">
+         <guard brief="g3()"/>
+         <action brief="a6()"/>
+         <choice_glyph conn="24,49,4,2,76,77,-11">
+          <action box="2,28,14,3"/>
+         </choice_glyph>
+        </choice>
+        <choice target="../../../..">
+         <action brief="a4()"/>
+         <choice_glyph conn="24,49,4,0,-27,101,18">
+          <action box="49,-30,16,4"/>
+         </choice_glyph>
+        </choice>
+        <choice_glyph conn="47,49,5,-1,-23">
+         <action box="-15,-3,11,3"/>
+        </choice_glyph>
+       </choice>
+       <choice_glyph conn="71,49,5,-1,-24">
+        <action box="-16,-3,14,3"/>
+       </choice_glyph>
+      </choice>
+      <tran_glyph conn="100,49,3,-1,-29">
+       <action box="-17,-3,14,3"/>
+      </tran_glyph>
+     </tran>
+     <state name="Diag">
+      <entry brief="DiagEntry()"/>
+      <exit brief="DiagExit()"/>
+      <state_glyph node="117,48,16,9">
+       <entry box="1,2,15,3"/>
+       <exit box="1,5,15,4"/>
+      </state_glyph>
+     </state>
+     <state_glyph node="100,40,37,18">
+      <entry box="1,2,14,3"/>
+      <exit box="1,5,18,3"/>
+     </state_glyph>
+    </state>
+    <state_diagram size="257,134"/>
+   </statechart>
+  </class>
+ </package>
+</model>

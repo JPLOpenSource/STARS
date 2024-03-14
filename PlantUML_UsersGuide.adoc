@@ -1,0 +1,169 @@
+
+= PlantUML User Guide: Hierarchical State Machines
+
+Welcome to the PlantUML User Guide focused on creating hierarchical state machines. This guide is designed to help you utilize a specific subset of PlantUML syntax for state machines, enabling the generation of code from your diagrams. Note that only selected features of PlantUML for state machines are supported here.
+The state machine Autocoder supports the following features: +
+- Hierarchical states +
+- Complex junctions +
+- Complex initial transitions +
+- Transition guards and actions +
+- Internal transitions +
+- Self transitions
+
+The state machine Autocoder does NOT support the following features: + 
+- Sub state machines +
+- Orthogonal regions
+
+In addition, the parser does not support PlantUML graphical layout information.  This may be supported on later releases.
+
+
+== Defining States
+
+=== Basic State Definition
+
+To define a state, use the `state` keyword followed by the state's name and enclose any nested states or definitions within curly braces `{}`.
+
+[source,plantuml]
+----
+state S2 {
+}
+----
+
+=== Nested States
+
+States can be nested within other states to represent hierarchical relationships.
+
+[source,plantuml]
+----
+state S2 {
+    state S21 {
+    }
+}
+----
+
+=== Entry and Exit Actions
+
+Specify actions that occur on entering or exiting states by appending `:Entry:` or `:Exit:` to the state name, followed by the action.
+
+[source,plantuml]
+----
+state S2 {
+    S2:Entry: foo()
+    S2:Exit: bar()
+}
+----
+
+Multiple actions can be delineated using semicolons `;`.
+
+[source,plantuml]
+----
+state S2 {
+    S2:Entry: foo(); foo2()
+    S2:Exit: bar(); bar2()
+}
+----
+
+== Initial Transitions
+
+=== Global Initial Transition
+
+Define an initial transition for the state machine using `[*]` to indicate the start point.
+
+[source,plantuml]
+----
+[*] --> S2
+----
+
+=== Hierarchical Initial Transition
+
+Each hierarchical state must also have an initial transition.
+
+[source,plantuml]
+----
+state S2 {
+    [*] --> S21
+    S2:Entry: foo()
+    S2:Exit: bar()
+    state S21 {
+    }
+}
+----
+
+== Regular Transitions
+
+Transitions between states are defined using the format: `source_state --> target_state : Event [guard()] / action()`.
+
+=== Transition with Event
+
+[source,plantuml]
+----
+S2 --> S3 : Ev1
+----
+
+=== Transition with Event and Guard
+
+[source,plantuml]
+----
+S2 --> S3 : Ev1[guard()]
+----
+
+=== Transition with Event and Action
+
+[source,plantuml]
+----
+S2 --> S3 : /action()
+----
+
+=== Transition with Event, Guard, and Action
+
+[source,plantuml]
+----
+S2 --> S3 : Ev1[guard()]/action()
+----
+
+== Junction States
+
+Junctions, or choice points, allow for branching transitions and are defined as a state with the `<<choice>>` stereotype.
+
+=== Defining a Junction
+
+[source,plantuml]
+----
+state c1 <<choice>>
+----
+
+=== Using Junctions in Transitions
+
+Once defined, junctions can facilitate multiple branching paths.
+
+[source,plantuml]
+----
+state c1 <<choice>>
+S1 --> c1 : Ev1
+c1 --> S1 : [guard()]
+c1 --> S2 : /action()
+----
+
+== Internal Transitions
+
+Internal transitions handle events within the same state, without causing a state change.
+
+=== Example of an Internal Transition
+
+Here, `Ev2` triggers `a1()` without leading to a state transition.
+
+[source,plantuml]
+----
+state S1 {
+    S1:Internal: Ev2/a1()
+}
+----
+
+== Comments
+Any line prefixed with `'` is considered a comment line and is ignored by the parser.
+
+This guide provides a concise yet comprehensive overview of using PlantUML to define hierarchical state machines, enabling you to effectively illustrate and generate code for your system's architecture.
+
+
+
+

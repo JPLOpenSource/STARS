@@ -1,0 +1,2 @@
+State-machine models used for unit testing the autocoder.
+See the README file in models

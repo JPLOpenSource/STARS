@@ -1,0 +1,8 @@
+*/test
+*/*.o
+*/*.h
+*/*.c
+*/*.hpp
+*/*.cpp
+*/*.trans
+fprime/SignalSmStatesEnumAi.xml

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model version="5.2.2" links="0">
+ <framework name="qpc"/>
+ <package name="package1" stereotype="0x00">
+  <class name="Transitions" superclass="qpc::QHsm">
+   <statechart properties="0x01">
+    <initial target="../1">
+     <action brief="init1(); init2()"/>
+     <initial_glyph conn="50,39,5,0,5,6">
+      <action box="1,-3,25,5"/>
+     </initial_glyph>
+    </initial>
+    <state name="S1">
+     <entry brief="s1Entry()"/>
+     <exit brief="s1Exit()"/>
+     <initial target="../7">
+      <initial_glyph conn="65,74,5,0,6,6">
+       <action box="0,-2,10,2"/>
+      </initial_glyph>
+     </initial>
+     <tran trig="Ev1" target="..">
+      <tran_glyph conn="127,50,1,1,9,5,-9">
+       <action box="4,-2,10,2"/>
+      </tran_glyph>
+     </tran>
+     <tran trig="Ev2">
+      <action brief="a1()"/>
+      <tran_glyph conn="48,62,3,-1,21">
+       <action box="3,-3,20,4"/>
+      </tran_glyph>
+     </tran>
+     <tran trig="Ev3">
+      <choice>
+       <guard brief="g1()"/>
+       <action brief="a2()"/>
+       <choice_glyph conn="67,67,5,-1,24">
+        <action box="8,-3,14,3"/>
+       </choice_glyph>
+      </choice>
+      <tran_glyph conn="48,67,3,-1,19">
+       <action box="3,-3,22,3"/>
+      </tran_glyph>
+     </tran>
+     <tran trig="Ev5">
+      <choice target="../..">
+       <guard brief="g2()"/>
+       <choice_glyph conn="140,69,4,1,9,-13">
+        <action box="1,0,13,6"/>
+       </choice_glyph>
+      </choice>
+      <tran_glyph conn="127,62,1,-1,13,7">
+       <action box="0,-2,10,2"/>
+      </tran_glyph>
+     </tran>
+     <tran trig="Ev6">
+      <choice target="../..">
+       <guard brief="g3()"/>
+       <action brief="a4()"/>
+       <choice_glyph conn="74,115,4,2,10,-22,-23">
+        <action box="-15,7,15,5"/>
+       </choice_glyph>
+      </choice>
+      <tran_glyph conn="74,102,2,-1,13">
+       <action box="0,5,10,2"/>
+      </tran_glyph>
+     </tran>
+     <tran trig="Ev7" target="../../2">
+      <tran_glyph conn="96,45,0,3,-24,5">
+       <action box="0,-5,14,4"/>
+      </tran_glyph>
+     </tran>
+     <state name="S11">
+      <entry brief="s11Entry()"/>
+      <exit brief="s11Exit()"/>
+      <tran trig="Ev4" target="../..">
+       <action brief="a3()"/>
+       <tran_glyph conn="94,85,1,1,33">
+        <action box="0,-2,10,2"/>
+       </tran_glyph>
+      </tran>
+      <state_glyph node="66,80,28,11">
+       <entry box="1,2,15,2"/>
+       <exit box="1,4,18,3"/>
+      </state_glyph>
+     </state>
+     <state_glyph node="48,45,79,57">
+      <entry box="1,2,19,3"/>
+      <exit box="1,5,23,4"/>
+     </state_glyph>
+    </state>
+    <state name="S2">
+     <entry brief="s2Entry()"/>
+     <exit brief="s2Exit()"/>
+     <tran trig="Ev7" target="../../1">
+      <tran_glyph conn="116,21,1,0,7,24">
+       <action box="1,-3,13,5"/>
+      </tran_glyph>
+     </tran>
+     <state_glyph node="101,17,15,12">
+      <entry box="1,2,13,4"/>
+      <exit box="1,6,14,4"/>
+     </state_glyph>
+    </state>
+    <state_diagram size="258,137"/>
+   </statechart>
+  </class>
+ </package>
+</model>

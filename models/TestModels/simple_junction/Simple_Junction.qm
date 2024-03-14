@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model version="5.0.1" links="0">
+ <framework name="qpc"/>
+ <package name="package1" stereotype="0x00">
+  <class name="Simple_Junction" superclass="qpc::QHsm">
+   <statechart properties="0x01">
+    <initial target="../2">
+     <initial_glyph conn="105,29,5,0,4,10">
+      <action box="0,-2,10,2"/>
+     </initial_glyph>
+    </initial>
+    <state name="ON">
+     <entry brief="OnEntry()"/>
+     <exit brief="OnExit()"/>
+     <initial target="../2">
+      <initial_glyph conn="107,80,5,0,10,8">
+       <action box="0,-2,10,2"/>
+      </initial_glyph>
+     </initial>
+     <tran trig="Ev1" target="../../2">
+      <tran_glyph conn="143,93,1,1,13,-45,-19">
+       <action box="0,-2,10,2"/>
+      </tran_glyph>
+     </tran>
+     <state name="Init">
+      <entry brief="InitEntry()"/>
+      <exit brief="InitExit()"/>
+      <state_glyph node="109,88,12,9">
+       <entry box="1,2,9,2"/>
+       <exit box="1,4,9,2"/>
+      </state_glyph>
+     </state>
+     <state_glyph node="93,74,50,40">
+      <entry box="1,2,14,3"/>
+      <exit box="1,5,16,3"/>
+     </state_glyph>
+    </state>
+    <state name="OFF">
+     <entry brief="OffEntry()"/>
+     <exit brief="OffExit()"/>
+     <initial target="../2">
+      <initial_glyph conn="120,43,5,0,2,4">
+       <action box="0,-2,10,2"/>
+      </initial_glyph>
+     </initial>
+     <tran trig="Ev1">
+      <choice target="../..">
+       <guard brief="g1()"/>
+       <choice_glyph conn="71,48,4,3,-6,29">
+        <action box="9,-9,10,2"/>
+       </choice_glyph>
+      </choice>
+      <choice target="../../../1">
+       <action brief="a1()"/>
+       <choice_glyph conn="71,48,4,3,41,22">
+        <action box="1,18,10,2"/>
+       </choice_glyph>
+      </choice>
+      <tran_glyph conn="100,48,3,-1,-29">
+       <action box="-16,-2,10,2"/>
+      </tran_glyph>
+     </tran>
+     <state name="Diag">
+      <entry brief="DiagEntry()"/>
+      <exit brief="DiagExit()"/>
+      <state_glyph node="117,47,16,9">
+       <entry box="1,2,11,2"/>
+       <exit box="1,4,10,4"/>
+      </state_glyph>
+     </state>
+     <state_glyph node="100,39,37,18">
+      <entry box="1,2,9,3"/>
+      <exit box="1,5,17,2"/>
+     </state_glyph>
+    </state>
+    <state_diagram size="257,134"/>
+   </statechart>
+  </class>
+ </package>
+</model>

@@ -1,0 +1,37 @@
+Arg_ActionsImpl_s1Entry()
+Arg_ActionsImpl_s1Entry2()
+Arg_ActionsImpl_foo()
+
+--> EV1_SIG
+Arg_ActionsImpl_g1() is 0
+
+--> EV1_SIG
+Arg_ActionsImpl_g1() is 1
+Arg_ActionsImpl_s1Exit()
+Arg_ActionsImpl_s1Exit2()
+Arg_ActionsImpl_foo()
+Arg_ActionsImpl_s2Entry()
+Arg_ActionsImpl_s2Entry2()
+Arg_ActionsImpl_foo()
+
+--> EV1_SIG
+Arg_ActionsImpl_a1()
+Arg_ActionsImpl_a2()
+Arg_ActionsImpl_foo()
+Arg_ActionsImpl_s2Exit()
+Arg_ActionsImpl_s2Exit2()
+Arg_ActionsImpl_s1Entry()
+Arg_ActionsImpl_s1Entry2()
+Arg_ActionsImpl_foo()
+
+--> EV2_SIG
+Arg_ActionsImpl_g2() is 0
+
+--> EV2_SIG
+Arg_ActionsImpl_g2() is 1
+Arg_ActionsImpl_s1Exit()
+Arg_ActionsImpl_s1Exit2()
+Arg_ActionsImpl_foo()
+Arg_ActionsImpl_s2Entry()
+Arg_ActionsImpl_s2Entry2()
+Arg_ActionsImpl_foo()

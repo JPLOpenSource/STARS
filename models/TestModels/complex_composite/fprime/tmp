@@ -1,0 +1,37 @@
+**** Running the state-machine autocoder ****
+../../../../autocoder/QMAutocoder.py fprime -namespace Ref ../Complex_Composite.qm
+State-machine semantics look good
+Generating Fprime C++ code for Complex_Composite for component SignalGen
+<FlatStateChart>
+  <initial target="s1111">
+    <action brief="init1();s1Entry();s11Entry();s111Entry();s1111Entry()"/>
+  </initial>
+  <state name="s1111">
+    <tran trig="Ev2" target="S21">
+      <action brief="s1111Exit();s111Exit();s11Exit();s1Exit();s2Entry();s21Entry()"/>
+    </tran>
+    <tran trig="Ev3" target="S121">
+      <action brief="s1111Exit();s111Exit();s11Exit();s12Entry();s121Entry()"/>
+    </tran>
+    <tran trig="Ev1" target="S121">
+      <action brief="s1111Exit();s111Exit();s11Exit();s12Entry();s121Entry()"/>
+    </tran>
+  </state>
+  <state name="S121">
+    <tran trig="Ev4" target="s1111">
+      <action brief="s121Exit();s12Exit();s11Entry();s111Entry();s1111Entry()"/>
+    </tran>
+    <tran trig="Ev2" target="s1111">
+      <action brief="s121Exit();s12Exit();s11Entry();s111Entry();s1111Entry()"/>
+    </tran>
+    <tran trig="Ev1" target="S21">
+      <action brief="s121Exit();s12Exit();s1Exit();s2Entry();s21Entry()"/>
+    </tran>
+  </state>
+  <state name="S21">
+    <tran trig="Ev1" target="s1111">
+      <action brief="s21Exit();s2Exit();s1Entry();s11Entry();s111Entry();s1111Entry()"/>
+    </tran>
+  </state>
+</FlatStateChart>
+

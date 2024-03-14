@@ -1,0 +1,30 @@
+
+@startuml
+
+[*] --> S1 :/init1(); init2()
+
+state S1 {
+    [*] --> S11
+    S1:Entry: s1Entry()
+    S1:Exit: s1Exit()
+    state S11 {
+        S11:Entry: s11Entry()
+        S11:Exit: s11Exit()
+    }
+    S11 --> S1 : Ev4/a3()
+    S1:Internal: Ev2/a1()
+    S1:Internal: Ev3[g1()]/a2()
+}
+
+state S2 {
+    S2:Entry: s2Entry()
+    S2:Exit: s2Exit()
+}
+
+S1 --> S2 : Ev7
+S2 --> S1 : Ev7
+S1 --> S1 : Ev6[g3()]/a4()
+S1 --> S1 : Ev5[g2()]
+S1 --> S1 : Ev1
+
+@enduml

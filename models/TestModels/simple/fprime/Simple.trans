@@ -1,0 +1,2 @@
+InitialState = S1, Event = EV1, guard = None, action = None, TargetState = S2
+InitialState = S2, Event = EV1, guard = None, action = s1Entry(), TargetState = S1

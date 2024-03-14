@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model version="5.0.1" links="0">
+ <framework name="qpc"/>
+ <package name="package1" stereotype="0x00">
+  <class name="JunctionNoGuard2" superclass="qpc::QHsm">
+   <statechart properties="0x01">
+    <initial target="../1">
+     <initial_glyph conn="60,38,5,0,6,7">
+      <action box="0,-2,10,2"/>
+     </initial_glyph>
+    </initial>
+    <state name="s1">
+     <entry brief="s1Entry()"/>
+     <initial target="../2">
+      <initial_glyph conn="57,55,5,0,3,14">
+       <action box="0,-2,10,2"/>
+      </initial_glyph>
+     </initial>
+     <tran trig="EV1">
+      <choice target="../../../2">
+       <choice_glyph conn="114,50,5,3,24">
+        <action box="1,0,10,2"/>
+       </choice_glyph>
+      </choice>
+      <choice target="../..">
+       <choice_glyph conn="114,50,4,0,-10,-34,5">
+        <action box="1,0,10,2"/>
+       </choice_glyph>
+      </choice>
+      <tran_glyph conn="87,50,1,-1,27">
+       <action box="17,-2,10,2"/>
+      </tran_glyph>
+     </tran>
+     <state name="s11">
+      <entry brief="s11Entry()"/>
+      <tran trig="EV2" target="../../3">
+       <tran_glyph conn="58,76,2,2,7,17,-6">
+        <action box="8,5,10,2"/>
+       </tran_glyph>
+      </tran>
+      <state_glyph node="53,69,10,7">
+       <entry box="1,2,9,3"/>
+      </state_glyph>
+     </state>
+     <state name="s12">
+      <entry brief="s12Entry()"/>
+      <state_glyph node="69,67,13,10">
+       <entry box="1,2,11,4"/>
+      </state_glyph>
+     </state>
+     <state_glyph node="48,45,39,45">
+      <entry box="1,2,19,3"/>
+     </state_glyph>
+    </state>
+    <state name="s2">
+     <entry brief="foo()"/>
+     <tran trig="EV1" target="../../1">
+      <tran_glyph conn="138,55,3,1,-51">
+       <action box="-20,-2,10,2"/>
+      </tran_glyph>
+     </tran>
+     <state_glyph node="138,46,21,15">
+      <entry box="1,2,6,2"/>
+     </state_glyph>
+    </state>
+    <state_diagram size="258,137"/>
+   </statechart>
+  </class>
+ </package>
+</model>

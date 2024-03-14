@@ -1,0 +1,18 @@
+
+     <tran trig="TurnOn">
+      <action brief="action1()"/>
+      <choice target="../..">
+       <guard brief="guard1()"/>
+       <action brief="action2()"/>
+      </choice>
+      <choice>
+       <action brief="action3()"/>
+       <choice target="../../../../1">
+        <guard brief="guard2()"/>
+        <action brief="action5()"/>
+       </choice>
+       <choice target="../../..">
+        <action brief="action4()"/>
+       </choice>
+      </choice>
+     </tran>

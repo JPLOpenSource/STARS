@@ -1,0 +1,10 @@
+State-machine models for unit testing
+
+* Run the autocoder and build the executable model:
+** make
+
+* Run the unit tests
+** make ut
+
+* Clean
+** make clean

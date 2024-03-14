@@ -1,0 +1,7 @@
+[91m
+
+*** Error parsing the state-machine: 'JunctionNoGuard' 
+[93m
+ Bad guard specification:  
+    Transition EV1, from state s1: Junction has no guard 
+[0m

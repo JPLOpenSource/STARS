@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model version="5.2.2" links="0">
+ <framework name="qpc"/>
+ <package name="package1" stereotype="0x00">
+  <class name="String_Guards" superclass="qpc::QHsm">
+   <statechart properties="0x01">
+    <initial target="../2">
+     <action brief="initialAction()"/>
+     <initial_glyph conn="103,29,5,0,3,10">
+      <action box="0,-2,13,5"/>
+     </initial_glyph>
+    </initial>
+    <state name="ON">
+     <initial target="../2">
+      <initial_glyph conn="103,76,5,0,9,5">
+       <action box="0,-2,10,2"/>
+      </initial_glyph>
+     </initial>
+     <tran trig="Ev2" target="../../2">
+      <tran_glyph conn="93,91,3,3,-18,-42,22">
+       <action box="-12,-3,12,5"/>
+      </tran_glyph>
+     </tran>
+     <state name="Bar">
+      <entry brief="barEntry()"/>
+      <exit brief="barExit()"/>
+      <state_glyph node="108,81,21,18">
+       <entry box="1,2,13,3"/>
+       <exit box="1,5,15,2"/>
+      </state_glyph>
+     </state>
+     <state_glyph node="93,70,50,40"/>
+    </state>
+    <state name="OFF">
+     <initial target="../3">
+      <initial_glyph conn="105,44,5,0,8,3">
+       <action box="0,-2,10,2"/>
+      </initial_glyph>
+     </initial>
+     <tran trig="Ev1">
+      <choice>
+       <guard brief="g1()"/>
+       <action brief="b2()"/>
+       <choice>
+        <guard brief="g2()"/>
+        <action brief="b3()"/>
+        <choice target="../../../../../1">
+         <guard brief="g3()"/>
+         <action brief="b4()"/>
+         <choice_glyph conn="185,44,5,1,9,38,-51">
+          <action box="3,-3,13,4"/>
+         </choice_glyph>
+        </choice>
+        <choice target="../../../..">
+         <action brief="a3()"/>
+         <choice_glyph conn="185,44,4,0,-30,-85,25">
+          <action box="-52,-33,11,4"/>
+         </choice_glyph>
+        </choice>
+        <choice_glyph conn="166,44,5,-1,19">
+         <action box="3,-3,12,3"/>
+        </choice_glyph>
+       </choice>
+       <choice target="../../..">
+        <action brief="a2()"/>
+        <choice_glyph conn="166,44,4,0,-22,-47,17">
+         <action box="-33,-25,11,5"/>
+        </choice_glyph>
+       </choice>
+       <choice_glyph conn="148,44,5,-1,18">
+        <action box="4,-3,13,4"/>
+       </choice_glyph>
+      </choice>
+      <choice target="../..">
+       <action brief="a1()"/>
+       <choice_glyph conn="148,44,4,0,-13,-22,8">
+        <action box="-14,-16,13,6"/>
+       </choice_glyph>
+      </choice>
+      <tran_glyph conn="134,44,1,-1,14">
+       <action box="4,-3,11,3"/>
+      </tran_glyph>
+     </tran>
+     <tran trig="Ev2">
+      <choice>
+       <guard brief="g4()"/>
+       <action brief="a5()"/>
+       <choice target="../../../../1">
+        <action brief="a6()"/>
+        <choice_glyph conn="166,54,4,1,20,-23">
+         <action box="0,6,11,5"/>
+        </choice_glyph>
+       </choice>
+       <choice target="../../..">
+        <guard brief="g5()"/>
+        <action brief="a4()"/>
+        <choice_glyph conn="166,54,4,1,-6,-32">
+         <action box="-12,-9,19,5"/>
+        </choice_glyph>
+       </choice>
+       <choice_glyph conn="147,54,5,-1,19">
+        <action box="6,-3,12,3"/>
+       </choice_glyph>
+      </choice>
+      <tran_glyph conn="134,54,1,-1,13">
+       <action box="3,-3,13,3"/>
+      </tran_glyph>
+     </tran>
+     <state name="Far">
+      <entry brief="farEntry()"/>
+      <exit brief="farExit()"/>
+      <state_glyph node="111,47,20,13">
+       <entry box="1,2,17,3"/>
+       <exit box="1,5,19,8"/>
+      </state_glyph>
+     </state>
+     <state_glyph node="97,39,37,23"/>
+    </state>
+    <state_diagram size="257,134"/>
+   </statechart>
+  </class>
+ </package>
+</model>

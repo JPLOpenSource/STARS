@@ -1,0 +1,8 @@
+[91m
+
+*** Error parsing the state-machine: 'MultipleInitialTransition' 
+[93m
+ Multiple initial transitions:  
+    Only 1 initial transition allowed on the same state-machine level.
+    Remove one of the initial transitions to these states: ['S11', 'S12']
+[0m

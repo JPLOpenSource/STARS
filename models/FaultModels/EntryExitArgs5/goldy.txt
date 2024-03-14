@@ -1,0 +1,7 @@
+[91m
+
+*** Error parsing the state-machine: 'EntryExitArgs5' 
+[93m
+ Action badly specified:  
+    Action function 'action3(f)' from event EV1: Needs to be specified as: '<function_name>([e])' 
+[0m

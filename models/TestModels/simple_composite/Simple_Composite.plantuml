@@ -1,0 +1,29 @@
+
+@startuml
+
+[*] --> S1
+
+state S1 {
+    [*] --> S11
+    S1:Entry: s1Entry()
+    S1:Exit: s1Exit()
+    state S11 {
+        S11:Entry: s11Entry()
+        S11:Exit: s11Exit()
+    }
+    state S12 {
+        S12:Entry: s12Entry()
+        S12:Exit: s12Exit()
+    }
+    S11 --> S12 : EV1
+    S12 --> S11 : EV2
+}
+
+state S2 {
+    S2:Entry: s2Entry()
+    S2:Exit: s2Exit()
+}
+
+S1 --> S2 : EV1
+S2 --> S1 : EV1
+@enduml

@@ -1,0 +1,24 @@
+Simple_CompositeImpl_s1Entry()
+Simple_CompositeImpl_s11Entry()
+
+--> EV1_SIG
+Simple_CompositeImpl_s11Exit()
+Simple_CompositeImpl_s12Entry()
+
+--> EV2_SIG
+Simple_CompositeImpl_s12Exit()
+Simple_CompositeImpl_s11Entry()
+
+--> EV1_SIG
+Simple_CompositeImpl_s11Exit()
+Simple_CompositeImpl_s12Entry()
+
+--> EV1_SIG
+Simple_CompositeImpl_s12Exit()
+Simple_CompositeImpl_s1Exit()
+Simple_CompositeImpl_s2Entry()
+
+--> EV1_SIG
+Simple_CompositeImpl_s2Exit()
+Simple_CompositeImpl_s1Entry()
+Simple_CompositeImpl_s11Entry()

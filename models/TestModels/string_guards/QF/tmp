@@ -1,0 +1,71 @@
+**** Running the executable model ****
+./test
+String_GuardsImpl_initialAction()
+String_GuardsImpl_farEntry()
+
+--> EV1_SIG
+String_GuardsImpl_g1() is 0
+String_GuardsImpl_a1()
+String_GuardsImpl_farExit()
+String_GuardsImpl_farEntry()
+
+--> EV2_SIG
+String_GuardsImpl_g4() is 0
+
+--> EV1_SIG
+String_GuardsImpl_g1() is 1
+String_GuardsImpl_b2()
+String_GuardsImpl_g2() is 0
+String_GuardsImpl_a2()
+String_GuardsImpl_farExit()
+String_GuardsImpl_farEntry()
+
+--> EV2_SIG
+String_GuardsImpl_g4() is 0
+
+--> EV1_SIG
+String_GuardsImpl_g1() is 1
+String_GuardsImpl_b2()
+String_GuardsImpl_g2() is 1
+String_GuardsImpl_b3()
+String_GuardsImpl_g3() is 0
+String_GuardsImpl_a3()
+String_GuardsImpl_farExit()
+String_GuardsImpl_farEntry()
+
+--> EV2_SIG
+String_GuardsImpl_g4() is 0
+
+--> EV1_SIG
+String_GuardsImpl_g1() is 1
+String_GuardsImpl_b2()
+String_GuardsImpl_g2() is 1
+String_GuardsImpl_b3()
+String_GuardsImpl_g3() is 1
+String_GuardsImpl_b4()
+String_GuardsImpl_farExit()
+String_GuardsImpl_barEntry()
+
+--> EV2_SIG
+String_GuardsImpl_barExit()
+String_GuardsImpl_farEntry()
+
+--> EV2_SIG
+String_GuardsImpl_g4() is 1
+String_GuardsImpl_a5()
+String_GuardsImpl_g5() is 0
+String_GuardsImpl_a6()
+String_GuardsImpl_farExit()
+String_GuardsImpl_barEntry()
+
+--> EV2_SIG
+String_GuardsImpl_barExit()
+String_GuardsImpl_farEntry()
+
+--> EV2_SIG
+String_GuardsImpl_g4() is 1
+String_GuardsImpl_a5()
+String_GuardsImpl_g5() is 1
+String_GuardsImpl_a4()
+String_GuardsImpl_farExit()
+String_GuardsImpl_farEntry()

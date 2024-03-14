@@ -1,0 +1,95 @@
+DeviceImpl_offEntry()
+
+--> POWERON_SIG
+DeviceImpl_offExit()
+DeviceImpl_turnOnPower()
+DeviceImpl_initDevice()
+
+--> COMPLETE_SIG
+DeviceImpl_initExit()
+DeviceImpl_idleEntry()
+
+--> CALIBRATE_SIG
+DeviceImpl_calibrateReady() is 0
+
+--> RTI_SIG
+
+--> RTI_SIG
+
+--> RTI_SIG
+
+--> RTI_SIG
+
+--> COMPLETE_SIG
+
+--> DRIVE_SIG
+DeviceImpl_idleExit()
+DeviceImpl_startMotor()
+
+--> RTI_SIG
+DeviceImpl_motorControl()
+
+--> RTI_SIG
+DeviceImpl_motorControl()
+
+--> RTI_SIG
+DeviceImpl_motorControl()
+
+--> FAULT_SIG
+DeviceImpl_reportFault()
+DeviceImpl_shutOffMotor()
+DeviceImpl_turnOffPower()
+DeviceImpl_startRecovery()
+
+--> RTI_SIG
+DeviceImpl_doSafe()
+
+--> RTI_SIG
+DeviceImpl_doSafe()
+
+--> RTI_SIG
+DeviceImpl_doSafe()
+
+--> COMPLETE_SIG
+DeviceImpl_recoveryExit()
+DeviceImpl_diagnosticsEntry()
+
+--> RTI_SIG
+DeviceImpl_doDiagnostics()
+
+--> RTI_SIG
+DeviceImpl_doDiagnostics()
+
+--> RTI_SIG
+DeviceImpl_doDiagnostics()
+
+--> RESUME_SIG
+DeviceImpl_diagnosticsExit()
+DeviceImpl_turnOnPower()
+DeviceImpl_initDevice()
+
+--> COMPLETE_SIG
+DeviceImpl_initExit()
+DeviceImpl_idleEntry()
+
+--> DRIVE_SIG
+DeviceImpl_idleExit()
+DeviceImpl_startMotor()
+
+--> RTI_SIG
+DeviceImpl_motorControl()
+
+--> RTI_SIG
+DeviceImpl_motorControl()
+
+--> RTI_SIG
+DeviceImpl_motorControl()
+
+--> STOP_SIG
+DeviceImpl_shutOffMotor()
+DeviceImpl_idleEntry()
+
+--> POWEROFF_SIG
+DeviceImpl_idleExit()
+DeviceImpl_turnOffPower()
+DeviceImpl_offEntry()

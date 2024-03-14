@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model version="5.0.1" links="0">
+ <framework name="qpc"/>
+ <package name="package1" stereotype="0x00">
+  <class name="Simple_Composite" superclass="qpc::QHsm">
+   <statechart properties="0x01">
+    <initial target="../1">
+     <initial_glyph conn="49,39,5,0,6,6">
+      <action box="0,-2,10,2"/>
+     </initial_glyph>
+    </initial>
+    <state name="S1">
+     <entry brief="s1Entry()"/>
+     <exit brief="s1Exit()"/>
+     <initial target="../2">
+      <initial_glyph conn="61,61,5,0,2,7">
+       <action box="0,-2,10,2"/>
+      </initial_glyph>
+     </initial>
+     <tran trig="Ev1" target="../../2">
+      <tran_glyph conn="109,50,1,3,79">
+       <action box="36,-2,10,2"/>
+      </tran_glyph>
+     </tran>
+     <state name="S11">
+      <entry brief="s11Entry()"/>
+      <exit brief="s11Exit()"/>
+      <tran trig="Ev1" target="../../3">
+       <tran_glyph conn="75,72,1,3,14">
+        <action box="3,-2,10,2"/>
+       </tran_glyph>
+      </tran>
+      <state_glyph node="57,68,18,15">
+       <entry box="1,2,12,2"/>
+       <exit box="1,4,11,2"/>
+      </state_glyph>
+     </state>
+     <state name="S12">
+      <entry brief="s12Entry()"/>
+      <exit brief="s12Exit()"/>
+      <tran trig="Ev2" target="../../2">
+       <tran_glyph conn="89,79,3,1,-14">
+        <action box="-10,-2,10,2"/>
+       </tran_glyph>
+      </tran>
+      <state_glyph node="89,69,12,13">
+       <entry box="1,2,11,2"/>
+       <exit box="1,4,8,3"/>
+      </state_glyph>
+     </state>
+     <state_glyph node="48,45,61,55">
+      <entry box="1,2,19,3"/>
+      <exit box="1,5,14,3"/>
+     </state_glyph>
+    </state>
+    <state name="S2">
+     <entry brief="s2Entry()"/>
+     <exit brief="s2Exit()"/>
+     <tran trig="Ev1" target="../../1">
+      <tran_glyph conn="188,68,3,1,-79">
+       <action box="-39,-2,16,2"/>
+      </tran_glyph>
+     </tran>
+     <state_glyph node="188,46,32,25">
+      <entry box="1,2,16,2"/>
+      <exit box="1,4,13,3"/>
+     </state_glyph>
+    </state>
+    <state_diagram size="258,137"/>
+   </statechart>
+  </class>
+ </package>
+</model>

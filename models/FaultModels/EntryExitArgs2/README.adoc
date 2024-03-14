@@ -1,0 +1,8 @@
+
+
+* Run the autocoder 
+** make
+
+* Run the unit test
+** make ut
+

@@ -1,0 +1,32 @@
+
+@startuml
+
+[*] --> OFF
+
+state OFF {
+    [*] --> Diag
+    OFF:Entry: OFFENTRY()
+    OFF:Exit: offexit()
+    state Diag {
+        Diag:Entry: DiagEntry()
+        Diag:Exit: DiagExit()
+    }
+}
+
+state on {
+    [*] --> Init
+    on:Entry: OnEntry()
+    on:Exit: OnExit()
+    state Init {
+        Init:Entry: InitEntry()
+        Init:Exit: InitExit()
+    }
+}
+
+state c1 <<choice>>
+on --> OFF: ev2
+OFF --> c1: EV1
+c1 --> OFF: [G1()]
+c1 --> on: /A1()
+
+@enduml

@@ -1,0 +1,19 @@
+
+@startuml
+
+[*] --> S1
+
+state S1 {
+    S1:Entry: s1Entry()
+    S1:Exit: s1Exit()
+}
+
+state S2 {
+    S2:Entry: s2Entry()
+    S2:Exit: s2Exit()
+}
+
+S1 --> S2 : EV1[g1()]
+S2 --> S1 : Ev1/a2()
+
+@enduml

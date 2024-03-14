@@ -1,0 +1,16 @@
+
+@startuml
+
+[*] --> Off: /Bsp_Initialize()
+
+state Off {
+    Off:Entry: Bsp_LED_TurnOff()
+}
+
+state On {
+    On:Entry: Bsp_LED_TurnOn()
+}
+
+Off --> On : TIMEOUT
+On --> Off : TIMEOUT
+@enduml

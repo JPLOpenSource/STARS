@@ -1,0 +1,32 @@
+    g1 = false
+    g2 = false
+    g3 = false
+    Ev1
+    Ev2
+
+    g1 = true
+    g2 = false
+    g3 = false
+    Ev1
+    Ev2
+
+    g1 = true
+    g2 = true
+    g3 = false
+    Ev1
+    Ev2
+
+    g1 = true
+    g2 = true
+    g3 = true
+    Ev1
+    Ev2
+
+    g4 = true
+    Ev2
+    Ev2
+
+    g4 = true
+    g5 = true
+    Ev2
+

@@ -1,0 +1,38 @@
+# Blinky Model
+
+## Quantum Modeler
+
+image::BlinkyQM.png[]
+
+## PlantUML
+
+....
+@startuml
+
+[*] --> Off: /Bsp_Initialize()
+
+state Off {
+    Off:Entry: Bsp_LED_TurnOff()
+}
+
+state On {
+    On:Entry: Bsp_LED_TurnOn()
+}
+
+Off --> On : TIMEOUT
+On --> Off : TIMEOUT
+@enduml
+....
+
+image::BlinkyUML.png[]
+
+
+* Run the autocoder and build the executable model for C back-end 
+** make 
+
+* Execute the model using the C back-end
+** make run
+
+* Run the unit tests for C back-end
+** make ut
+

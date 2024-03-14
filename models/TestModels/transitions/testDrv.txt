@@ -1,0 +1,17 @@
+     Ev1
+     Ev2
+     g1 = false
+     Ev3
+     g1 = true
+     Ev3
+     Ev4
+     g2 = false
+     Ev5
+     g2 = true
+     Ev5
+     g3 = false
+     Ev6
+     g3 = true
+     Ev6
+     Ev7
+     Ev7

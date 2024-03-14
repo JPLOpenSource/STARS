@@ -1,0 +1,827 @@
+**** Running the state-machine autocoder ****
+../../../../autocoder/QMAutocoder.py c  -debug ../String_Guards.plantuml
+Hello, welcome to the Plant UML parser
+------umlFileName = ../String_Guards.plantuml
+[['OFF', 'initialAction()'], ['state', 'OFF', [['Far'], ['state', 'Far', [['Far', 'Entry:', 'farEntry()'], ['Far', 'Exit:', 'farExit()']]]]], ['state', 'ON', [['Bar'], ['state', 'Bar', [['Bar', 'Entry:', 'barEntry()'], ['Bar', 'Exit:', 'barExit()']]]]], ['state', 'c1', '<<choice>>'], ['state', 'c2', '<<choice>>'], ['state', 'c3', '<<choice>>'], ['state', 'c4', '<<choice>>'], ['state', 'c5', '<<choice>>'], ['ON', 'OFF', ['Ev2']], ['OFF', 'c1', ['Ev1']], ['c1', 'c2', ['g1()', 'b2()']], ['c2', 'OFF', ['a2()']], ['c2', 'c3', ['g2()', 'b3()']], ['c3', 'OFF', ['a3()']], ['c3', 'ON', ['g3()', 'b4()']], ['OFF', 'c4', ['Ev2']], ['c4', 'c5', ['g4()', 'a5()']], ['c5', 'OFF', ['g5()', 'a4()']], ['c5', 'ON', ['a6()']]]
+- CHOICE: [['state', 'c1', '<<choice>>'], ['state', 'c2', '<<choice>>'], ['state', 'c3', '<<choice>>'], ['state', 'c4', '<<choice>>'], ['state', 'c5', '<<choice>>']]
+  [0]:
+    ['state', 'c1', '<<choice>>']
+    - STATE_NAME: 'c1'
+  [1]:
+    ['state', 'c2', '<<choice>>']
+    - STATE_NAME: 'c2'
+  [2]:
+    ['state', 'c3', '<<choice>>']
+    - STATE_NAME: 'c3'
+  [3]:
+    ['state', 'c4', '<<choice>>']
+    - STATE_NAME: 'c4'
+  [4]:
+    ['state', 'c5', '<<choice>>']
+    - STATE_NAME: 'c5'
+- COMP_STATE: [['state', 'OFF', [['Far'], ['state', 'Far', [['Far', 'Entry:', 'farEntry()'], ['Far', 'Exit:', 'farExit()']]]]], ['state', 'ON', [['Bar'], ['state', 'Bar', [['Bar', 'Entry:', 'barEntry()'], ['Bar', 'Exit:', 'barExit()']]]]]]
+  [0]:
+    ['state', 'OFF', [['Far'], ['state', 'Far', [['Far', 'Entry:', 'farEntry()'], ['Far', 'Exit:', 'farExit()']]]]]
+    [0]:
+      state
+    [1]:
+      OFF
+    [2]:
+      [['Far'], ['state', 'Far', [['Far', 'Entry:', 'farEntry()'], ['Far', 'Exit:', 'farExit()']]]]
+      - COMP_STATE: [['state', 'Far', [['Far', 'Entry:', 'farEntry()'], ['Far', 'Exit:', 'farExit()']]]]
+        [0]:
+          ['state', 'Far', [['Far', 'Entry:', 'farEntry()'], ['Far', 'Exit:', 'farExit()']]]
+          [0]:
+            state
+          [1]:
+            Far
+          [2]:
+            [['Far', 'Entry:', 'farEntry()'], ['Far', 'Exit:', 'farExit()']]
+            - STATE: [['Far', 'Entry:', 'farEntry()'], ['Far', 'Exit:', 'farExit()']]
+              [0]:
+                ['Far', 'Entry:', 'farEntry()']
+                - ACTION: ['farEntry()']
+                - PREFIX: 'Entry:'
+                - STATE_NAME: 'Far'
+              [1]:
+                ['Far', 'Exit:', 'farExit()']
+                - ACTION: ['farExit()']
+                - PREFIX: 'Exit:'
+                - STATE_NAME: 'Far'
+            [0]:
+              ['Far', 'Entry:', 'farEntry()']
+              - ACTION: ['farEntry()']
+              - PREFIX: 'Entry:'
+              - STATE_NAME: 'Far'
+            [1]:
+              ['Far', 'Exit:', 'farExit()']
+              - ACTION: ['farExit()']
+              - PREFIX: 'Exit:'
+              - STATE_NAME: 'Far'
+      - INIT: [['Far']]
+        [0]:
+          ['Far']
+          - STATE_NAME: 'Far'
+      [0]:
+        ['Far']
+        - STATE_NAME: 'Far'
+      [1]:
+        ['state', 'Far', [['Far', 'Entry:', 'farEntry()'], ['Far', 'Exit:', 'farExit()']]]
+        [0]:
+          state
+        [1]:
+          Far
+        [2]:
+          [['Far', 'Entry:', 'farEntry()'], ['Far', 'Exit:', 'farExit()']]
+          - STATE: [['Far', 'Entry:', 'farEntry()'], ['Far', 'Exit:', 'farExit()']]
+            [0]:
+              ['Far', 'Entry:', 'farEntry()']
+              - ACTION: ['farEntry()']
+              - PREFIX: 'Entry:'
+              - STATE_NAME: 'Far'
+            [1]:
+              ['Far', 'Exit:', 'farExit()']
+              - ACTION: ['farExit()']
+              - PREFIX: 'Exit:'
+              - STATE_NAME: 'Far'
+          [0]:
+            ['Far', 'Entry:', 'farEntry()']
+            - ACTION: ['farEntry()']
+            - PREFIX: 'Entry:'
+            - STATE_NAME: 'Far'
+          [1]:
+            ['Far', 'Exit:', 'farExit()']
+            - ACTION: ['farExit()']
+            - PREFIX: 'Exit:'
+            - STATE_NAME: 'Far'
+  [1]:
+    ['state', 'ON', [['Bar'], ['state', 'Bar', [['Bar', 'Entry:', 'barEntry()'], ['Bar', 'Exit:', 'barExit()']]]]]
+    [0]:
+      state
+    [1]:
+      ON
+    [2]:
+      [['Bar'], ['state', 'Bar', [['Bar', 'Entry:', 'barEntry()'], ['Bar', 'Exit:', 'barExit()']]]]
+      - COMP_STATE: [['state', 'Bar', [['Bar', 'Entry:', 'barEntry()'], ['Bar', 'Exit:', 'barExit()']]]]
+        [0]:
+          ['state', 'Bar', [['Bar', 'Entry:', 'barEntry()'], ['Bar', 'Exit:', 'barExit()']]]
+          [0]:
+            state
+          [1]:
+            Bar
+          [2]:
+            [['Bar', 'Entry:', 'barEntry()'], ['Bar', 'Exit:', 'barExit()']]
+            - STATE: [['Bar', 'Entry:', 'barEntry()'], ['Bar', 'Exit:', 'barExit()']]
+              [0]:
+                ['Bar', 'Entry:', 'barEntry()']
+                - ACTION: ['barEntry()']
+                - PREFIX: 'Entry:'
+                - STATE_NAME: 'Bar'
+              [1]:
+                ['Bar', 'Exit:', 'barExit()']
+                - ACTION: ['barExit()']
+                - PREFIX: 'Exit:'
+                - STATE_NAME: 'Bar'
+            [0]:
+              ['Bar', 'Entry:', 'barEntry()']
+              - ACTION: ['barEntry()']
+              - PREFIX: 'Entry:'
+              - STATE_NAME: 'Bar'
+            [1]:
+              ['Bar', 'Exit:', 'barExit()']
+              - ACTION: ['barExit()']
+              - PREFIX: 'Exit:'
+              - STATE_NAME: 'Bar'
+      - INIT: [['Bar']]
+        [0]:
+          ['Bar']
+          - STATE_NAME: 'Bar'
+      [0]:
+        ['Bar']
+        - STATE_NAME: 'Bar'
+      [1]:
+        ['state', 'Bar', [['Bar', 'Entry:', 'barEntry()'], ['Bar', 'Exit:', 'barExit()']]]
+        [0]:
+          state
+        [1]:
+          Bar
+        [2]:
+          [['Bar', 'Entry:', 'barEntry()'], ['Bar', 'Exit:', 'barExit()']]
+          - STATE: [['Bar', 'Entry:', 'barEntry()'], ['Bar', 'Exit:', 'barExit()']]
+            [0]:
+              ['Bar', 'Entry:', 'barEntry()']
+              - ACTION: ['barEntry()']
+              - PREFIX: 'Entry:'
+              - STATE_NAME: 'Bar'
+            [1]:
+              ['Bar', 'Exit:', 'barExit()']
+              - ACTION: ['barExit()']
+              - PREFIX: 'Exit:'
+              - STATE_NAME: 'Bar'
+          [0]:
+            ['Bar', 'Entry:', 'barEntry()']
+            - ACTION: ['barEntry()']
+            - PREFIX: 'Entry:'
+            - STATE_NAME: 'Bar'
+          [1]:
+            ['Bar', 'Exit:', 'barExit()']
+            - ACTION: ['barExit()']
+            - PREFIX: 'Exit:'
+            - STATE_NAME: 'Bar'
+- INIT: [['OFF', 'initialAction()']]
+  [0]:
+    ['OFF', 'initialAction()']
+    - ACTION: ['initialAction()']
+    - STATE_NAME: 'OFF'
+- TRANSITION: [['ON', 'OFF', ['Ev2']], ['OFF', 'c1', ['Ev1']], ['c1', 'c2', ['g1()', 'b2()']], ['c2', 'OFF', ['a2()']], ['c2', 'c3', ['g2()', 'b3()']], ['c3', 'OFF', ['a3()']], ['c3', 'ON', ['g3()', 'b4()']], ['OFF', 'c4', ['Ev2']], ['c4', 'c5', ['g4()', 'a5()']], ['c5', 'OFF', ['g5()', 'a4()']], ['c5', 'ON', ['a6()']]]
+  [0]:
+    ['ON', 'OFF', ['Ev2']]
+    - BODY: ['Ev2']
+      - EVENT: 'Ev2'
+    - SOURCE: 'ON'
+    - TARGET: 'OFF'
+    [0]:
+      ON
+    [1]:
+      OFF
+    [2]:
+      ['Ev2']
+      - EVENT: 'Ev2'
+  [1]:
+    ['OFF', 'c1', ['Ev1']]
+    - BODY: ['Ev1']
+      - EVENT: 'Ev1'
+    - SOURCE: 'OFF'
+    - TARGET: 'c1'
+    [0]:
+      OFF
+    [1]:
+      c1
+    [2]:
+      ['Ev1']
+      - EVENT: 'Ev1'
+  [2]:
+    ['c1', 'c2', ['g1()', 'b2()']]
+    - BODY: ['g1()', 'b2()']
+      - ACTION: ['b2()']
+      - GUARD: 'g1()'
+    - SOURCE: 'c1'
+    - TARGET: 'c2'
+    [0]:
+      c1
+    [1]:
+      c2
+    [2]:
+      ['g1()', 'b2()']
+      - ACTION: ['b2()']
+      - GUARD: 'g1()'
+  [3]:
+    ['c2', 'OFF', ['a2()']]
+    - BODY: ['a2()']
+      - ACTION: ['a2()']
+    - SOURCE: 'c2'
+    - TARGET: 'OFF'
+    [0]:
+      c2
+    [1]:
+      OFF
+    [2]:
+      ['a2()']
+      - ACTION: ['a2()']
+  [4]:
+    ['c2', 'c3', ['g2()', 'b3()']]
+    - BODY: ['g2()', 'b3()']
+      - ACTION: ['b3()']
+      - GUARD: 'g2()'
+    - SOURCE: 'c2'
+    - TARGET: 'c3'
+    [0]:
+      c2
+    [1]:
+      c3
+    [2]:
+      ['g2()', 'b3()']
+      - ACTION: ['b3()']
+      - GUARD: 'g2()'
+  [5]:
+    ['c3', 'OFF', ['a3()']]
+    - BODY: ['a3()']
+      - ACTION: ['a3()']
+    - SOURCE: 'c3'
+    - TARGET: 'OFF'
+    [0]:
+      c3
+    [1]:
+      OFF
+    [2]:
+      ['a3()']
+      - ACTION: ['a3()']
+  [6]:
+    ['c3', 'ON', ['g3()', 'b4()']]
+    - BODY: ['g3()', 'b4()']
+      - ACTION: ['b4()']
+      - GUARD: 'g3()'
+    - SOURCE: 'c3'
+    - TARGET: 'ON'
+    [0]:
+      c3
+    [1]:
+      ON
+    [2]:
+      ['g3()', 'b4()']
+      - ACTION: ['b4()']
+      - GUARD: 'g3()'
+  [7]:
+    ['OFF', 'c4', ['Ev2']]
+    - BODY: ['Ev2']
+      - EVENT: 'Ev2'
+    - SOURCE: 'OFF'
+    - TARGET: 'c4'
+    [0]:
+      OFF
+    [1]:
+      c4
+    [2]:
+      ['Ev2']
+      - EVENT: 'Ev2'
+  [8]:
+    ['c4', 'c5', ['g4()', 'a5()']]
+    - BODY: ['g4()', 'a5()']
+      - ACTION: ['a5()']
+      - GUARD: 'g4()'
+    - SOURCE: 'c4'
+    - TARGET: 'c5'
+    [0]:
+      c4
+    [1]:
+      c5
+    [2]:
+      ['g4()', 'a5()']
+      - ACTION: ['a5()']
+      - GUARD: 'g4()'
+  [9]:
+    ['c5', 'OFF', ['g5()', 'a4()']]
+    - BODY: ['g5()', 'a4()']
+      - ACTION: ['a4()']
+      - GUARD: 'g5()'
+    - SOURCE: 'c5'
+    - TARGET: 'OFF'
+    [0]:
+      c5
+    [1]:
+      OFF
+    [2]:
+      ['g5()', 'a4()']
+      - ACTION: ['a4()']
+      - GUARD: 'g5()'
+  [10]:
+    ['c5', 'ON', ['a6()']]
+    - BODY: ['a6()']
+      - ACTION: ['a6()']
+    - SOURCE: 'c5'
+    - TARGET: 'ON'
+    [0]:
+      c5
+    [1]:
+      ON
+    [2]:
+      ['a6()']
+      - ACTION: ['a6()']
+[0]:
+  ['OFF', 'initialAction()']
+  - ACTION: ['initialAction()']
+  - STATE_NAME: 'OFF'
+[1]:
+  ['state', 'OFF', [['Far'], ['state', 'Far', [['Far', 'Entry:', 'farEntry()'], ['Far', 'Exit:', 'farExit()']]]]]
+  [0]:
+    state
+  [1]:
+    OFF
+  [2]:
+    [['Far'], ['state', 'Far', [['Far', 'Entry:', 'farEntry()'], ['Far', 'Exit:', 'farExit()']]]]
+    - COMP_STATE: [['state', 'Far', [['Far', 'Entry:', 'farEntry()'], ['Far', 'Exit:', 'farExit()']]]]
+      [0]:
+        ['state', 'Far', [['Far', 'Entry:', 'farEntry()'], ['Far', 'Exit:', 'farExit()']]]
+        [0]:
+          state
+        [1]:
+          Far
+        [2]:
+          [['Far', 'Entry:', 'farEntry()'], ['Far', 'Exit:', 'farExit()']]
+          - STATE: [['Far', 'Entry:', 'farEntry()'], ['Far', 'Exit:', 'farExit()']]
+            [0]:
+              ['Far', 'Entry:', 'farEntry()']
+              - ACTION: ['farEntry()']
+              - PREFIX: 'Entry:'
+              - STATE_NAME: 'Far'
+            [1]:
+              ['Far', 'Exit:', 'farExit()']
+              - ACTION: ['farExit()']
+              - PREFIX: 'Exit:'
+              - STATE_NAME: 'Far'
+          [0]:
+            ['Far', 'Entry:', 'farEntry()']
+            - ACTION: ['farEntry()']
+            - PREFIX: 'Entry:'
+            - STATE_NAME: 'Far'
+          [1]:
+            ['Far', 'Exit:', 'farExit()']
+            - ACTION: ['farExit()']
+            - PREFIX: 'Exit:'
+            - STATE_NAME: 'Far'
+    - INIT: [['Far']]
+      [0]:
+        ['Far']
+        - STATE_NAME: 'Far'
+    [0]:
+      ['Far']
+      - STATE_NAME: 'Far'
+    [1]:
+      ['state', 'Far', [['Far', 'Entry:', 'farEntry()'], ['Far', 'Exit:', 'farExit()']]]
+      [0]:
+        state
+      [1]:
+        Far
+      [2]:
+        [['Far', 'Entry:', 'farEntry()'], ['Far', 'Exit:', 'farExit()']]
+        - STATE: [['Far', 'Entry:', 'farEntry()'], ['Far', 'Exit:', 'farExit()']]
+          [0]:
+            ['Far', 'Entry:', 'farEntry()']
+            - ACTION: ['farEntry()']
+            - PREFIX: 'Entry:'
+            - STATE_NAME: 'Far'
+          [1]:
+            ['Far', 'Exit:', 'farExit()']
+            - ACTION: ['farExit()']
+            - PREFIX: 'Exit:'
+            - STATE_NAME: 'Far'
+        [0]:
+          ['Far', 'Entry:', 'farEntry()']
+          - ACTION: ['farEntry()']
+          - PREFIX: 'Entry:'
+          - STATE_NAME: 'Far'
+        [1]:
+          ['Far', 'Exit:', 'farExit()']
+          - ACTION: ['farExit()']
+          - PREFIX: 'Exit:'
+          - STATE_NAME: 'Far'
+[2]:
+  ['state', 'ON', [['Bar'], ['state', 'Bar', [['Bar', 'Entry:', 'barEntry()'], ['Bar', 'Exit:', 'barExit()']]]]]
+  [0]:
+    state
+  [1]:
+    ON
+  [2]:
+    [['Bar'], ['state', 'Bar', [['Bar', 'Entry:', 'barEntry()'], ['Bar', 'Exit:', 'barExit()']]]]
+    - COMP_STATE: [['state', 'Bar', [['Bar', 'Entry:', 'barEntry()'], ['Bar', 'Exit:', 'barExit()']]]]
+      [0]:
+        ['state', 'Bar', [['Bar', 'Entry:', 'barEntry()'], ['Bar', 'Exit:', 'barExit()']]]
+        [0]:
+          state
+        [1]:
+          Bar
+        [2]:
+          [['Bar', 'Entry:', 'barEntry()'], ['Bar', 'Exit:', 'barExit()']]
+          - STATE: [['Bar', 'Entry:', 'barEntry()'], ['Bar', 'Exit:', 'barExit()']]
+            [0]:
+              ['Bar', 'Entry:', 'barEntry()']
+              - ACTION: ['barEntry()']
+              - PREFIX: 'Entry:'
+              - STATE_NAME: 'Bar'
+            [1]:
+              ['Bar', 'Exit:', 'barExit()']
+              - ACTION: ['barExit()']
+              - PREFIX: 'Exit:'
+              - STATE_NAME: 'Bar'
+          [0]:
+            ['Bar', 'Entry:', 'barEntry()']
+            - ACTION: ['barEntry()']
+            - PREFIX: 'Entry:'
+            - STATE_NAME: 'Bar'
+          [1]:
+            ['Bar', 'Exit:', 'barExit()']
+            - ACTION: ['barExit()']
+            - PREFIX: 'Exit:'
+            - STATE_NAME: 'Bar'
+    - INIT: [['Bar']]
+      [0]:
+        ['Bar']
+        - STATE_NAME: 'Bar'
+    [0]:
+      ['Bar']
+      - STATE_NAME: 'Bar'
+    [1]:
+      ['state', 'Bar', [['Bar', 'Entry:', 'barEntry()'], ['Bar', 'Exit:', 'barExit()']]]
+      [0]:
+        state
+      [1]:
+        Bar
+      [2]:
+        [['Bar', 'Entry:', 'barEntry()'], ['Bar', 'Exit:', 'barExit()']]
+        - STATE: [['Bar', 'Entry:', 'barEntry()'], ['Bar', 'Exit:', 'barExit()']]
+          [0]:
+            ['Bar', 'Entry:', 'barEntry()']
+            - ACTION: ['barEntry()']
+            - PREFIX: 'Entry:'
+            - STATE_NAME: 'Bar'
+          [1]:
+            ['Bar', 'Exit:', 'barExit()']
+            - ACTION: ['barExit()']
+            - PREFIX: 'Exit:'
+            - STATE_NAME: 'Bar'
+        [0]:
+          ['Bar', 'Entry:', 'barEntry()']
+          - ACTION: ['barEntry()']
+          - PREFIX: 'Entry:'
+          - STATE_NAME: 'Bar'
+        [1]:
+          ['Bar', 'Exit:', 'barExit()']
+          - ACTION: ['barExit()']
+          - PREFIX: 'Exit:'
+          - STATE_NAME: 'Bar'
+[3]:
+  ['state', 'c1', '<<choice>>']
+  - STATE_NAME: 'c1'
+[4]:
+  ['state', 'c2', '<<choice>>']
+  - STATE_NAME: 'c2'
+[5]:
+  ['state', 'c3', '<<choice>>']
+  - STATE_NAME: 'c3'
+[6]:
+  ['state', 'c4', '<<choice>>']
+  - STATE_NAME: 'c4'
+[7]:
+  ['state', 'c5', '<<choice>>']
+  - STATE_NAME: 'c5'
+[8]:
+  ['ON', 'OFF', ['Ev2']]
+  - BODY: ['Ev2']
+    - EVENT: 'Ev2'
+  - SOURCE: 'ON'
+  - TARGET: 'OFF'
+  [0]:
+    ON
+  [1]:
+    OFF
+  [2]:
+    ['Ev2']
+    - EVENT: 'Ev2'
+[9]:
+  ['OFF', 'c1', ['Ev1']]
+  - BODY: ['Ev1']
+    - EVENT: 'Ev1'
+  - SOURCE: 'OFF'
+  - TARGET: 'c1'
+  [0]:
+    OFF
+  [1]:
+    c1
+  [2]:
+    ['Ev1']
+    - EVENT: 'Ev1'
+[10]:
+  ['c1', 'c2', ['g1()', 'b2()']]
+  - BODY: ['g1()', 'b2()']
+    - ACTION: ['b2()']
+    - GUARD: 'g1()'
+  - SOURCE: 'c1'
+  - TARGET: 'c2'
+  [0]:
+    c1
+  [1]:
+    c2
+  [2]:
+    ['g1()', 'b2()']
+    - ACTION: ['b2()']
+    - GUARD: 'g1()'
+[11]:
+  ['c2', 'OFF', ['a2()']]
+  - BODY: ['a2()']
+    - ACTION: ['a2()']
+  - SOURCE: 'c2'
+  - TARGET: 'OFF'
+  [0]:
+    c2
+  [1]:
+    OFF
+  [2]:
+    ['a2()']
+    - ACTION: ['a2()']
+[12]:
+  ['c2', 'c3', ['g2()', 'b3()']]
+  - BODY: ['g2()', 'b3()']
+    - ACTION: ['b3()']
+    - GUARD: 'g2()'
+  - SOURCE: 'c2'
+  - TARGET: 'c3'
+  [0]:
+    c2
+  [1]:
+    c3
+  [2]:
+    ['g2()', 'b3()']
+    - ACTION: ['b3()']
+    - GUARD: 'g2()'
+[13]:
+  ['c3', 'OFF', ['a3()']]
+  - BODY: ['a3()']
+    - ACTION: ['a3()']
+  - SOURCE: 'c3'
+  - TARGET: 'OFF'
+  [0]:
+    c3
+  [1]:
+    OFF
+  [2]:
+    ['a3()']
+    - ACTION: ['a3()']
+[14]:
+  ['c3', 'ON', ['g3()', 'b4()']]
+  - BODY: ['g3()', 'b4()']
+    - ACTION: ['b4()']
+    - GUARD: 'g3()'
+  - SOURCE: 'c3'
+  - TARGET: 'ON'
+  [0]:
+    c3
+  [1]:
+    ON
+  [2]:
+    ['g3()', 'b4()']
+    - ACTION: ['b4()']
+    - GUARD: 'g3()'
+[15]:
+  ['OFF', 'c4', ['Ev2']]
+  - BODY: ['Ev2']
+    - EVENT: 'Ev2'
+  - SOURCE: 'OFF'
+  - TARGET: 'c4'
+  [0]:
+    OFF
+  [1]:
+    c4
+  [2]:
+    ['Ev2']
+    - EVENT: 'Ev2'
+[16]:
+  ['c4', 'c5', ['g4()', 'a5()']]
+  - BODY: ['g4()', 'a5()']
+    - ACTION: ['a5()']
+    - GUARD: 'g4()'
+  - SOURCE: 'c4'
+  - TARGET: 'c5'
+  [0]:
+    c4
+  [1]:
+    c5
+  [2]:
+    ['g4()', 'a5()']
+    - ACTION: ['a5()']
+    - GUARD: 'g4()'
+[17]:
+  ['c5', 'OFF', ['g5()', 'a4()']]
+  - BODY: ['g5()', 'a4()']
+    - ACTION: ['a4()']
+    - GUARD: 'g5()'
+  - SOURCE: 'c5'
+  - TARGET: 'OFF'
+  [0]:
+    c5
+  [1]:
+    OFF
+  [2]:
+    ['g5()', 'a4()']
+    - ACTION: ['a4()']
+    - GUARD: 'g5()'
+[18]:
+  ['c5', 'ON', ['a6()']]
+  - BODY: ['a6()']
+    - ACTION: ['a6()']
+  - SOURCE: 'c5'
+  - TARGET: 'ON'
+  [0]:
+    c5
+  [1]:
+    ON
+  [2]:
+    ['a6()']
+    - ACTION: ['a6()']
+{'OFF': 1, 'Far': 2, 'ON': 3, 'Bar': 4, 'c1': 5, 'c2': 6, 'c3': 7, 'c4': 8, 'c5': 9}
+{'OFF': {'entry': None, 'exit': None, 'internal': None}, 'Far': {'entry': 'farEntry()', 'exit': 'farExit()', 'internal': None}, 'ON': {'entry': None, 'exit': None, 'internal': None}, 'Bar': {'entry': 'barEntry()', 'exit': 'barExit()', 'internal': None}}
+---------------- xmi Model ------------
+Node('/xmiModel', package='String_GuardsPackage', stateMachine='String_Guards')
+├── Node('/xmiModel/STATE', entry=None, exit=None, id=1, stateName='OFF')
+│   ├── Node('/xmiModel/STATE/STATE', entry='farEntry()', exit='farExit()', id=2, stateName='Far')
+│   ├── Node('/xmiModel/STATE/PSUEDOSTATE', id=10)
+│   └── Node('/xmiModel/STATE/TRANSITION', action=None, event=None, guard=None, kind=None, source=10, target=2)
+├── Node('/xmiModel/STATE', entry=None, exit=None, id=3, stateName='ON')
+│   ├── Node('/xmiModel/STATE/STATE', entry='barEntry()', exit='barExit()', id=4, stateName='Bar')
+│   ├── Node('/xmiModel/STATE/PSUEDOSTATE', id=11)
+│   └── Node('/xmiModel/STATE/TRANSITION', action=None, event=None, guard=None, kind=None, source=11, target=4)
+├── Node('/xmiModel/PSUEDOSTATE', id=12)
+├── Node('/xmiModel/TRANSITION', action='initialAction()', event=None, guard=None, kind=None, source=12, target=1)
+├── Node('/xmiModel/PSUEDOSTATE', id=5)
+├── Node('/xmiModel/PSUEDOSTATE', id=6)
+├── Node('/xmiModel/PSUEDOSTATE', id=7)
+├── Node('/xmiModel/PSUEDOSTATE', id=8)
+├── Node('/xmiModel/PSUEDOSTATE', id=9)
+├── Node('/xmiModel/TRANSITION', action=None, event='Ev2', guard=None, kind=None, source=3, target=1)
+├── Node('/xmiModel/TRANSITION', action=None, event='Ev1', guard=None, kind=None, source=1, target=5)
+├── Node('/xmiModel/TRANSITION', action='b2()', event=None, guard='g1()', kind=None, source=5, target=6)
+├── Node('/xmiModel/TRANSITION', action='a2()', event=None, guard=None, kind=None, source=6, target=1)
+├── Node('/xmiModel/TRANSITION', action='b3()', event=None, guard='g2()', kind=None, source=6, target=7)
+├── Node('/xmiModel/TRANSITION', action='a3()', event=None, guard=None, kind=None, source=7, target=1)
+├── Node('/xmiModel/TRANSITION', action='b4()', event=None, guard='g3()', kind=None, source=7, target=3)
+├── Node('/xmiModel/TRANSITION', action=None, event='Ev2', guard=None, kind=None, source=1, target=8)
+├── Node('/xmiModel/TRANSITION', action='a5()', event=None, guard='g4()', kind=None, source=8, target=9)
+├── Node('/xmiModel/TRANSITION', action='a4()', event=None, guard='g5()', kind=None, source=9, target=1)
+└── Node('/xmiModel/TRANSITION', action='a6()', event=None, guard=None, kind=None, source=9, target=3)
+------------------end------------------
+=> After convertXmiToQmModel
+---------------- qm Model ------------
+Node('/new', package='String_GuardsPackage', position=[], stateMachine='String_Guards')
+├── Node('/new/STATE', entry=None, exit=None, id=1, position=[1], stateName='OFF')
+│   ├── Node('/new/STATE/STATE', entry='farEntry()', exit='farExit()', id=2, position=[1, 1], stateName='Far')
+│   ├── Node('/new/STATE/INIT', action=None, event=None, guard=None, position=[1, 2], target='../1')
+│   ├── Node('/new/STATE/TRANSITION', action=None, event='Ev1', guard=None, position=[1, 3], source=1, target=None)
+│   │   └── Node('/new/STATE/TRANSITION/CHOICE', action='b2()', guard='g1()', position=[1, 3, 1], target=None)
+│   │       ├── Node('/new/STATE/TRANSITION/CHOICE/CHOICE', action='a2()', guard=None, position=[1, 3, 1, 1], target='../../../../1')
+│   │       └── Node('/new/STATE/TRANSITION/CHOICE/CHOICE', action='b3()', guard='g2()', position=[1, 3, 1, 2], target=None)
+│   │           ├── Node('/new/STATE/TRANSITION/CHOICE/CHOICE/CHOICE', action='a3()', guard=None, position=[1, 3, 1, 2, 1], target='../../../../../1')
+│   │           └── Node('/new/STATE/TRANSITION/CHOICE/CHOICE/CHOICE', action='b4()', guard='g3()', position=[1, 3, 1, 2, 2], target='../../../../../2')
+│   └── Node('/new/STATE/TRANSITION', action=None, event='Ev2', guard=None, position=[1, 4], source=1, target=None)
+│       └── Node('/new/STATE/TRANSITION/CHOICE', action='a5()', guard='g4()', position=[1, 4, 1], target=None)
+│           ├── Node('/new/STATE/TRANSITION/CHOICE/CHOICE', action='a4()', guard='g5()', position=[1, 4, 1, 1], target='../../../../1')
+│           └── Node('/new/STATE/TRANSITION/CHOICE/CHOICE', action='a6()', guard=None, position=[1, 4, 1, 2], target='../../../../2')
+├── Node('/new/STATE', entry=None, exit=None, id=3, position=[2], stateName='ON')
+│   ├── Node('/new/STATE/STATE', entry='barEntry()', exit='barExit()', id=4, position=[2, 1], stateName='Bar')
+│   ├── Node('/new/STATE/INIT', action=None, event=None, guard=None, position=[2, 2], target='../1')
+│   └── Node('/new/STATE/TRANSITION', action=None, event='Ev2', guard=None, position=[2, 3], source=3, target='../../1')
+└── Node('/new/INIT', action='initialAction()', event=None, guard=None, position=[3], target='../1')
+------------------end------------------
+<model>
+  <package name="String_GuardsPackage">
+    <class name="String_Guards">
+      <statechart>
+        <state name="OFF">
+          <state name="Far">
+            <entry brief="farEntry()"/>
+            <exit brief="farExit()"/>
+          </state>
+          <initial target="../1"/>
+          <tran trig="Ev1">
+            <choice>
+              <guard brief="g1()"/>
+              <action brief="b2()"/>
+              <choice target="../../../../1">
+                <action brief="a2()"/>
+              </choice>
+              <choice>
+                <guard brief="g2()"/>
+                <action brief="b3()"/>
+                <choice target="../../../../../1">
+                  <action brief="a3()"/>
+                </choice>
+                <choice target="../../../../../2">
+                  <guard brief="g3()"/>
+                  <action brief="b4()"/>
+                </choice>
+              </choice>
+            </choice>
+          </tran>
+          <tran trig="Ev2">
+            <choice>
+              <guard brief="g4()"/>
+              <action brief="a5()"/>
+              <choice target="../../../../1">
+                <guard brief="g5()"/>
+                <action brief="a4()"/>
+              </choice>
+              <choice target="../../../../2">
+                <action brief="a6()"/>
+              </choice>
+            </choice>
+          </tran>
+        </state>
+        <state name="ON">
+          <state name="Bar">
+            <entry brief="barEntry()"/>
+            <exit brief="barExit()"/>
+          </state>
+          <initial target="../1"/>
+          <tran trig="Ev2" target="../../1"/>
+        </state>
+        <initial target="../1">
+          <action brief="initialAction()"/>
+        </initial>
+      </statechart>
+    </class>
+  </package>
+</model>
+
+State-machine semantics look good
+<statechart>
+  <state name="OFF">
+    <state name="Far">
+      <entry brief="farEntry()"/>
+      <exit brief="farExit()"/>
+    </state>
+    <initial target="../1"/>
+    <tran trig="Ev1">
+      <choice>
+        <guard brief="g1()"/>
+        <action brief="b2()"/>
+        <choice target="../../../../1">
+          <action brief="a2()"/>
+        </choice>
+        <choice>
+          <guard brief="g2()"/>
+          <action brief="b3()"/>
+          <choice target="../../../../../1">
+            <action brief="a3()"/>
+          </choice>
+          <choice target="../../../../../2">
+            <guard brief="g3()"/>
+            <action brief="b4()"/>
+          </choice>
+        </choice>
+      </choice>
+    </tran>
+    <tran trig="Ev2">
+      <choice>
+        <guard brief="g4()"/>
+        <action brief="a5()"/>
+        <choice target="../../../../1">
+          <guard brief="g5()"/>
+          <action brief="a4()"/>
+        </choice>
+        <choice target="../../../../2">
+          <action brief="a6()"/>
+        </choice>
+      </choice>
+    </tran>
+  </state>
+  <state name="ON">
+    <state name="Bar">
+      <entry brief="barEntry()"/>
+      <exit brief="barExit()"/>
+    </state>
+    <initial target="../1"/>
+    <tran trig="Ev2" target="../../1"/>
+  </state>
+  <initial target="../1">
+    <action brief="initialAction()"/>
+  </initial>
+</statechart>
+
+Generating flat C code for String_Guards
+Generating String_GuardsImpl.c
+Generating String_GuardsImpl.h
+Generating main.c
+Generating sendEvent.h
+Generating sendEvent.c
+Generating testDrv.h
+Generating testDrv.c
+Generating String_Guards.c
+Generating String_Guards.h

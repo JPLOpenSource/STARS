@@ -1,0 +1,7 @@
+InitialState = s1111, Event = Ev2, guard = None, action = s1111Exit();s111Exit();s11Exit();s1Exit();s2Entry();s21Entry(), TargetState = S21
+InitialState = s1111, Event = Ev3, guard = None, action = s1111Exit();s111Exit();s11Exit();s12Entry();s121Entry(), TargetState = S121
+InitialState = s1111, Event = Ev1, guard = None, action = s1111Exit();s111Exit();s11Exit();s12Entry();s121Entry(), TargetState = S121
+InitialState = S121, Event = Ev4, guard = None, action = s121Exit();s12Exit();s11Entry();s111Entry();s1111Entry(), TargetState = s1111
+InitialState = S121, Event = Ev2, guard = None, action = s121Exit();s12Exit();s11Entry();s111Entry();s1111Entry(), TargetState = s1111
+InitialState = S121, Event = Ev1, guard = None, action = s121Exit();s12Exit();s1Exit();s2Entry();s21Entry(), TargetState = S21
+InitialState = S21, Event = Ev1, guard = None, action = s21Exit();s2Exit();s1Entry();s11Entry();s111Entry();s1111Entry(), TargetState = s1111

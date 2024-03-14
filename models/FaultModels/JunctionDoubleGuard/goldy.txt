@@ -1,0 +1,7 @@
+[91m
+
+*** Error parsing the state-machine: 'JunctionDoubleGuard' 
+[93m
+ Junction Guard error:  
+    Transition EV1, from state s1: multiple guards detected, only 1 guard allowed from a junction
+[0m

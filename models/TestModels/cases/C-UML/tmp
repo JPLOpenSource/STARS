@@ -1,0 +1,296 @@
+**** Running the state-machine autocoder ****
+../../../../autocoder/QMAutocoder.py c  -debug ../Cases.plantuml
+Hello, welcome to the Plant UML parser
+------umlFileName = ../Cases.plantuml
+[['OFF'], ['state', 'OFF', [['OFF', 'Entry:', 'OFFENTRY()'], ['OFF', 'Exit:', 'offexit()']]], ['state', 'on', [['on', 'Entry:', 'OnEntry()'], ['on', 'Exit:', 'OnExit()']]], ['state', 'c1', '<<choice>>'], ['on', 'OFF', ['ev2']], ['OFF', 'c1', ['EV1']], ['c1', 'OFF', ['G1()']], ['c1', 'on', ['A1()']]]
+- CHOICE: [['state', 'c1', '<<choice>>']]
+  [0]:
+    ['state', 'c1', '<<choice>>']
+    - STATE_NAME: 'c1'
+- COMP_STATE: [['state', 'OFF', [['OFF', 'Entry:', 'OFFENTRY()'], ['OFF', 'Exit:', 'offexit()']]], ['state', 'on', [['on', 'Entry:', 'OnEntry()'], ['on', 'Exit:', 'OnExit()']]]]
+  [0]:
+    ['state', 'OFF', [['OFF', 'Entry:', 'OFFENTRY()'], ['OFF', 'Exit:', 'offexit()']]]
+    [0]:
+      state
+    [1]:
+      OFF
+    [2]:
+      [['OFF', 'Entry:', 'OFFENTRY()'], ['OFF', 'Exit:', 'offexit()']]
+      - STATE: [['OFF', 'Entry:', 'OFFENTRY()'], ['OFF', 'Exit:', 'offexit()']]
+        [0]:
+          ['OFF', 'Entry:', 'OFFENTRY()']
+          - FUNCTION: 'OFFENTRY()'
+          - PREFIX: 'Entry:'
+          - STATE_NAME: 'OFF'
+        [1]:
+          ['OFF', 'Exit:', 'offexit()']
+          - FUNCTION: 'offexit()'
+          - PREFIX: 'Exit:'
+          - STATE_NAME: 'OFF'
+      [0]:
+        ['OFF', 'Entry:', 'OFFENTRY()']
+        - FUNCTION: 'OFFENTRY()'
+        - PREFIX: 'Entry:'
+        - STATE_NAME: 'OFF'
+      [1]:
+        ['OFF', 'Exit:', 'offexit()']
+        - FUNCTION: 'offexit()'
+        - PREFIX: 'Exit:'
+        - STATE_NAME: 'OFF'
+  [1]:
+    ['state', 'on', [['on', 'Entry:', 'OnEntry()'], ['on', 'Exit:', 'OnExit()']]]
+    [0]:
+      state
+    [1]:
+      on
+    [2]:
+      [['on', 'Entry:', 'OnEntry()'], ['on', 'Exit:', 'OnExit()']]
+      - STATE: [['on', 'Entry:', 'OnEntry()'], ['on', 'Exit:', 'OnExit()']]
+        [0]:
+          ['on', 'Entry:', 'OnEntry()']
+          - FUNCTION: 'OnEntry()'
+          - PREFIX: 'Entry:'
+          - STATE_NAME: 'on'
+        [1]:
+          ['on', 'Exit:', 'OnExit()']
+          - FUNCTION: 'OnExit()'
+          - PREFIX: 'Exit:'
+          - STATE_NAME: 'on'
+      [0]:
+        ['on', 'Entry:', 'OnEntry()']
+        - FUNCTION: 'OnEntry()'
+        - PREFIX: 'Entry:'
+        - STATE_NAME: 'on'
+      [1]:
+        ['on', 'Exit:', 'OnExit()']
+        - FUNCTION: 'OnExit()'
+        - PREFIX: 'Exit:'
+        - STATE_NAME: 'on'
+- INIT: [['OFF']]
+  [0]:
+    ['OFF']
+    - STATE_NAME: 'OFF'
+- TRANSITION: [['on', 'OFF', ['ev2']], ['OFF', 'c1', ['EV1']], ['c1', 'OFF', ['G1()']], ['c1', 'on', ['A1()']]]
+  [0]:
+    ['on', 'OFF', ['ev2']]
+    - BODY: ['ev2']
+      - EVENT: 'ev2'
+    - SOURCE: 'on'
+    - TARGET: 'OFF'
+    [0]:
+      on
+    [1]:
+      OFF
+    [2]:
+      ['ev2']
+      - EVENT: 'ev2'
+  [1]:
+    ['OFF', 'c1', ['EV1']]
+    - BODY: ['EV1']
+      - EVENT: 'EV1'
+    - SOURCE: 'OFF'
+    - TARGET: 'c1'
+    [0]:
+      OFF
+    [1]:
+      c1
+    [2]:
+      ['EV1']
+      - EVENT: 'EV1'
+  [2]:
+    ['c1', 'OFF', ['G1()']]
+    - BODY: ['G1()']
+      - GUARD: 'G1()'
+    - SOURCE: 'c1'
+    - TARGET: 'OFF'
+    [0]:
+      c1
+    [1]:
+      OFF
+    [2]:
+      ['G1()']
+      - GUARD: 'G1()'
+  [3]:
+    ['c1', 'on', ['A1()']]
+    - BODY: ['A1()']
+      - ACTION: ['A1()']
+    - SOURCE: 'c1'
+    - TARGET: 'on'
+    [0]:
+      c1
+    [1]:
+      on
+    [2]:
+      ['A1()']
+      - ACTION: ['A1()']
+[0]:
+  ['OFF']
+  - STATE_NAME: 'OFF'
+[1]:
+  ['state', 'OFF', [['OFF', 'Entry:', 'OFFENTRY()'], ['OFF', 'Exit:', 'offexit()']]]
+  [0]:
+    state
+  [1]:
+    OFF
+  [2]:
+    [['OFF', 'Entry:', 'OFFENTRY()'], ['OFF', 'Exit:', 'offexit()']]
+    - STATE: [['OFF', 'Entry:', 'OFFENTRY()'], ['OFF', 'Exit:', 'offexit()']]
+      [0]:
+        ['OFF', 'Entry:', 'OFFENTRY()']
+        - FUNCTION: 'OFFENTRY()'
+        - PREFIX: 'Entry:'
+        - STATE_NAME: 'OFF'
+      [1]:
+        ['OFF', 'Exit:', 'offexit()']
+        - FUNCTION: 'offexit()'
+        - PREFIX: 'Exit:'
+        - STATE_NAME: 'OFF'
+    [0]:
+      ['OFF', 'Entry:', 'OFFENTRY()']
+      - FUNCTION: 'OFFENTRY()'
+      - PREFIX: 'Entry:'
+      - STATE_NAME: 'OFF'
+    [1]:
+      ['OFF', 'Exit:', 'offexit()']
+      - FUNCTION: 'offexit()'
+      - PREFIX: 'Exit:'
+      - STATE_NAME: 'OFF'
+[2]:
+  ['state', 'on', [['on', 'Entry:', 'OnEntry()'], ['on', 'Exit:', 'OnExit()']]]
+  [0]:
+    state
+  [1]:
+    on
+  [2]:
+    [['on', 'Entry:', 'OnEntry()'], ['on', 'Exit:', 'OnExit()']]
+    - STATE: [['on', 'Entry:', 'OnEntry()'], ['on', 'Exit:', 'OnExit()']]
+      [0]:
+        ['on', 'Entry:', 'OnEntry()']
+        - FUNCTION: 'OnEntry()'
+        - PREFIX: 'Entry:'
+        - STATE_NAME: 'on'
+      [1]:
+        ['on', 'Exit:', 'OnExit()']
+        - FUNCTION: 'OnExit()'
+        - PREFIX: 'Exit:'
+        - STATE_NAME: 'on'
+    [0]:
+      ['on', 'Entry:', 'OnEntry()']
+      - FUNCTION: 'OnEntry()'
+      - PREFIX: 'Entry:'
+      - STATE_NAME: 'on'
+    [1]:
+      ['on', 'Exit:', 'OnExit()']
+      - FUNCTION: 'OnExit()'
+      - PREFIX: 'Exit:'
+      - STATE_NAME: 'on'
+[3]:
+  ['state', 'c1', '<<choice>>']
+  - STATE_NAME: 'c1'
+[4]:
+  ['on', 'OFF', ['ev2']]
+  - BODY: ['ev2']
+    - EVENT: 'ev2'
+  - SOURCE: 'on'
+  - TARGET: 'OFF'
+  [0]:
+    on
+  [1]:
+    OFF
+  [2]:
+    ['ev2']
+    - EVENT: 'ev2'
+[5]:
+  ['OFF', 'c1', ['EV1']]
+  - BODY: ['EV1']
+    - EVENT: 'EV1'
+  - SOURCE: 'OFF'
+  - TARGET: 'c1'
+  [0]:
+    OFF
+  [1]:
+    c1
+  [2]:
+    ['EV1']
+    - EVENT: 'EV1'
+[6]:
+  ['c1', 'OFF', ['G1()']]
+  - BODY: ['G1()']
+    - GUARD: 'G1()'
+  - SOURCE: 'c1'
+  - TARGET: 'OFF'
+  [0]:
+    c1
+  [1]:
+    OFF
+  [2]:
+    ['G1()']
+    - GUARD: 'G1()'
+[7]:
+  ['c1', 'on', ['A1()']]
+  - BODY: ['A1()']
+    - ACTION: ['A1()']
+  - SOURCE: 'c1'
+  - TARGET: 'on'
+  [0]:
+    c1
+  [1]:
+    on
+  [2]:
+    ['A1()']
+    - ACTION: ['A1()']
+{'OFF': 1, 'on': 2, 'c1': 3}
+{'OFF': {'entry': 'OFFENTRY()', 'exit': 'offexit()', 'internal': None}, 'on': {'entry': 'OnEntry()', 'exit': 'OnExit()', 'internal': None}}
+---------------- xmi Model ------------
+Node('/xmiModel', package='CasesPackage', stateMachine='Cases')
+├── Node('/xmiModel/STATE', entry='OFFENTRY()', exit='offexit()', id=1, stateName='OFF')
+├── Node('/xmiModel/STATE', entry='OnEntry()', exit='OnExit()', id=2, stateName='on')
+├── Node('/xmiModel/PSUEDOSTATE', id=4)
+├── Node('/xmiModel/TRANSITION', action=None, event=None, guard=None, kind=None, source=4, target=1)
+├── Node('/xmiModel/PSUEDOSTATE', id=3)
+├── Node('/xmiModel/TRANSITION', action=None, event='ev2', guard=None, kind=None, source=2, target=1)
+├── Node('/xmiModel/TRANSITION', action=None, event='EV1', guard=None, kind=None, source=1, target=3)
+├── Node('/xmiModel/TRANSITION', action=None, event=None, guard=None, kind=None, source=3, target=1)
+└── Node('/xmiModel/TRANSITION', action=None, event=None, guard=None, kind=None, source=3, target=2)
+------------------end------------------
+=> After convertXmiToQmModel
+---------------- qm Model ------------
+Node('/new', package='CasesPackage', position=[], stateMachine='Cases')
+├── Node('/new/STATE', entry='OFFENTRY()', exit='offexit()', id=1, position=[1], stateName='OFF')
+│   └── Node('/new/STATE/TRANSITION', action=None, event='EV1', guard=None, position=[1, 1], source=1, target=None)
+│       ├── Node('/new/STATE/TRANSITION/CHOICE', action=None, guard=None, position=[1, 1, 1], target='../../../1')
+│       └── Node('/new/STATE/TRANSITION/CHOICE', action=None, guard=None, position=[1, 1, 2], target='../../../2')
+├── Node('/new/STATE', entry='OnEntry()', exit='OnExit()', id=2, position=[2], stateName='on')
+│   └── Node('/new/STATE/TRANSITION', action=None, event='ev2', guard=None, position=[2, 1], source=2, target='../../1')
+└── Node('/new/INIT', action=None, event=None, guard=None, position=[3], target='../1')
+------------------end------------------
+<model>
+  <package name="CasesPackage">
+    <class name="Cases">
+      <statechart>
+        <state name="OFF">
+          <entry brief="OFFENTRY()"/>
+          <exit brief="offexit()"/>
+          <tran trig="EV1">
+            <choice target="../../../1"/>
+            <choice target="../../../2"/>
+          </tran>
+        </state>
+        <state name="on">
+          <entry brief="OnEntry()"/>
+          <exit brief="OnExit()"/>
+          <tran trig="ev2" target="../../1"/>
+        </state>
+        <initial target="../1"/>
+      </statechart>
+    </class>
+  </package>
+</model>
+
+[91m
+
+*** Error parsing the state-machine: 'Cases' 
+[93m
+ Bad guard specification:  
+    Transition EV1, from state OFF: Junction has no guard 
+[0m

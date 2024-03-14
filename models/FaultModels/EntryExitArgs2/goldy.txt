@@ -1,0 +1,7 @@
+[91m
+
+*** Error parsing the state-machine: 'EntryExitArgs2' 
+[93m
+ Entry/Exit action badly specified:  
+    Entry/Exit function 's12Exit(e)' in state s12: Needs to be specified as: '<function_name>()' with no arguments
+[0m

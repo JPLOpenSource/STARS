@@ -1,0 +1,7 @@
+[91m
+
+*** Error parsing the state-machine: 'MissingInitialTransition2' 
+[93m
+ Missing initial transition:  
+    Add an initial transition to one of these states:  ['S11', 'S12']
+[0m

@@ -1,0 +1,8 @@
+BlinkyImpl_Bsp_Initialize()
+BlinkyImpl_Bsp_LED_TurnOff()
+
+--> TIMEOUT_SIG
+BlinkyImpl_Bsp_LED_TurnOn()
+
+--> TIMEOUT_SIG
+BlinkyImpl_Bsp_LED_TurnOff()

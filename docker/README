@@ -1,0 +1,12 @@
+Create the docker image:
+- docker build -t qm .
+
+If the file qm.tar exists, then just load it:
+- docker load < qm.tar
+
+Check the docker images:
+- docker images
+
+Run in the docker:
+- cd ..
+- ./docker/run_container.sh

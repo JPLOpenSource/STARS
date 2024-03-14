@@ -1,0 +1,8 @@
+[91m
+
+*** Error parsing the state-machine: 'Fault' 
+[93m
+ State names not unique:  
+    Of these states: ['S1', 'S11', 'S11', 'S1'],
+    Rename these states to be unique: ['S1', 'S11'] 
+[0m

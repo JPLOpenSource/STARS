@@ -1,0 +1,66 @@
+
+@startuml
+
+[*] --> Off
+
+state Off {
+    Off:Entry: offEntry()
+    Off:Exit: offExit()
+}
+
+state On {
+    [*] --> Initializing
+    On:Entry: turnOnPower()
+    On:Exit: turnOffPower()
+
+    state Initializing {
+        Initializing:Entry: initDevice()
+        Initializing:Exit: initExit()
+    }
+
+    state Idle {
+        Idle:Entry: idleEntry()
+        Idle:Exit: idleExit()
+    }
+
+    state Calibrating {
+        Calibrating:Entry: calibratingEntry()
+        Calibrating:Exit: calibratingExit()
+        Calibrating:Internal: RTI/doCalibrate()
+    }
+
+    state Driving {
+        Driving:Entry: startMotor()
+        Driving:Exit: shutOffMotor()
+        Driving:Internal: RTI/motorControl()
+    }
+
+    Initializing --> Idle: Complete
+    Idle --> Driving: Drive
+    Idle --> Calibrating: Calibrate[calibrateReady()]
+    Calibrating --> Idle: Fault/reportFault()
+    Calibrating --> Idle: Complete
+    Driving --> Idle: Stop
+}
+
+state Recovery {
+    Recovery:Entry: startRecovery()
+    Recovery:Exit: recoveryExit()
+    Recovery:Internal: RTI/doSafe()
+}
+
+state Diagnostics {
+    Diagnostics:Entry: diagnosticsEntry()
+    Diagnostics:Exit: diagnosticsExit()
+    Diagnostics:Internal: RTI/doDiagnostics()
+}
+
+Off --> On: PowerOn
+On --> Off: PowerOff
+On --> Recovery: Fault/reportFault()
+Diagnostics --> On: Resume
+Recovery --> Diagnostics: Complete
+On --> On: POR
+
+
+@enduml

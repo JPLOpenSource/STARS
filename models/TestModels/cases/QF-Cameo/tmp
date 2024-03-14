@@ -1,0 +1,86 @@
+**** Running the state-machine autocoder with Cameo front end****
+../../../../autocoder/QMAutocoder.py qf  -debug ../Cases.xml
+Hello, welcome to the CAMEO xml parser
+MagicDraw version = 19.0 v9
+---------------- xmi Model ------------
+Node('/xmiModel', package='MyPackage', stateMachine='Cases')
+├── Node('/xmiModel/PSUEDOSTATE', id='_19_0_3_9120299_1628893135539_747021_42634')
+├── Node('/xmiModel/STATE', entry='OFFENTRY()', exit='offexit()', id='_19_0_3_9120299_1628893135544_707219_42635', stateName='OFF')
+│   ├── Node('/xmiModel/STATE/STATE', entry='DiagEntry()', exit='DiagExit()', id='_19_0_3_9120299_1629496426609_428137_42114', stateName='Diag')
+│   ├── Node('/xmiModel/STATE/PSUEDOSTATE', id='_19_0_3_9120299_1629496463461_399848_42206')
+│   └── Node('/xmiModel/STATE/TRANSITION', action=None, event=None, guard=None, kind=None, source='_19_0_3_9120299_1629496463461_399848_42206', target='_19_0_3_9120299_1629496426609_428137_42114')
+├── Node('/xmiModel/STATE', entry='OnEntry()', exit='OnExit()', id='_19_0_3_9120299_1628893147103_551864_42655', stateName='on')
+│   ├── Node('/xmiModel/STATE/STATE', entry='InitEntry()', exit='InitExit()', id='_19_0_3_9120299_1629496532568_734134_42321', stateName='Init')
+│   ├── Node('/xmiModel/STATE/PSUEDOSTATE', id='_19_0_3_9120299_1629496545402_77298_42341')
+│   └── Node('/xmiModel/STATE/TRANSITION', action=None, event=None, guard=None, kind=None, source='_19_0_3_9120299_1629496545402_77298_42341', target='_19_0_3_9120299_1629496532568_734134_42321')
+├── Node('/xmiModel/PSUEDOSTATE', id='_19_0_3_9120299_1629496586218_255778_42420')
+├── Node('/xmiModel/TRANSITION', action=None, event=None, guard=None, kind=None, source='_19_0_3_9120299_1628893135539_747021_42634', target='_19_0_3_9120299_1628893135544_707219_42635')
+├── Node('/xmiModel/TRANSITION', action=None, event='EV1', guard=None, kind=None, source='_19_0_3_9120299_1628893135544_707219_42635', target='_19_0_3_9120299_1629496586218_255778_42420')
+├── Node('/xmiModel/TRANSITION', action='A1()', event=None, guard=None, kind=None, source='_19_0_3_9120299_1629496586218_255778_42420', target='_19_0_3_9120299_1628893147103_551864_42655')
+├── Node('/xmiModel/TRANSITION', action=None, event=None, guard='G1()', kind=None, source='_19_0_3_9120299_1629496586218_255778_42420', target='_19_0_3_9120299_1628893135544_707219_42635')
+└── Node('/xmiModel/TRANSITION', action=None, event='ev2', guard=None, kind=None, source='_19_0_3_9120299_1628893147103_551864_42655', target='_19_0_3_9120299_1628893135544_707219_42635')
+------------------end------------------
+=> After convertXmiToQmModel
+---------------- qm Model ------------
+Node('/new', package='MyPackage', position=[], stateMachine='Cases')
+├── Node('/new/STATE', entry='OFFENTRY()', exit='offexit()', id='_19_0_3_9120299_1628893135544_707219_42635', position=[1], stateName='OFF')
+│   ├── Node('/new/STATE/STATE', entry='DiagEntry()', exit='DiagExit()', id='_19_0_3_9120299_1629496426609_428137_42114', position=[1, 1], stateName='Diag')
+│   ├── Node('/new/STATE/INIT', action=None, event=None, guard=None, position=[1, 2], target='../1')
+│   └── Node('/new/STATE/TRANSITION', action=None, event='EV1', guard=None, position=[1, 3], source='_19_0_3_9120299_1628893135544_707219_42635', target=None)
+│       ├── Node('/new/STATE/TRANSITION/CHOICE', action='A1()', guard=None, position=[1, 3, 1], target='../../../2')
+│       └── Node('/new/STATE/TRANSITION/CHOICE', action=None, guard='G1()', position=[1, 3, 2], target='../../../1')
+├── Node('/new/STATE', entry='OnEntry()', exit='OnExit()', id='_19_0_3_9120299_1628893147103_551864_42655', position=[2], stateName='on')
+│   ├── Node('/new/STATE/STATE', entry='InitEntry()', exit='InitExit()', id='_19_0_3_9120299_1629496532568_734134_42321', position=[2, 1], stateName='Init')
+│   ├── Node('/new/STATE/INIT', action=None, event=None, guard=None, position=[2, 2], target='../1')
+│   └── Node('/new/STATE/TRANSITION', action=None, event='ev2', guard=None, position=[2, 3], source='_19_0_3_9120299_1628893147103_551864_42655', target='../../1')
+└── Node('/new/INIT', action=None, event=None, guard=None, position=[3], target='../1')
+------------------end------------------
+<model>
+  <package name="MyPackage">
+    <class name="Cases">
+      <statechart>
+        <state name="OFF">
+          <entry brief="OFFENTRY()"/>
+          <exit brief="offexit()"/>
+          <state name="Diag">
+            <entry brief="DiagEntry()"/>
+            <exit brief="DiagExit()"/>
+          </state>
+          <initial target="../1"/>
+          <tran trig="EV1">
+            <choice target="../../../2">
+              <action brief="A1()"/>
+            </choice>
+            <choice target="../../../1">
+              <guard brief="G1()"/>
+            </choice>
+          </tran>
+        </state>
+        <state name="on">
+          <entry brief="OnEntry()"/>
+          <exit brief="OnExit()"/>
+          <state name="Init">
+            <entry brief="InitEntry()"/>
+            <exit brief="InitExit()"/>
+          </state>
+          <initial target="../1"/>
+          <tran trig="ev2" target="../../1"/>
+        </state>
+        <initial target="../1"/>
+      </statechart>
+    </class>
+  </package>
+</model>
+
+State-machine semantics look good
+Generating C Quantum Framework code for Cases
+Generating CasesImpl.c
+Generating CasesImpl.h
+Generating main.c
+Generating sendEvent.h
+Generating sendEvent.c
+Generating testDrv.h
+Generating testDrv.c
+Generating StatechartSignals.h
+Generating Cases.c
+Generating Cases.h

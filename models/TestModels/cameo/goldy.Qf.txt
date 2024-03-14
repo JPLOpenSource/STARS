@@ -1,0 +1,62 @@
+**** Running the executable model ****
+./test
+CameoImpl_guard() is 0
+CameoImpl_runningEntry()
+CameoImpl_guard4() is 0
+CameoImpl_s2Entry()
+
+--> EV3_SIG
+CameoImpl_guard3() is 1
+CameoImpl_s2Exit()
+CameoImpl_runningExit()
+CameoImpl_S1Entry()
+
+--> EV2_SIG
+CameoImpl_a2()
+CameoImpl_S1Exit()
+CameoImpl_runningEntry()
+CameoImpl_guard4() is 0
+CameoImpl_s2Entry()
+
+--> EV1_SIG
+CameoImpl_guard2() is 0
+
+--> EV1_SIG
+CameoImpl_guard2() is 1
+CameoImpl_a1()
+CameoImpl_s2Exit()
+CameoImpl_runningExit()
+CameoImpl_S1Entry()
+
+--> EV2_SIG
+CameoImpl_a2()
+CameoImpl_S1Exit()
+CameoImpl_runningEntry()
+CameoImpl_guard4() is 0
+CameoImpl_s2Entry()
+
+--> EV3_SIG
+CameoImpl_guard3() is 0
+CameoImpl_a2()
+CameoImpl_s2Exit()
+CameoImpl_runningExit()
+CameoImpl_runningEntry()
+CameoImpl_guard4() is 1
+CameoImpl_s3Entry()
+
+--> EV4_SIG
+CameoImpl_a4()
+CameoImpl_guard3() is 0
+CameoImpl_a2()
+CameoImpl_s3Exit()
+CameoImpl_runningExit()
+CameoImpl_runningEntry()
+CameoImpl_guard4() is 1
+CameoImpl_s3Entry()
+
+--> EV4_SIG
+CameoImpl_a4()
+CameoImpl_guard3() is 1
+CameoImpl_s3Exit()
+CameoImpl_runningExit()
+CameoImpl_S1Entry()

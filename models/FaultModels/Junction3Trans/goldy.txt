@@ -1,0 +1,7 @@
+[91m
+
+*** Error parsing the state-machine: 'Junction3Trans' 
+[93m
+ Junction transition error:  
+    Transition EV1, from state s1: Only 2 outgoing transitions from a junction is allowed
+[0m
