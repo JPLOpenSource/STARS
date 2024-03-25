@@ -2,3 +2,4 @@ anytree==2.12.1
 Cheetah3==3.2.6.post1
 lxml==5.1.0
 pyparsing==3.1.1
+plantuml==0.3.0
