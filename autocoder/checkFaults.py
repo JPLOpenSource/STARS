@@ -10,6 +10,7 @@
 import sys
 import flattenstatemachine as flatt
 import collections
+import qmlib
 from Cheetah.Template import Template
 
 class bcolors:
@@ -182,7 +183,26 @@ class ActionArg(Exception):
         template.action = self.action
         return str(template)
 
-
+# -----------------------------------------------------------------------
+# BadEvent
+# 
+# An Exception class for transitions with badly specified Event
+#
+# -----------------------------------------------------------------------
+class BadEvent(Exception):
+    message = """ Transition has no Event:  
+    The transition with action $action, has no Event """ 
+    
+    def __init__(self, trans):
+        self.trans = trans
+        
+    def __str__(self):
+        template = Template(self.message)
+        actions = self.trans.iter('action')
+        for action in actions:
+            template.action = action.get('brief')
+        return str(template)
+    
 # -----------------------------------------------------------------------
 # initialTransition
 # 
@@ -365,6 +385,17 @@ def actionArgs(root):
         for action in actions:
             checkAction(action.get('brief'), tran.get('trig'))
     
+# -----------------------------------------------------------------------
+# checkEvents
+# 
+# Check that a transition has an event
+#
+# -----------------------------------------------------------------------
+def checkEvents(root):
+    trans = root.iter('tran')
+    for tran in trans:
+        if tran.get('trig').isspace() or not tran.get('trig'):
+            raise BadEvent(tran)
 
 # -----------------------------------------------------------------------
 # checkStateMachine
@@ -380,8 +411,9 @@ def checkStateMachine(smname, root):
         junctionGuards(root)
         entryExitArgs(root)
         actionArgs(root)
+        checkEvents(root)
         print("State-machine semantics look good")
-    except (MissingInit, MultipleInit, StateNames, GuardError, JunctionError, EntryExitArg, JunctionGuardError, ActionArg) as Argument:
+    except (MissingInit, MultipleInit, StateNames, GuardError, JunctionError, EntryExitArg, JunctionGuardError, ActionArg, BadEvent) as Argument:
         print(bcolors.FAIL)
         print(errorMessage)
         print(bcolors.WARNING)

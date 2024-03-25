@@ -105,7 +105,6 @@ statechart: ElementTreeType = className.find('statechart')
 # Process the states by adding an index attribute
 smname: str = className.get('name')
 
-
 # Perform state-machine semantics checking
 checkFaults.checkStateMachine(smname, statechart)
 

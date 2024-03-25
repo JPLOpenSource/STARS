@@ -104,7 +104,7 @@ def createUmlSyntax() -> ParserElement:
         state.setResultsName('STATE_NAME') +
         colon +
         pyparse.Literal('Internal:') +
-        event.setResultsName('EVENT') +  
+        Optional(event.setResultsName('EVENT')) +  
         Optional(guard) + 
         action
     ).setResultsName('INTERNAL', True)

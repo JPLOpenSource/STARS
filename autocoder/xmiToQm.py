@@ -225,6 +225,8 @@ def writeTreeToXml(qmModelNode, xmlTag):
                 action = etree.SubElement(init, 'action', brief=node.action)
             writeTreeToXml(node, init)
         if node.name == "TRANSITION":
+            if node.event == None:
+                node.event = ""
             tran = etree.SubElement(xmlTag, 'tran', trig=node.event)
             if node.target is not None:
                 tran.attrib['target'] = node.target
