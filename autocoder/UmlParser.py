@@ -272,7 +272,7 @@ def createStateDefMap(parseList: ParserElement, thisMap:  Dict[str, Dict[str, st
                 handleError(f"In the composition state {stateName}, state {state.STATE_NAME} is unexpected.")
 
         for intern in comp[2].INTERNAL:
-            if intern.STATE_NAME != state.STATE_NAME:
+            if intern.STATE_NAME != stateName:
                 handleError(f"In the composition state {state.STATE_NAME}, state {intern.STATE_NAME} is unexpected.")
 
         thisMap[stateName]['entry'] = entryFunc
