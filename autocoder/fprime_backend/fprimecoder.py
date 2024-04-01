@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------
 # fprimecoder.py
 #
-# Implements the C++ switch statement for fprime output for the QMAutocoder.
+# Implements the C++ switch statement for fprime output for the Stars.
 # The hierarchical state-machine is flattened into just the leaf states.
 # This code is responsible for creating the flattened state-machine and
 # performing polymorphism or inheritance on all the transitions.

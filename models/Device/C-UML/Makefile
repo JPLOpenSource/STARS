@@ -7,7 +7,7 @@ all: autocode build
 
 autocode:
 	@printf "**** Running the state-machine autocoder ****\n"
-	../../../autocoder/QMAutocoder.py $(BACK-END) ../$(MODEL).plantuml
+	../../../autocoder/Stars.py $(BACK-END) ../$(MODEL).plantuml
 
 build:
 	@printf "**** Building an executable model ****\n"

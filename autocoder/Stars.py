@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -----------------------------------------------------------------------
-# QMAutocoder.py
+# Stars.py
 #
 # The State-machine Autocoder for the Quantum Leaps QM modeling tool
 # This Autocoder outputs the following design pattern implementations:
@@ -9,7 +9,7 @@
 #     - C++ switch statements
 #     - Fprime
 #
-# Usage: QMAutocoder.py [-h] [-noImpl] [-noSignals] [-namespace NAMESPACE] [-debug] {c,qf,c++,fprime} model
+# Usage: Stars.py [-h] [-noImpl] [-noSignals] [-namespace NAMESPACE] [-debug] {c,qf,c++,fprime} model
 #
 # State-machine Autocoder.
 #
@@ -25,19 +25,19 @@
 #  -debug                prints out the models
 # 
 # Example:
-#     QMAutocoder.py c -noImpl ping.qm
+#     Stars.py c -noImpl ping.qm
 #     This will output the following files:
 #        ping.h
 #        ping.c
 #
-#     QMAutocoder.py fprime -noImpl -namespace PING ping.qm
+#     Stars.py fprime -noImpl -namespace PING ping.qm
 #     This will output the following files:
 #        ping.cpp
 #        ping.h
 #        ping.trans
 #        pingStatesEnumAi.xml
 #
-#     QMAutocoder.py qf -noImpl ping.qm    
+#     Stars.py qf -noImpl ping.qm    
 #     This will output the following files:
 #       ping.h
 #       ping.c

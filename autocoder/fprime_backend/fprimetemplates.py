@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------
 # fprimetemplates.py
 #
-# A python class that contains template code for the QMAutocoder 
+# A python class that contains template code for the Stars 
 # fprime back-end 
 #
 # -----------------------------------------------------------------------

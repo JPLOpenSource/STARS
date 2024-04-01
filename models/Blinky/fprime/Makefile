@@ -10,7 +10,7 @@ all: autocode build
 
 autocode:
 	@printf "**** Running the state-machine autocoder ****\n"
-	../../../autocoder/QMAutocoder.py $(BACK-END) -namespace $(NAMESPACE) ../$(MODEL).qm
+	../../../autocoder/Stars.py $(BACK-END) -namespace $(NAMESPACE) ../$(MODEL).qm
 
 build:
 	@printf "**** Building an executable model ****\n"

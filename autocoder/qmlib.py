@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------
 # qmlib.py
 # 
-# Some common library functions used by the QMAutocoder
+# Some common library functions used by the Stars
 #
 # -----------------------------------------------------------------------
 

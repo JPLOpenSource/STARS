@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------
 # cUnitTestTemplates.py
 #
-# A python class that contains template code for the QMAutocoder 
+# A python class that contains template code for the Stars 
 # c back-end specific for unit testing
 #
 # -----------------------------------------------------------------------

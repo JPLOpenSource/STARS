@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------
 # qfcoder.py
 # 
-# Implements the C Quantum Framework (QF) output of the QMAutocoder.
+# Implements the C Quantum Framework (QF) output of the Stars.
 # The QF preserves the hierarchy of the state-machine.
 # This output is the most common state-machine implementation at JPL and 
 # is used in multiple JPL spacecraft flight software.
