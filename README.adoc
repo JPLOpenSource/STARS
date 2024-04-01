@@ -1,6 +1,6 @@
-# QMAutocoder
+# STARS
 
-The Quantum Modeling State-machine Autocoder (QMAutocoder) is an innovative software tool designed to streamline and optimize the development of embedded real-time applications. Leveraging state-of-the-art autocoding technology, QMAutocoder transforms state-machine models into efficient, reliable, and maintainable code, suitable for a wide range of applications. Developed with a focus on user-friendliness and versatility, it supports multiple modeling tools and generates code in C or C++ and specifically generates code for two different frameworks - the F` framework and the Quantum Framework, addressing the diverse needs of developers and engineers. By automating the code generation process, QMAutocoder not only accelerates development cycles but also significantly reduces the potential for human error, ensuring higher quality and performance in the final product. Whether you are working on small-scale projects or complex embedded systems, QMAutocoder is engineered to enhance productivity and foster innovation in your development endeavors.
+STARS (State Autocoding for Real time Systems) is an innovative software tool designed to streamline and optimize the development of embedded real-time applications. Leveraging state-of-the-art autocoding technology, Stars transforms state-machine models into efficient, reliable, and maintainable code, suitable for a wide range of applications. Developed with a focus on user-friendliness and versatility, it supports multiple modeling tools and generates code in C or C++ and specifically generates code for two different frameworks - the F` framework and the Quantum Framework, addressing the diverse needs of developers and engineers. By automating the code generation process, Stars not only accelerates development cycles but also significantly reduces the potential for human error, ensuring higher quality and performance in the final product. Whether you are working on small-scale projects or complex embedded systems, Stars is engineered to enhance productivity and foster innovation in your development endeavors.
 
 State machine models may be specified using any of these modeling tools: +
 1) MagicDraw Cameo Systems Modeler +
@@ -17,11 +17,11 @@ The Autocoder processes the model into any one of the following: +
 
 This diagram highlights the input models (front end) and the autocoder products (back end)
 
-image::QMAutocoderDocs.png[alt="QM State Machine Autocoder Interfaces"]
+image::STARSDocs.png[alt="STARS Interfaces"]
 
 This diagram highlights the design and process flow of the QM State Machine Autocoder:
 
-image::QMAutocoderDesign.png[alt="QM State Machine Autocoder Design"]
+image::STARSDesign.png[alt="STARS Design"]
 
 ## Installation and checkout
 - Install the Python module:
@@ -181,7 +181,7 @@ class SignalGen : public SimpleIf {
 ## Command Syntax
 The Python state-machine Autocoder command syntax: +
 
-usage: QMAutocoder.py [-h] [-noImpl] [-noSignals] [-namespace NAMESPACE] [-debug] {c,qf,c++,fprime} model
+usage: Stars.py [-h] [-noImpl] [-noSignals] [-namespace NAMESPACE] [-debug] {c,qf,c++,fprime} model
 
 State-machine Autocoder.
 
@@ -202,19 +202,19 @@ optional arguments:
 cd autocoder
 
 ### QM Model - C Backend
-`./QMAutocoder.py c -noImpl ../models/Blinky/Blinky.qm`
+`./Stars.py c -noImpl ../models/Blinky/Blinky.qm`
 
 ### PlantUML Model - C++ Backend
-`./QMAutocoder.py c++ -noImpl ../models/Blinky/Blinky.plantuml`
+`./Stars.py c++ -noImpl ../models/Blinky/Blinky.plantuml`
 
 ### QM Model - QF Backend
-`./QMAutocoder.py qf -noImpl ../models/Blinky/Blinky.qm`
+`./Stars.py qf -noImpl ../models/Blinky/Blinky.qm`
 
 ### PlantUML Model - fprime backend
-`./QMAutocoder.py fprime -noImpl -namespace BLINKY ../models/Blinky/Blinky.plantuml`
+`./Stars.py fprime -noImpl -namespace BLINKY ../models/Blinky/Blinky.plantuml`
 
 ### Cameo Model - fprime backend
-`./QMAutocoder.py fprime -noImpl -namespace BLINKY ../models/Blinky/Blinky.xml`
+`./Stars.py fprime -noImpl -namespace BLINKY ../models/Blinky/Blinky.xml`
 
 
 For other examples see: +
