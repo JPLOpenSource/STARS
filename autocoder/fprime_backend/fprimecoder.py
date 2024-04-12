@@ -416,6 +416,30 @@ def printBaseHeader(state_machines,
     file.close()
 
 # -----------------------------------------------------------------------
+# printBaseCpp
+#
+# Print the state machine Base cpp file
+# -----------------------------------------------------------------------  
+def printBaseCpp(state_machines,
+                 nameSpace,
+                 component,
+                 componentPath,
+                 autoHeaderFile,
+                 componentBase):
+    
+    fileName = component + "SmBase.cpp"
+    print ("Generating " + fileName)
+    file = open(fileName, "w")
+    file.write(codeTemplate.smBaseCpp(state_machines,
+                                      nameSpace,
+                                      component,
+                                      componentPath,
+                                      autoHeaderFile,
+                                      componentBase))
+    
+    file.close()
+
+# -----------------------------------------------------------------------
 # generateSMBase
 #
 # -----------------------------------------------------------------------
@@ -435,6 +459,13 @@ def generateSMBase():
     state_machines = config.state_machines
 
     printBaseHeader(state_machines,
+                    nameSpace,
+                    component,
+                    componentPath,
+                    autoHeaderFile,
+                    componentBase)
+
+    printBaseCpp(state_machines,
                     nameSpace,
                     component,
                     componentPath,

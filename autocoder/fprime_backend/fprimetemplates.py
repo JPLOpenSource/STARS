@@ -325,7 +325,7 @@ void $(namespace)::$(smname)::update(const Svc::SMEvents *e)
 // acknowledged.
 //
 // ======================================================================            
-\#include "$(componentPath)/$(autoHeaderFile)
+\#include "$(componentPath)/$(autoHeaderFile)"
 #for $state in $state_machines
 \#include "$(componentPath)/$(state.stateName).h"
 #end for
@@ -358,9 +358,87 @@ namespace $nameSpace {
             #end for
             
                                 
+    };
 }
 #endif
 
+            """)
+            template.state_machines = state_machines
+            template.nameSpace = nameSpace
+            template.component = component
+            template.componentPath = componentPath
+            template.autoHeaderFile = autoHeaderFile
+            template.componentBase = componentBase
+            return str(template)
+        
+# -------------------------------------------------------------------------------
+# smBaseCpp
+# -------------------------------------------------------------------------------           
+        def smBaseCpp(self,
+                      state_machines,
+                      nameSpace: str,
+                      component: str,
+                      componentPath: str,
+                      autoHeaderFile: str,
+                      componentBase: str) -> str: 
+            template = Template("""
+// ======================================================================
+// \\title  $(component)SmBase.cpp
+// \\author Auto-generated
+// \\brief  Cpp file for the state machine base class
+//
+// \\copyright
+// Copyright 2009-2015, by the California Institute of Technology.
+// ALL RIGHTS RESERVED.  United States Government Sponsorship
+// acknowledged.
+//
+// ======================================================================            
+\#include "$(componentPath)/$(component)SmBase.hpp"
+#for $state in $state_machines
+\#include "$(componentPath)/$(state.stateName).h"
+#end for
+                                
+$(nameSpace)::$(component)SmBase::$(component)SmBase(const char* const compName):
+    $(componentBase)(compName)
+    #for $state in $state_machines
+        #for $impl in $state.stateMachineInstance
+    ,$(impl)(this)
+        #end for
+    #end for
+{
+                                
+}                               
+
+void $(nameSpace)::$(component)SmBase::init(
+            NATIVE_INT_TYPE queueDepth,
+            NATIVE_INT_TYPE instance)
+{
+    $(componentBase)::init(queueDepth, instance);
+                                
+    // Initialize the state machine
+    #for $state in $state_machines
+        #for $impl in $state.stateMachineInstance
+    $(impl).init();
+        #end for
+    #end for
+    
+} 
+
+void $(nameSpace)::$(component)SmBase::sendEvent(U32 eventSignal) {
+    Svc::SMEvents event;
+    event.seteventSignal(eventSignal);
+    sendEvents_internalInterfaceInvoke(event);
+}
+
+void $(nameSpace)::$(component)SmBase::sendEvents_internalInterfaceHandler(const Svc::SMEvents& ev)
+{
+        #for $state in $state_machines
+        #for $impl in $state.stateMachineInstance
+    $(impl).update(&ev);
+        #end for
+    #end for
+
+}
             """)
             template.state_machines = state_machines
             template.nameSpace = nameSpace
