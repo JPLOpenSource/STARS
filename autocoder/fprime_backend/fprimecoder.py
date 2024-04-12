@@ -467,6 +467,36 @@ def printInternalQ():
     
     file.close()
 
+
+# -----------------------------------------------------------------------
+# update_cmakelists
+#
+# Update the CMakeLists.txt
+# -----------------------------------------------------------------------  
+def update_cmakelists(file_path, new_file):
+    with open(file_path, 'r+') as file:
+        lines = file.readlines()
+        source_files_section = False
+        file_updated = False
+        new_file_entry = f'  "${{CMAKE_CURRENT_LIST_DIR}}/{new_file}"\n'
+
+        for i, line in enumerate(lines):
+            if line.startswith("set(SOURCE_FILES"):
+                source_files_section = True
+            elif line.strip() == ")" and source_files_section:
+                # If the new file entry is not found in the SOURCE_FILES section, add it
+                if new_file_entry not in lines:
+                    lines.insert(i, new_file_entry)
+                    file_updated = True
+                break  # Exit the loop once the end of the SOURCE_FILES section is reached
+
+        # If the file was updated, write the changes back to the file
+        if file_updated:
+            file.seek(0)
+            file.writelines(lines)
+            file.truncate()  # Remove any leftover text
+
+
 # -----------------------------------------------------------------------
 # generateSMBase
 #
@@ -503,7 +533,13 @@ def generateSMBase():
     printSMEvents()
 
     printInternalQ()
+
+    print("Updating CMakeLists.txt")
+    for state in state_machines:
+        update_cmakelists("CMakeLists.txt", state.stateName+".cpp")
     
+    update_cmakelists("CMakeLists.txt", component + "SmBase.cpp")
+    update_cmakelists("CMakeLists.txt", "SMEvents.fpp")
 
 # -----------------------------------------------------------------------
 # generateCode
