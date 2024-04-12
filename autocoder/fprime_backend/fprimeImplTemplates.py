@@ -15,20 +15,19 @@ class FprimeImplTemplate:
     
         
 # -------------------------------------------------------------------------------
-# stateEnumAI
+# stateEnumFpp
 # -------------------------------------------------------------------------------          
-        def stateEnumAI(self, smname: str, namespace: str, stateList: List[str]):
-            template = Template("""<?xml version="1.0" encoding="UTF-8"?>
-<?oxygen RNGSchema="file:../../Autocoders/Python/schema/ISF_Type_Schema.rnc" type="compact"?>
-<enum namespace = "$(namespace)" name="$(smname)States">
-    <comment>Enum of $(smname) state-machine states </comment>
+        def stateEnumFpp(self, smname: str, namespace: str, stateList: List[str]):
+            template = Template("""
+
+    enum $(smname)States {
     #set $counter = 0
     #for $state in $stateList
-    <item name="$(state)" value="$counter"/>
+        $(state) = $counter
     #set $counter = $counter + 1
     #end for
+    }
 
-</enum>
 """)
             template.smname = smname
             template.namespace = namespace

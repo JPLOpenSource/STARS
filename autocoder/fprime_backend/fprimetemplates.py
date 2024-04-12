@@ -472,7 +472,7 @@ module Svc {
 # -------------------------------------------------------------------------------
 # internalQ
 # -------------------------------------------------------------------------------           
-        def internalQ(self) -> str:
+        def internalQ(self, state_machines) -> str:
             
             template = Template("""
                                 
@@ -481,6 +481,12 @@ module Svc {
 @ internal port for handling state-machine Events
 internal port sendEvents(ev: Svc.SMEvents) 
                                 
+#for $state in $state_machines
+    include "$(state.stateName)State.fppi"
+#end for
+
+                                
             """)
 
+            template.state_machines = state_machines
             return str(template)

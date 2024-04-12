@@ -369,14 +369,17 @@ def printComponentCode(root, smname: str, namespace: str, component: str):
 
 
 # -----------------------------------------------------------------------
-# printEnumAi
+# printEnumFpp
 #
-# Print state enumeration AI file
+# Print state enumeration fpp
 # -----------------------------------------------------------------------  
-def printEnumAi(smname: str, root: ElementTreeType, namespace: str):
+def printEnumFpp(smname: str, root: ElementTreeType, namespace: str):
         
     # Open the generated files
-    xmlFile= open(smname+"StatesEnumAi.xml", "w")
+
+    fileName = smname + ".fppi"
+    file = open(fileName, "w")
+    print(f'Generating {fileName}')
     
     states = root.iter("state")
     stateList = []
@@ -384,10 +387,10 @@ def printEnumAi(smname: str, root: ElementTreeType, namespace: str):
         stateList.append(state.get('name'))
   
     # Write the C implementation file    
-    xmlFile.write(codeImplTemplate.stateEnumAI(smname, namespace, stateList))
+    file.write(codeImplTemplate.stateEnumFpp(smname, namespace, stateList))
     
 
-    xmlFile.close()
+    file.close()
     
     return 
 
@@ -458,12 +461,12 @@ def printSMEvents():
 #
 # Print the Internal input queue fppi
 # -----------------------------------------------------------------------  
-def printInternalQ():
+def printInternalQ(state_machines):
     
     fileName = "state-machine.fppi"
     print ("Generating " + fileName)
     file = open(fileName, "w")
-    file.write(codeTemplate.internalQ())
+    file.write(codeTemplate.internalQ(state_machines))
     
     file.close()
 
@@ -532,7 +535,7 @@ def generateSMBase():
     
     printSMEvents()
 
-    printInternalQ()
+    printInternalQ(state_machines)
 
     print("Updating CMakeLists.txt")
     for state in state_machines:
@@ -560,14 +563,14 @@ def generateCode(smname: str, statechart: ElementTreeType, noImpl: bool, namespa
     global unitTestTemplate
     global codeImplTemplate
 
-    component = "SignalGen"
-    implHdr = "SignalGen.hpp"
 
-    print ("Generating Fprime C++ code for {0} for component {1}".format(smname, component))
+    print(f'Generating Fprime C++ backend for state machine {smname}')
 
     flatchart : ElementTreeType = flatt.flatten_state_machine(statechart)
     
     if noImpl == False:
+        component = "SignalGen"
+        implHdr = "SignalGen.hpp"
         # Generate the component files for unit testing only
         print ("Generating " + component + ".cpp")
         print ("Generating " + component + ".hpp")
@@ -588,6 +591,5 @@ def generateCode(smname: str, statechart: ElementTreeType, noImpl: bool, namespa
     print ("Generating " + smname + ".h")
     printSmCode(smname, flatchart, namespace)
 
-    # Generate the states enumeration AI xml file
-    print ("Generating " + smname + "StatesEnumAi.xml")
-    printEnumAi(smname, flatchart, namespace)
+    # Generate the states enumeration fpp
+    printEnumFpp(smname, flatchart, namespace)
