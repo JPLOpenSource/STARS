@@ -331,6 +331,16 @@ void $(namespace)::$(smname)::update(const Svc::SMEvents *e)
 #end for
                                 
 namespace $nameSpace {
+    namespace StateMachine {
+        typedef enum {
+        #for $state in $state_machines
+            #for $impl in $state.stateMachineInstance
+            $(impl.upper()),
+            #end for
+        #end for
+        } SmId;                           
+    };
+
     class $(component)SmBase : public $(componentBase)
     #for $state in $state_machines
         ,public $(state.stateName)If
@@ -345,7 +355,7 @@ namespace $nameSpace {
             );
             
             // Interface to send an event to the state-machine
-            void sendEvent(U32 eventSignal);
+            void sendEvent(U32 eventSignal, StateMachine::SmId id);
 
             // Internal Interface handler for sendEvents
             void sendEvents_internalInterfaceHandler(const Svc::SMEvents& ev);
@@ -424,19 +434,29 @@ void $(nameSpace)::$(component)SmBase::init(
     
 } 
 
-void $(nameSpace)::$(component)SmBase::sendEvent(U32 eventSignal) {
+void $(nameSpace)::$(component)SmBase:: sendEvent(U32 eventSignal, StateMachine::SmId id) {
+                                
     Svc::SMEvents event;
     event.seteventSignal(eventSignal);
+    event.setsmId(id);
     sendEvents_internalInterfaceInvoke(event);
 }
 
 void $(nameSpace)::$(component)SmBase::sendEvents_internalInterfaceHandler(const Svc::SMEvents& ev)
 {
+    U16 id = ev.getsmId();
+    switch (id) {
+                                
         #for $state in $state_machines
-        #for $impl in $state.stateMachineInstance
-    $(impl).update(&ev);
+            #for $impl in $state.stateMachineInstance
+        case StateMachine::$impl.upper():
+            this->$(impl).update(&ev);
+            break;
+            #end for
         #end for
-    #end for
+        default:
+            FW_ASSERT(0);
+    }
 
 }
             """)
