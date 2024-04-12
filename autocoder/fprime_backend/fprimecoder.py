@@ -16,7 +16,21 @@ from fprime_backend.fprimeUnitTestTemplates import FprimeUnitTestTemplate
 from fprime_backend.fprimeImplTemplates import FprimeImplTemplate
 from typing import List, Dict, Tuple, Any, Optional, IO
 from qmlib import ElementTreeType
-import sys
+from pydantic import BaseModel
+import json
+
+# Pydantic classes that specify the configSm.json
+class State(BaseModel):
+    stateName: str
+    stateMachineInstance: List[str]
+
+class FprimeConfig(BaseModel):
+    nameSpace: str
+    component: str
+    componentPath: str
+    autoHeaderFile: str
+    componentBase: str
+    state_machines: List[State]
 
 
 # Initialize global variables
@@ -382,7 +396,21 @@ def printEnumAi(smname: str, root: ElementTreeType, namespace: str):
 #
 # -----------------------------------------------------------------------
 def generateSMBase():
-    print("Generating SM Base")
+
+    with open("configSm.json", 'r') as file:
+        json_data = json.load(file)
+
+    # Creating an instance of FprimeConfig from the JSON data
+    config = FprimeConfig(**json_data)
+
+    nameSpace = config.nameSpace
+    component = config.component
+    componentPath = config.componentPath
+    autoHeaderFile = config.autoHeaderFile
+    componentBase = config.componentBase
+    state_machines = config.state_machines
+    
+    print(f'nameSpace = {config.nameSpace}')
 
 # -----------------------------------------------------------------------
 # generateCode
