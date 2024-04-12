@@ -392,6 +392,30 @@ def printEnumAi(smname: str, root: ElementTreeType, namespace: str):
     return 
 
 # -----------------------------------------------------------------------
+# printBaseHeader
+#
+# Print the state machine Base Header file
+# -----------------------------------------------------------------------  
+def printBaseHeader(state_machines,
+                    nameSpace,
+                    component,
+                    componentPath,
+                    autoHeaderFile,
+                    componentBase):
+    
+    fileName = component + "SmBase.hpp"
+    print ("Generating " + fileName)
+    file = open(fileName, "w")
+    file.write(codeTemplate.smBaseHeader(state_machines,
+                                             nameSpace,
+                                             component,
+                                             componentPath,
+                                             autoHeaderFile,
+                                             componentBase))
+    
+    file.close()
+
+# -----------------------------------------------------------------------
 # generateSMBase
 #
 # -----------------------------------------------------------------------
@@ -409,8 +433,14 @@ def generateSMBase():
     autoHeaderFile = config.autoHeaderFile
     componentBase = config.componentBase
     state_machines = config.state_machines
+
+    printBaseHeader(state_machines,
+                    nameSpace,
+                    component,
+                    componentPath,
+                    autoHeaderFile,
+                    componentBase)
     
-    print(f'nameSpace = {config.nameSpace}')
 
 # -----------------------------------------------------------------------
 # generateCode

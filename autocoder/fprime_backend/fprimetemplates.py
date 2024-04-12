@@ -298,3 +298,74 @@ void $(namespace)::$(smname)::update(const Svc::SMEvents *e)
 """)
             return str(template)
 
+
+
+
+# -------------------------------------------------------------------------------
+# smBaseHeader
+# -------------------------------------------------------------------------------           
+        def smBaseHeader(self, 
+                        state_machines,
+                        nameSpace: str,
+                        component: str,
+                        componentPath: str,
+                        autoHeaderFile: str,
+                        componentBase: str) -> str: 
+            template = Template("""
+#ifndef $(component.upper())_SM_BASE_HPP
+#define $(component.upper())_SM_BASE_HPP
+// ======================================================================
+// \\title  $(component)SmBase.hpp
+// \\author Auto-generated
+// \\brief  Header file for the state machine base class
+//
+// \\copyright
+// Copyright 2009-2015, by the California Institute of Technology.
+// ALL RIGHTS RESERVED.  United States Government Sponsorship
+// acknowledged.
+//
+// ======================================================================            
+\#include "$(componentPath)/$(autoHeaderFile)
+#for $state in $state_machines
+\#include "$(componentPath)/$(state.stateName).h"
+#end for
+                                
+namespace $nameSpace {
+    class $(component)SmBase : public $(componentBase)
+    #for $state in $state_machines
+        ,public $(state.stateName)If
+    #end for
+                                
+    {
+        public:
+            $(component)SmBase(const char* const compName);
+            void init(
+                        NATIVE_INT_TYPE queueDepth,
+                        NATIVE_INT_TYPE instance
+            );
+            
+            // Interface to send an event to the state-machine
+            void sendEvent(U32 eventSignal);
+
+            // Internal Interface handler for sendEvents
+            void sendEvents_internalInterfaceHandler(const Svc::SMEvents& ev);
+                                
+            // Instantiate the state machines
+            #for $state in $state_machines
+                #for $impl in $state.stateMachineInstance
+            $state.stateName $(impl);
+                #end for
+            #end for
+            
+                                
+}
+#endif
+
+            """)
+            template.state_machines = state_machines
+            template.nameSpace = nameSpace
+            template.component = component
+            template.componentPath = componentPath
+            template.autoHeaderFile = autoHeaderFile
+            template.componentBase = componentBase
+            return str(template)
