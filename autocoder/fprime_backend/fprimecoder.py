@@ -378,6 +378,13 @@ def printEnumAi(smname: str, root: ElementTreeType, namespace: str):
     return 
 
 # -----------------------------------------------------------------------
+# generateSMBase
+#
+# -----------------------------------------------------------------------
+def generateSMBase():
+    print("Generating SM Base")
+
+# -----------------------------------------------------------------------
 # generateCode
 #
 # This function generates the following code:
