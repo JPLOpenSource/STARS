@@ -452,6 +452,7 @@ void $(nameSpace)::$(component)SmBase::sendEvents_internalInterfaceHandler(const
 # smEvents
 # -------------------------------------------------------------------------------           
         def smEvents(self) -> str:
+
             template = Template("""
 # This is an Auto generate file from the STARS Autocoder
 
@@ -466,4 +467,20 @@ module Svc {
 }       
                                 
             """)
+            return str(template)
+        
+# -------------------------------------------------------------------------------
+# internalQ
+# -------------------------------------------------------------------------------           
+        def internalQ(self) -> str:
+            
+            template = Template("""
+                                
+# This is an Auto generate file from the STARS Autocoder
+                                
+@ internal port for handling state-machine Events
+internal port sendEvents(ev: Svc.SMEvents) 
+                                
+            """)
+
             return str(template)

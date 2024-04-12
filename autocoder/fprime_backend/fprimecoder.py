@@ -454,6 +454,20 @@ def printSMEvents():
     file.close()
 
 # -----------------------------------------------------------------------
+# printInternalQ
+#
+# Print the Internal input queue fppi
+# -----------------------------------------------------------------------  
+def printInternalQ():
+    
+    fileName = "state-machine.fppi"
+    print ("Generating " + fileName)
+    file = open(fileName, "w")
+    file.write(codeTemplate.internalQ())
+    
+    file.close()
+
+# -----------------------------------------------------------------------
 # generateSMBase
 #
 # -----------------------------------------------------------------------
@@ -487,6 +501,8 @@ def generateSMBase():
                     componentBase)
     
     printSMEvents()
+
+    printInternalQ()
     
 
 # -----------------------------------------------------------------------
