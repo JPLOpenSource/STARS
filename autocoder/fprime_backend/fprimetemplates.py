@@ -447,3 +447,23 @@ void $(nameSpace)::$(component)SmBase::sendEvents_internalInterfaceHandler(const
             template.autoHeaderFile = autoHeaderFile
             template.componentBase = componentBase
             return str(template)
+        
+# -------------------------------------------------------------------------------
+# smEvents
+# -------------------------------------------------------------------------------           
+        def smEvents(self) -> str:
+            template = Template("""
+# This is an Auto generate file from the STARS Autocoder
+
+module Svc {
+
+    struct SMEvents {
+        smId : U32
+        eventSignal: U32
+        payload: [128] U8
+    }
+
+}       
+                                
+            """)
+            return str(template)

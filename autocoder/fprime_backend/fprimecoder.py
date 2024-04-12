@@ -440,6 +440,20 @@ def printBaseCpp(state_machines,
     file.close()
 
 # -----------------------------------------------------------------------
+# printSMEvents
+#
+# Print the SMEvents fpp file
+# -----------------------------------------------------------------------  
+def printSMEvents():
+    
+    fileName = "SMEvents.fpp"
+    print ("Generating " + fileName)
+    file = open(fileName, "w")
+    file.write(codeTemplate.smEvents())
+    
+    file.close()
+
+# -----------------------------------------------------------------------
 # generateSMBase
 #
 # -----------------------------------------------------------------------
@@ -471,6 +485,8 @@ def generateSMBase():
                     componentPath,
                     autoHeaderFile,
                     componentBase)
+    
+    printSMEvents()
     
 
 # -----------------------------------------------------------------------
