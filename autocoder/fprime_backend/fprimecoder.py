@@ -493,28 +493,22 @@ def update_cmakelists(marker, new_file):
         for line in file:
             if state == State.FIND_SOURCE_LIST:
                  new_line.append(line.rstrip())
-                 #print(line.rstrip())
                  if marker_string in line:
                       state = State.FIND_END_LIST
             elif state == State.FIND_END_LIST:
                     if ")" in line:
                         new_line.append(new_file_entry)
-                        #print(new_file_entry)
                         new_line.append(line.rstrip())
-                        #print(line.rstrip())
                         state = State.FILE_ADDED
                     else:
                         if new_file in line:
                              new_line.append(line.rstrip())
-                             #print(line.rstrip())
                              state = State.FILE_ADDED
                         else:
                             new_line.append(line.rstrip())
-                            #print(line.rstrip())
 
             elif state == State.FILE_ADDED:
                  new_line.append(line.rstrip())
-                 #print(line.rstrip())       
 
     with open("CMakeLists.txt", 'w') as file:
          for line in new_line:
