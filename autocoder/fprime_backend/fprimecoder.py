@@ -476,29 +476,49 @@ def printInternalQ(state_machines):
 #
 # Update the CMakeLists.txt
 # -----------------------------------------------------------------------  
-def update_cmakelists(file_path, new_file):
-    with open(file_path, 'r+') as file:
-        lines = file.readlines()
-        source_files_section = False
-        file_updated = False
-        new_file_entry = f'  "${{CMAKE_CURRENT_LIST_DIR}}/{new_file}"\n'
 
-        for i, line in enumerate(lines):
-            if line.startswith("set(SOURCE_FILES"):
-                source_files_section = True
-            elif line.strip() == ")" and source_files_section:
-                # If the new file entry is not found in the SOURCE_FILES section, add it
-                if new_file_entry not in lines:
-                    lines.insert(i, new_file_entry)
-                    file_updated = True
-                break  # Exit the loop once the end of the SOURCE_FILES section is reached
+def update_cmakelists(marker, new_file):
+    from enum import Enum, auto
 
-        # If the file was updated, write the changes back to the file
-        if file_updated:
-            file.seek(0)
-            file.writelines(lines)
-            file.truncate()  # Remove any leftover text
+    class State(Enum):
+        FIND_SOURCE_LIST = auto()
+        FIND_END_LIST = auto()
+        FILE_ADDED = auto()
 
+    new_file_entry = f'    "${{CMAKE_CURRENT_LIST_DIR}}/{new_file}"'
+    marker_string = "set("+marker
+    state = State.FIND_SOURCE_LIST
+    new_line = []
+    with open("CMakeLists.txt", 'r') as file:
+        for line in file:
+            if state == State.FIND_SOURCE_LIST:
+                 new_line.append(line.rstrip())
+                 #print(line.rstrip())
+                 if marker_string in line:
+                      state = State.FIND_END_LIST
+            elif state == State.FIND_END_LIST:
+                    if ")" in line:
+                        new_line.append(new_file_entry)
+                        #print(new_file_entry)
+                        new_line.append(line.rstrip())
+                        #print(line.rstrip())
+                        state = State.FILE_ADDED
+                    else:
+                        if new_file in line:
+                             new_line.append(line.rstrip())
+                             #print(line.rstrip())
+                             state = State.FILE_ADDED
+                        else:
+                            new_line.append(line.rstrip())
+                            #print(line.rstrip())
+
+            elif state == State.FILE_ADDED:
+                 new_line.append(line.rstrip())
+                 #print(line.rstrip())       
+
+    with open("CMakeLists.txt", 'w') as file:
+         for line in new_line:
+              file.write(f'{line}\n')                  
 
 # -----------------------------------------------------------------------
 # generateSMBase
@@ -539,10 +559,13 @@ def generateSMBase():
 
     print("Updating CMakeLists.txt")
     for state in state_machines:
-        update_cmakelists("CMakeLists.txt", state.stateName+".cpp")
+        update_cmakelists("SOURCE_FILES", state.stateName+".cpp")
+        update_cmakelists("UT_SOURCE_FILES", state.stateName+".cpp")
     
-    update_cmakelists("CMakeLists.txt", component + "SmBase.cpp")
-    update_cmakelists("CMakeLists.txt", "SMEvents.fpp")
+    update_cmakelists("SOURCE_FILES", component + "SmBase.cpp")
+    update_cmakelists("SOURCE_FILES", "SMEvents.fpp")
+    update_cmakelists("UT_SOURCE_FILES", component + "SmBase.cpp")
+    update_cmakelists("UT_SOURCE_FILES", "SMEvents.fpp")
 
 # -----------------------------------------------------------------------
 # generateCode
