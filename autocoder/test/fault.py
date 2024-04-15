@@ -57,7 +57,7 @@ try:
     # Run the executable and store stdout in a file
     tmpFileName = '/tmp/results'
     resFile = open(tmpFileName, 'w')
-    subprocess.call([root + "/autocoder/Stars.py", "c", sys.argv[2]], stdout=resFile)
+    subprocess.call([root + "/autocoder/Stars.py", "-backend", "c", "-model", sys.argv[2]], stdout=resFile)
     resFile.close()
     
     # Compare the output results with the goldy
