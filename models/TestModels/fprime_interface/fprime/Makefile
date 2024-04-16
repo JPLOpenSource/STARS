@@ -28,7 +28,7 @@ run:
 	./test
 
 ut:
-	@./../../../../autocoder/test/run.py Simple $(GOLDY) $(BACK-END)
+	@./../../../../autocoder/test/run.py fprime_interface $(GOLDY) $(BACK-END)
 
 
 clean:

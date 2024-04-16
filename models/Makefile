@@ -1,12 +1,12 @@
 
 
-all: QHsm-build TestModels/simple-build TestModels/actions-build TestModels/multiple_actions-build TestModels/arg_actions-build TestModels/simple_composite-build TestModels/complex_composite-build TestModels/string_guards-build TestModels/transitions-build TestModels/simple_junction-build TestModels/complex_junction-build TestModels/cases-build TestModels/cameo-build 
+all: QHsm-build TestModels/simple-build TestModels/actions-build TestModels/multiple_actions-build TestModels/arg_actions-build TestModels/simple_composite-build TestModels/complex_composite-build TestModels/string_guards-build TestModels/transitions-build TestModels/simple_junction-build TestModels/complex_junction-build TestModels/cases-build TestModels/cameo-build TestModels/fprime_interface-build 
 
-ut: TestModels/simple-ut TestModels/actions-ut TestModels/multiple_actions-ut TestModels/arg_actions-ut TestModels/simple_composite-ut TestModels/complex_composite-ut TestModels/string_guards-ut TestModels/transitions-ut TestModels/simple_junction-ut TestModels/complex_junction-ut TestModels/cases-ut TestModels/cameo-ut FaultModels/MissingInitialTransition-ut FaultModels/MissingInitialTransition2-ut FaultModels/MultipleInitialTransition-ut FaultModels/DuplicateStateNames-ut FaultModels/JunctionNoGuard-ut FaultModels/JunctionNoGuard2-ut FaultModels/Junction3Trans-ut FaultModels/JunctionDoubleGuard-ut FaultModels/EntryExitArgs-ut FaultModels/EntryExitArgs2-ut FaultModels/EntryExitArgs3-ut FaultModels/EntryExitArgs4-ut FaultModels/EntryExitArgs5-ut 
+ut: TestModels/simple-ut TestModels/actions-ut TestModels/multiple_actions-ut TestModels/arg_actions-ut TestModels/simple_composite-ut TestModels/complex_composite-ut TestModels/string_guards-ut TestModels/transitions-ut TestModels/simple_junction-ut TestModels/complex_junction-ut TestModels/cases-ut TestModels/cameo-ut TestModels/fprime_interface-ut FaultModels/MissingInitialTransition-ut FaultModels/MissingInitialTransition2-ut FaultModels/MultipleInitialTransition-ut FaultModels/DuplicateStateNames-ut FaultModels/JunctionNoGuard-ut FaultModels/JunctionNoGuard2-ut FaultModels/Junction3Trans-ut FaultModels/JunctionDoubleGuard-ut FaultModels/EntryExitArgs-ut FaultModels/EntryExitArgs2-ut FaultModels/EntryExitArgs3-ut FaultModels/EntryExitArgs4-ut FaultModels/EntryExitArgs5-ut 
 
-run: TestModels/simple-run TestModels/actions-run TestModels/multiple_actions-run TestModels/arg_actions-run TestModels/simple_composite-run TestModels/complex_composite-run TestModels/string_guards-run TestModels/transitions-run TestModels/simple_junction-run TestModels/complex_junction-run TestModels/cases-run TestModels/cameo-run 
+run: TestModels/simple-run TestModels/actions-run TestModels/multiple_actions-run TestModels/arg_actions-run TestModels/simple_composite-run TestModels/complex_composite-run TestModels/string_guards-run TestModels/transitions-run TestModels/simple_junction-run TestModels/complex_junction-run TestModels/cases-run TestModels/cameo-run TestModels/fprime_interface-run 
 
-clean: QHsm-clean TestModels/simple-clean TestModels/actions-clean TestModels/multiple_actions-clean TestModels/arg_actions-clean TestModels/simple_composite-clean TestModels/complex_composite-clean TestModels/string_guards-clean TestModels/transitions-clean TestModels/simple_junction-clean TestModels/complex_junction-clean TestModels/cases-clean TestModels/cameo-clean 
+clean: QHsm-clean TestModels/simple-clean TestModels/actions-clean TestModels/multiple_actions-clean TestModels/arg_actions-clean TestModels/simple_composite-clean TestModels/complex_composite-clean TestModels/string_guards-clean TestModels/transitions-clean TestModels/simple_junction-clean TestModels/complex_junction-clean TestModels/cases-clean TestModels/cameo-clean TestModels/fprime_interface-clean 
 
 QHsm-build:
 	@cd ../QHsm; \
@@ -410,6 +410,30 @@ TestModels/cameo-run:
 
 TestModels/cameo-ut:
 	@cd TestModels/cameo; \
+	make --no-print-directory ut
+	@cd ..
+        
+# --------------------------
+# actions TestModels/fprime_interface
+# --------------------------
+
+TestModels/fprime_interface-clean:
+	@cd TestModels/fprime_interface; \
+	make clean
+	@cd ..
+
+TestModels/fprime_interface-build:
+	@cd TestModels/fprime_interface; \
+	make
+	@cd ..
+
+TestModels/fprime_interface-run:
+	@cd TestModels/fprime_interface; \
+	make run
+	@cd ..
+
+TestModels/fprime_interface-ut:
+	@cd TestModels/fprime_interface; \
 	make --no-print-directory ut
 	@cd ..
         
