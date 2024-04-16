@@ -1,0 +1,2 @@
+InitialState = ON, Event = ToggleEv, guard = None, action = offEntry(), TargetState = OFF
+InitialState = OFF, Event = ToggleEv, guard = None, action = onEntry(), TargetState = ON

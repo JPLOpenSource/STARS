@@ -1,0 +1,20 @@
+{
+    "nameSpace": "Ref",
+    "component": "SignalGen",
+    "componentPath": ".",
+    "autoHeaderFile": "SignalGenComponentAc.hpp",
+    "componentBase": "SignalGenComponentBase",
+    "state_machines": [
+        {
+            "stateName": "Simple",
+            "stateMachineInstance": ["simple1", "simple2"]
+        },
+        {
+            "stateName": "Toggle",
+            "stateMachineInstance": ["toggle"]
+        }
+    ]
+}
+
+
+

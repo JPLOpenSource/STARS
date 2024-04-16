@@ -1,0 +1,17 @@
+
+@startuml
+
+[*] --> OFF
+
+state ON {
+    ON:Entry: onEntry()
+}
+
+state OFF {
+    OFF:Entry: offEntry()
+
+}
+
+OFF --> ON : ToggleEv
+ON --> OFF : ToggleEv
+@enduml
