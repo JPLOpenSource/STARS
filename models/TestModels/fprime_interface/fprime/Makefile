@@ -34,6 +34,3 @@ ut:
 clean:
 	rm -rf test
 	rm -rf *.o
-	rm -rf *.hpp
-	rm -rf *.cpp
-	rm -rf *.h

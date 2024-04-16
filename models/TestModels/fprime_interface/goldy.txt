@@ -1,6 +1,6 @@
 Simple_s1Entry()
 Simple_s1Entry()
-ToggleImpl_offEntry()
+Toggle_offEntry()
 
 --> EV1_SIG
 
@@ -9,7 +9,7 @@ Simple_s1Entry()
 Simple_s1Entry()
 
 --> TOGGLEEV_SIG
-ToggleImpl_onEntry()
+Toggle_onEntry()
 
 --> TOGGLEEV_SIG
-ToggleImpl_offEntry()
+Toggle_offEntry()

@@ -1,7 +1,7 @@
-all: c-depend qf-depend cpp-depend fprime-depend qf-cameo-depend uml-depend
-ut: c-ut qf-ut cpp-ut fprime-ut qf-cameo-ut uml-ut
-run: c-run qf-run cpp-run fprime-run qf-cameo-run uml-run
-clean: c-clean qf-clean cpp-clean fprime-clean qf-cameo-clean uml-clean
+all: fprime-depend
+ut: fprime-ut
+run: fprime-run
+clean: fprime-clean
 
 
 C: c-depend
