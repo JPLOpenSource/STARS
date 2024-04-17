@@ -5,8 +5,8 @@
 @ internal port for handling state-machine Events
 internal port sendEvents(ev: Svc.SMEvents) 
                                 
-    include "SimpleState.fppi"
-    include "ToggleState.fppi"
+    include "Simple.fppi"
+    include "Toggle.fppi"
 
                                 
             

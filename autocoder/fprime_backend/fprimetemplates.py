@@ -502,7 +502,7 @@ module Svc {
 internal port sendEvents(ev: Svc.SMEvents) 
                                 
 #for $state in $state_machines
-    include "$(state.stateName)State.fppi"
+    include "$(state.stateName).fppi"
 #end for
 
                                 
