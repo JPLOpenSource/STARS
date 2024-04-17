@@ -2,51 +2,80 @@
 # -----------------------------------------------------------------------
 # Stars.py
 #
-# The State-machine Autocoder for the Quantum Leaps QM modeling tool
-# This Autocoder outputs the following design pattern implementations:
+# The State-machine Autocoder for generating state-machine code
+# from MagicDraw Cameo or the Quantum Leaps QM modeling tool or PlantUML.
+# This Autocoder outputs one of the following back ends:
 #     - C switch statements
 #     - C Quantum Framework
 #     - C++ switch statements
 #     - Fprime
 #
-# Usage: Stars.py [-h] [-noImpl] [-noSignals] [-namespace NAMESPACE] [-debug] {c,qf,c++,fprime} model
+# usage: Stars.py [-h] [-backend {c,qf,c++,fprime}] [-model MODEL] [-noImpl] [-noSignals] [-namespace NAMESPACE] [-debug] [-smbase]
 #
 # State-machine Autocoder.
 #
-# Positional arguments:
-#  {c,qf,c++,fprime}     back-end code to generate
-#  model                 QM state-machine model file: <model>.qm#
-#
-# Optional arguments:
-#  -h, --help            show this help message and exit
-#  -noImpl               Don't generate the Impl files
-#  -noSignals            Don't generate the Signals header file
-#  -namespace NAMESPACE  Fprime namespace
-#  -debug                prints out the models
+# optional arguments:
+#   -h, --help            show this help message and exit
+#   -backend {c,qf,c++,fprime}
+#                         back-end code to generate
+#   -model MODEL          QM state-machine model file: <model>.qm
+#   -noImpl               Don't generate the Impl files
+#   -noSignals            Don't generate the Signals header file
+#   -namespace NAMESPACE  Fprime namespace
+#   -debug                prints out the models
+#   -smbase               Generates the component state-machine base class
 # 
-# Example:
-#     Stars.py c -noImpl ping.qm
+# Example:  To generate state-machine code
+#     ./Stars.py -backend c -noImpl -model Blinky.qm
 #     This will output the following files:
-#        ping.h
-#        ping.c
+#        Blinky.h
+#        Blinky.c
 #
-#     Stars.py fprime -noImpl -namespace PING ping.qm
+#     ./Stars.py -backend fprime -noImpl -namespace Components -model Blinky.qm
 #     This will output the following files:
-#        ping.cpp
-#        ping.h
-#        ping.trans
-#        pingStatesEnumAi.xml
+#        Blinky.cpp
+#        Blinky.h
+#        Blinky.fppi
+#        Blinky.trans
 #
-#     Stars.py qf -noImpl ping.qm    
+#     ./Stars.py -backend qf -noImpl -model Blinky.qm    
 #     This will output the following files:
-#       ping.h
-#       ping.c
+#       Blinky.h
+#       Blinky.c
 #       StatechartSignals.h
 #
-# 
+# Example:  To generate fprime component state-machine base class artifacts
+# Assuming a configSm.json file:
 #
-# This file is responsible for reading the command line syntax, opening
-# the model .qm file and invoking one of the output back-ends.
+# {
+#     "nameSpace": "Components",
+#     "component": "SignalGen",
+#     "componentPath": ".",
+#     "autoHeaderFile": "SignalGenComponentAc.hpp",
+#     "componentBase": "SignalGenComponentBase",
+#     "state_machines": [
+#         {
+#             "stateName": "Blinky",
+#             "stateMachineInstance": ["blinky1", "blinky2"]
+#         },
+#         {
+#             "stateName": "Toggle",
+#             "stateMachineInstance": ["toggle"]
+#         }
+#     ]
+# }
+#
+# And a CMakeLists.txt file
+#
+#      ./Stars.py -smbase
+#      This will output the following files:
+#       SignalGenSmBase.hpp
+#       SignalGenSmBase.cpp
+#       SMEvents.fpp
+#       state-machine.fppi
+#       Update to CMakeLists.txt
+#
+#
 # -----------------------------------------------------------------------
 import os
 from lxml import etree

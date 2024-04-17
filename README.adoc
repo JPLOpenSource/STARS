@@ -181,40 +181,45 @@ class SignalGen : public SimpleIf {
 ## Command Syntax
 The Python state-machine Autocoder command syntax: +
 
-usage: Stars.py [-h] [-noImpl] [-noSignals] [-namespace NAMESPACE] [-debug] {c,qf,c++,fprime} model
+usage: Stars.py [-h] [-backend {c,qf,c++,fprime}] [-model MODEL] [-noImpl] [-noSignals] [-namespace NAMESPACE] [-debug] [-smbase]
 
 State-machine Autocoder.
 
-positional arguments:
-  {c,qf,c++,fprime}     back-end code to generate
-  model                 state-machine model file: <model>.qm | <model.xml> or <model.plantuml>
-
-optional arguments:
-  -h, --help            show this help message and exit +
-  -noImpl               Don't generate the Impl files +
-  -noSignals            Don't generate the Signals header file +
-  -namespace NAMESPACE  Fprime namespace +
-  -debug                prints out the models +
-
+[options="State machine Autocoder"]
+|===
+|   switch     | argument | deescription
+|  -h, --help  |           | show this help message and exit +
+|   -backend   | c, qf, c++, fprime  | back-end code to generate +
+|   -model     |   MODEL   | QM state-machine model file: <model>.qm +
+|   -noImpl    |           | Don't generate the Impl files +
+|   -noSignals |           | Don't generate the Signals header file +
+|   -namespace | NAMESPACE | Fprime namespace +
+|   -debug     |           | prints out the models +
+|   -smbase    |           | Generates the component state-machine base class +
+|===
 
 ## Examples
 
 cd autocoder
 
 ### QM Model - C Backend
-`./Stars.py c -noImpl ../models/Blinky/Blinky.qm`
+`./Stars.py -backend c -noImpl -model ../models/Blinky/Blinky.qm`
 
 ### PlantUML Model - C++ Backend
-`./Stars.py c++ -noImpl ../models/Blinky/Blinky.plantuml`
+`./Stars.py -backend c++ -noImpl -model ../models/Blinky/Blinky.plantuml`
 
 ### QM Model - QF Backend
-`./Stars.py qf -noImpl ../models/Blinky/Blinky.qm`
+`./Stars.py -backend qf -noImpl -model ../models/Blinky/Blinky.qm`
 
 ### PlantUML Model - fprime backend
-`./Stars.py fprime -noImpl -namespace BLINKY ../models/Blinky/Blinky.plantuml`
+`./Stars.py -backend fprime -noImpl -namespace BLINKY -model ../models/Blinky/Blinky.plantuml`
 
 ### Cameo Model - fprime backend
-`./Stars.py fprime -noImpl -namespace BLINKY ../models/Blinky/Blinky.xml`
+`./Stars.py -backend fprime -noImpl -namespace BLINKY -model ../models/Blinky/Blinky.xml`
+
+### Generate F` state machine base classes and other F` artifacts
+`./Stars.py -smbase`
+
 
 
 For other examples see: +

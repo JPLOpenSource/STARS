@@ -18,6 +18,7 @@ from typing import List, Dict, Tuple, Any, Optional, IO
 from qmlib import ElementTreeType
 from pydantic import BaseModel
 import json
+import os
 
 # Pydantic classes that specify the configSm.json
 class State(BaseModel):
@@ -519,8 +520,20 @@ def update_cmakelists(marker, new_file):
 #
 # -----------------------------------------------------------------------
 def generateSMBase():
+    CONFIG_JSON_FILE = "configSm.json"
+    CMAKE_FILE = "CMakeLists.txt"
 
-    with open("configSm.json", 'r') as file:
+
+    if not os.path.exists(CONFIG_JSON_FILE):
+        print("*** Error: You need the file: " + CONFIG_JSON_FILE)
+        print("See ../models/TestModels/fprime_interface/fprime/configSm.json as an example")
+        return
+
+    if not os.path.exists(CMAKE_FILE):
+        print("*** Error: You need the file: " + CMAKE_FILE)
+        return
+
+    with open(CONFIG_JSON_FILE, 'r') as file:
         json_data = json.load(file)
 
     # Creating an instance of FprimeConfig from the JSON data
