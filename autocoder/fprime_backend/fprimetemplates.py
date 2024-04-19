@@ -172,6 +172,7 @@ class $(smname)If {
     #for $function in $implFunctions
     virtual $function = 0;
     #end for
+    virtual void internalSend(Svc::SMEvents &e) = 0;
                                                                   
 };
 
@@ -199,9 +200,11 @@ class $(smname) {
     enum $(smname)States state;
 
     void * extension;
+    U32 smId;
 
-    void init();
+    void init(U32 id);
     void update(const Svc::SMEvents *e);
+    void sendEvent($(smname)Events signal, Svc::SMEvents &e);
 
 };
 
@@ -241,10 +244,20 @@ class $(smname) {
 \#include "$(smname).h"
 
 
-void $(namespace)::$(smname)::init()
+void $(namespace)::$(smname)::init(U32 id)
 {
 $transition
+this->smId = id;
 }
+                                
+void $(namespace)::$(smname)::sendEvent($(smname)Events signal, Svc::SMEvents &e)
+{
+    e.setsmId(this->smId);
+    e.seteventSignal(signal);
+    parent->internalSend(e);
+
+}
+
 
 
 void $(namespace)::$(smname)::update(const Svc::SMEvents *e)
@@ -353,9 +366,6 @@ namespace $nameSpace {
                         NATIVE_INT_TYPE queueDepth,
                         NATIVE_INT_TYPE instance
             );
-            
-            // Interface to send an event to the state-machine
-            void sendEvent(U32 eventSignal, StateMachine::SmId id);
 
             // Internal Interface handler for sendEvents
             void sendEvents_internalInterfaceHandler(const Svc::SMEvents& ev);
@@ -428,19 +438,11 @@ void $(nameSpace)::$(component)SmBase::init(
     // Initialize the state machine
     #for $state in $state_machines
         #for $impl in $state.stateMachineInstance
-    $(impl).init();
+    $(impl).init(StateMachine::$impl.upper());
         #end for
     #end for
     
 } 
-
-void $(nameSpace)::$(component)SmBase:: sendEvent(U32 eventSignal, StateMachine::SmId id) {
-                                
-    Svc::SMEvents event;
-    event.seteventSignal(eventSignal);
-    event.setsmId(id);
-    sendEvents_internalInterfaceInvoke(event);
-}
 
 void $(nameSpace)::$(component)SmBase::sendEvents_internalInterfaceHandler(const Svc::SMEvents& ev)
 {
