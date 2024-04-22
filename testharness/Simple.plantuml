@@ -18,5 +18,5 @@ c1 --> c2 : [guard1()]/action1()
 c1 --> S1 : /action4()
 c2 --> S1 : [guard2()]/action2()
 c2 --> S2 : /action3()
-S2 --> S1 : EV1[guard2()]/action5()
+S2 --> S1 : EV1[guard3()]/action5()
 @enduml

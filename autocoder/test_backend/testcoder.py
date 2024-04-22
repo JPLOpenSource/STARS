@@ -105,6 +105,37 @@ def genPythonCode(flatchart: ElementTreeType, smname: str, currentState: str, ev
             assert False, f'Could not find event {event}'
     assert False, f'Could not find state {currentState}'
 
+
+# -----------------------------------------------------------------------
+# defaultAllGuards
+#
+# This function
+#
+# ----------------------------------------------------------------------- 
+def defaultAllGuards(flatchart: ElementTreeType, configGuards: List[Guard]) -> List[Guard]:
+
+    # Get a list of all the guards in the model
+    guards = flatchart.iter("guard")
+    modelGuardList = []
+    for guard in guards:
+        guardName = guard.get('brief').split('(')[0]
+        modelGuardList.append(guardName)
+    modelGuardList = list(set(modelGuardList))
+
+    # Get a list of all guards in the configuration
+    configGuardList = []
+    for guard in configGuards:
+        configGuardList.append(guard.name)
+    configGuardList = list(set(configGuardList))
+
+    # Go through the guards in the model and if it is not part of the configuration
+    # then add it to the list of guards with a default return of False
+    for guard in modelGuardList:
+        if guard not in configGuardList:
+            configGuards.append(Guard(name = guard, state = "False"))
+
+    return configGuards
+
 # -----------------------------------------------------------------------
 # generateCode
 #
@@ -122,10 +153,11 @@ def generateCode(smname: str, statechart: ElementTreeType):
     config = TestConfig(**json_data)
     currentState = config.currentState
     event = config.event
-    guards = config.guards
 
-    flatchart : ElementTreeType = flatt.flatten_state_machine(statechart)
-    
+    flatchart = flatt.flatten_state_machine(statechart)
+
+    guards = defaultAllGuards(flatchart, config.guards)
+
     python_code = genPythonCode(flatchart, smname, currentState, event, guards)
 
     local_vars = {}
