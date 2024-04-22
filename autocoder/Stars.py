@@ -89,6 +89,7 @@ import c_backend.ccoder as ccoder
 import qf_backend.qfcoder as qfcoder
 import cpp_backend.cppcoder as cppcoder
 import fprime_backend.fprimecoder as fprimecoder
+import test_backend.testcoder as testcoder
 import checkFaults
 import CameoParser
 import UmlParser
@@ -103,7 +104,7 @@ ElementTreeType = Any
 # -----------------------------------------------------------------------
 
 parser = argparse.ArgumentParser(description='State-machine Autocoder.')
-parser.add_argument("-backend", type=str, choices=['c', 'qf', 'c++', 'fprime'], help="back-end code to generate")
+parser.add_argument("-backend", type=str, choices=['c', 'qf', 'c++', 'fprime', 'test'], help="back-end code to generate")
 parser.add_argument("-model", help="QM state-machine model file: <model>.qm")
 parser.add_argument("-noImpl", help="Don't generate the Impl files", action="store_true")
 parser.add_argument("-noSignals", help="Don't generate the Signals header file", action="store_true")
@@ -143,13 +144,16 @@ else:
     checkFaults.checkStateMachine(smname, statechart)
 
     if args.backend == "c++":
-            cppcoder.generateCode(smname, statechart, args.noImpl)
+        cppcoder.generateCode(smname, statechart, args.noImpl)
         
     if args.backend == "c":
-            ccoder.generateCode(smname, statechart, args.noImpl)
+        ccoder.generateCode(smname, statechart, args.noImpl)
         
     if args.backend == "qf":
         qfcoder.generateCode(smname, statechart, args.noImpl, args.noSignals)
+
+    if args.backend == "test":
+        testcoder.generateCode(smname, statechart)
         
     if args.backend == 'fprime':
         if (args.namespace is None):

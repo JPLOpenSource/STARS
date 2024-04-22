@@ -46,6 +46,27 @@ def format_C(cStatements: List[str], startTab: int) -> str:
     return output 
 
 # -----------------------------------------------------------------------
+# format_python
+#
+# Input cStatements is a list of C statement strings
+# The startTab is the number of spaces to initially indent the returned string.
+# Returns a single string of all the input items with 
+# spacing tabs and line returns
+# -----------------------------------------------------------------------
+def format_python(cStatements: List[str], startTab: int) -> str:
+    output = ""
+    tab = startTab
+    indent = 4
+    for s in cStatements:
+        if s.find('}') >= 0:
+            tab = tab - indent
+        output = output + ' '*tab + s.replace("{", "").replace("}", "") + "\n"
+        if s.find('{') >= 0:
+            tab = tab + indent
+            
+    return output 
+
+# -----------------------------------------------------------------------
 # pick_guard
 
 # Input is QM xml tags
