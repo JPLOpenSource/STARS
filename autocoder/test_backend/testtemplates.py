@@ -38,8 +38,8 @@ class TestTemplate:
             template = Template("""
 class Oracle:
     #for guard in $guards
-    def $(guard[0])(self):
-        return $guard[1]
+    def $(guard.name)(self):
+        return $guard.state
     #end for
 
     def evalState(self):

@@ -1,0 +1,21 @@
+{
+    "currentState": "S1",
+    "event": "EV1",
+    "guards": [
+        {
+            "name": "guard1",
+            "state": "True"
+        },
+        {
+            "name": "guard2",
+            "state": "True"
+        },
+        {
+            "name": "guard3",
+            "state": "False"
+        }
+    ]
+}
+
+
+

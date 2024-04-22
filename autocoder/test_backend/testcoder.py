@@ -17,21 +17,20 @@ import os
 import sys
 
 # Pydantic classes that specify the configSm.json
-# class State(BaseModel):
-#     stateName: str
-#     stateMachineInstance: List[str]
-
-# class FprimeConfig(BaseModel):
-#     nameSpace: str
-#     component: str
-#     componentPath: str
-#     autoHeaderFile: str
-#     componentBase: str
-#     state_machines: List[State]
+class Guard(BaseModel):
+    name: str
+    state: str
+    
+class TestConfig(BaseModel):
+    currentState: str
+    event: str
+    guards: List[Guard]
 
 
 # Initialize global variables
 codeTemplate = TestTemplate()
+
+TEST_JSON_FILE = "test.json"
 
 # ---------------------------------------------------------------------------
 # testHarnessTransition
@@ -87,6 +86,25 @@ def testHarnessTransition(smname: str, tran: ElementTreeType) -> List[str]:
 
     return rstr
 
+
+# -----------------------------------------------------------------------
+# generatePythonCode
+#
+# This function
+#
+# ----------------------------------------------------------------------- 
+def genPythonCode(flatchart: ElementTreeType, smname: str, currentState: str, event: str, guards: List[Guard]):
+    states = flatchart.iter("state")
+    for state in states:
+        if state.get("name") == currentState:
+            trans = state.findall('tran')
+            for tran in trans:
+                if tran.get("trig") == event:
+                    oracleCode = qmlib.format_python(testHarnessTransition(smname, tran), 6)
+                    return codeTemplate.pythonOracle(guards, oracleCode)
+            assert False, f'Could not find event {event}'
+    assert False, f'Could not find state {currentState}'
+
 # -----------------------------------------------------------------------
 # generateCode
 #
@@ -98,21 +116,17 @@ def generateCode(smname: str, statechart: ElementTreeType):
     global unitTestTemplate
     global codeImplTemplate
 
+    with open(TEST_JSON_FILE, 'r') as file:
+        json_data = json.load(file)
+
+    config = TestConfig(**json_data)
+    currentState = config.currentState
+    event = config.event
+    guards = config.guards
 
     flatchart : ElementTreeType = flatt.flatten_state_machine(statechart)
     
-    currentState = "S1"
-    event = "EV1"
-    guards = [("guard1", "True"), ("guard2", "True"), ("guard3", "True")]
-
-    states = flatchart.iter("state")
-    for state in states:
-        if state.get("name") == currentState:
-            trans = state.findall('tran')
-            for tran in trans:
-                if tran.get("trig") == event:
-                    oracleCode = qmlib.format_python(testHarnessTransition(smname, tran), 6)
-                    python_code = codeTemplate.pythonOracle(guards, oracleCode)
+    python_code = genPythonCode(flatchart, smname, currentState, event, guards)
 
     local_vars = {}
     exec(python_code, {}, local_vars)
