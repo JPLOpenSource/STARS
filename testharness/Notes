@@ -1,0 +1,16 @@
+To use the test harness:
+------------------------
+Copy a model
+- cp ../models/TestModels/complex_junction/Complex_Junction.plantuml .
+
+- ipython
+
+> %run test_harness.py
+
+> set_model("Complex_Junction.plantuml")
+  (Open and view Complex_Junction.png)
+
+> set_guard("g3", "True")
+
+> send_event("Ev1")
+

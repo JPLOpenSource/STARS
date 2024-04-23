@@ -227,3 +227,28 @@ For other examples see: +
 link:models/Blinky/README.adoc[] +
 link:models/Device/README.adoc[]
 
+## Test Harness
+
+The test harness provides the capability to test a state machine model by setting guard states and sending events.  +
+A graphical rendering of the state machine is updated to animate the state machine.
+
+image::TestHarness.png[alt="STARS Interfaces"]
+
+### Example 
+
+- `cd testharness`
+
+- `cp ../models/TestModels/complex_junction/Complex_Junction.plantuml .`
+
+- `ipython`
+
+- `%run test_harness.py`
+
+- `set_model("Complex_Junction.plantuml")` +
+  (Open and view `Complex_Junction.png`)
+
+- `set_guard("g3", "True")`
+
+- `send_event("Ev1")`
+
+
