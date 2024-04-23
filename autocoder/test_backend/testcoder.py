@@ -26,6 +26,10 @@ class TestConfig(BaseModel):
     event: str
     guards: List[Guard]
 
+class OutputConfig(BaseModel):
+    actions: List[str]
+    state: str
+
 
 # Initialize global variables
 codeTemplate = TestTemplate()
@@ -94,16 +98,22 @@ def testHarnessTransition(smname: str, tran: ElementTreeType) -> List[str]:
 #
 # ----------------------------------------------------------------------- 
 def genPythonCode(flatchart: ElementTreeType, smname: str, currentState: str, event: str, guards: List[Guard]):
-    states = flatchart.iter("state")
-    for state in states:
-        if state.get("name") == currentState:
-            trans = state.findall('tran')
-            for tran in trans:
-                if tran.get("trig") == event:
-                    oracleCode = qmlib.format_python(testHarnessTransition(smname, tran), 6)
-                    return codeTemplate.pythonOracle(guards, oracleCode)
-            assert False, f'Could not find event {event}'
-    assert False, f'Could not find state {currentState}'
+
+    if currentState == "None":
+        initialTran = flatchart.find('initial')
+        oracleCode = qmlib.format_python(testHarnessTransition(smname, initialTran), 6)
+        return codeTemplate.pythonOracle(guards, oracleCode)
+    else:
+        states = flatchart.iter("state")
+        for state in states:
+            if state.get("name") == currentState:
+                trans = state.findall('tran')
+                for tran in trans:
+                    if tran.get("trig") == event:
+                        oracleCode = qmlib.format_python(testHarnessTransition(smname, tran), 6)
+                        return codeTemplate.pythonOracle(guards, oracleCode)
+                assert False, f'Could not find event {event}'
+        assert False, f'Could not find state {currentState}'
 
 
 # -----------------------------------------------------------------------
@@ -163,6 +173,10 @@ def generateCode(smname: str, statechart: ElementTreeType):
     local_vars = {}
     exec(python_code, {}, local_vars)
     result = local_vars['result']
-    print(result)
+    if result is None:
+        out_json_data = OutputConfig(actions=[], state=currentState)
+    else:
+        out_json_data = OutputConfig(actions=result[0], state=result[1])
+    print(out_json_data.model_dump_json())
 
-    sys.exit()
+    sys.exit(0)
