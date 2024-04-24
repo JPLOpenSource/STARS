@@ -11,6 +11,10 @@ interface SimpleIf <<interface>> {
 
 }
 
+class SignalGenSmBase <<component>> {
+
+}
+
 class SignalGen <<component>> {
 
 }
@@ -20,13 +24,13 @@ class Simple <<state-machine>> {
 }
 
 
-class SignalGenBase {
+class SignalGenComponentBase {
 
 }
 
-SignalGenBase <|-- SignalGen : Inheritance
-SignalGen .right.|> SimpleIf : Implements
-SignalGen *-- Simple : Composition
-Simple ---> SignalGen : Association
+SignalGenSmBase <|-- SignalGen : Inheritance
+SignalGenComponentBase <|-- SignalGenSmBase : Inheritance
+SignalGenSmBase .right.|> SimpleIf : Implements
+SignalGenSmBase *-- Simple : Composition
 
 @enduml
