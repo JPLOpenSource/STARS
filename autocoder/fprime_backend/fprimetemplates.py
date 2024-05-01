@@ -151,11 +151,6 @@ $(transition)
 // \\author Auto-generated
 // \\brief  header file for state machine $smname
 //
-// \\copyright
-// Copyright 2009-2015, by the California Institute of Technology.
-// ALL RIGHTS RESERVED.  United States Government Sponsorship
-// acknowledged.
-//
 // ======================================================================
            
 #ifndef $(smname.upper())_H_
@@ -227,11 +222,6 @@ class $(smname) {
 // \\title  $(smname).cpp
 // \\author Auto-generated
 // \\brief  cpp file for state machine $smname
-//
-// \\copyright
-// Copyright 2009-2015, by the California Institute of Technology.
-// ALL RIGHTS RESERVED.  United States Government Sponsorship
-// acknowledged.
 //
 // ======================================================================            
     
@@ -319,11 +309,6 @@ void $(namespace)::$(smname)::update(const Svc::SMEvents *e)
 // \\author Auto-generated
 // \\brief  Header file for the state machine base class
 //
-// \\copyright
-// Copyright 2009-2015, by the California Institute of Technology.
-// ALL RIGHTS RESERVED.  United States Government Sponsorship
-// acknowledged.
-//
 // ======================================================================            
 \#include "$(componentPath)/$(autoHeaderFile)"
 #for $state in $state_machines
@@ -396,11 +381,6 @@ namespace $nameSpace {
 // \\title  $(component)SmBase.cpp
 // \\author Auto-generated
 // \\brief  Cpp file for the state machine base class
-//
-// \\copyright
-// Copyright 2009-2015, by the California Institute of Technology.
-// ALL RIGHTS RESERVED.  United States Government Sponsorship
-// acknowledged.
 //
 // ======================================================================            
 \#include "$(componentPath)/$(component)SmBase.hpp"

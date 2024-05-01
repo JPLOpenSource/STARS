@@ -4,11 +4,6 @@
 // \author Auto-generated
 // \brief  Cpp file for the state machine base class
 //
-// \copyright
-// Copyright 2009-2015, by the California Institute of Technology.
-// ALL RIGHTS RESERVED.  United States Government Sponsorship
-// acknowledged.
-//
 // ======================================================================            
 #include "./SignalGenSmBase.hpp"
 #include "./Simple.h"

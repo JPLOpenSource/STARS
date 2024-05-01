@@ -4,11 +4,6 @@
 // \author Auto-generated
 // \brief  cpp file for state machine Toggle
 //
-// \copyright
-// Copyright 2009-2015, by the California Institute of Technology.
-// ALL RIGHTS RESERVED.  United States Government Sponsorship
-// acknowledged.
-//
 // ======================================================================            
     
 #include "stdio.h"

@@ -4,11 +4,6 @@
 // \author Auto-generated
 // \brief  header file for state machine Simple
 //
-// \copyright
-// Copyright 2009-2015, by the California Institute of Technology.
-// ALL RIGHTS RESERVED.  United States Government Sponsorship
-// acknowledged.
-//
 // ======================================================================
            
 #ifndef SIMPLE_H_
