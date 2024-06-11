@@ -12,7 +12,7 @@ typedef unsigned char U8;
 typedef unsigned int U32;
 typedef int NATIVE_INT_TYPE;
 
-namespace Svc {
+namespace Fw {
 class SMEvents {
 
 

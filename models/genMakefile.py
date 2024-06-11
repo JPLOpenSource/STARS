@@ -14,8 +14,7 @@ modellist = [
              "TestModels/simple_junction",
              "TestModels/complex_junction",
              "TestModels/cases",
-             "TestModels/cameo",
-             "TestModels/fprime_interface"
+             "TestModels/cameo"
            ]
 
 faultlist = [

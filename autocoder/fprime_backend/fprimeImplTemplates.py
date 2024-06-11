@@ -46,7 +46,7 @@ class FprimeImplTemplate:
 #define _SIGNAL_GEN_HPP_
                                 
 \#include "SMEvents/SMEventsSerializableAc.hpp"
-\#include "$(smname).h"
+\#include "$(smname).hpp"
 
 namespace $(namespace) {
 
@@ -82,7 +82,7 @@ class $(component) : public $(smname)If {
             template = Template("""
             
 \#include "$(component).hpp"
-\#include "$(smname).h"
+\#include "$(smname).hpp"
 \#include "stdio.h"
                                 
 #for $function in $guardFunctions

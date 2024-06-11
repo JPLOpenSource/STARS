@@ -36,14 +36,14 @@ void sendEvent_send(unsigned int signal);
 \#include "sendEvent.h"
 \#include "SMEvents/SMEventsSerializableAc.hpp"
 \#include "$(implHdr)"
-\#include "$(smname).h"
+\#include "$(smname).hpp"
 
 extern $(namespace)::$(component) component;
 
 
 void sendEvent_send(unsigned int signal) {
     // Instantiate an event
-    Svc::SMEvents event;
+    Fw::SMEvents event;
     char signalName[100];
     
     switch (signal) {
@@ -110,7 +110,7 @@ void sendEvent_send(unsigned int signal) {
 \#include <stdio.h>
 \#include "sendEvent.h"
 \#include "$(component).hpp"
-\#include "$(smname).h"
+\#include "$(smname).hpp"
 
 void testDrv() {
 """)

@@ -6,7 +6,7 @@
 #include <Fw/Types/String.hpp>
 #endif
 #include <cstring>
-namespace Svc {
+namespace Fw {
 // public methods
 
 SMEvents::SMEvents(): Serializable() {
