@@ -2,8 +2,7 @@ BACK-END = fprime
 GOLDY = goldy.txt
 NAMESPACE = Ref
 INCLUDEDIRS = -I. \
-              -IFw/SMEvents \
-		-I../..
+    -I../..
 
 all: autocode build
 

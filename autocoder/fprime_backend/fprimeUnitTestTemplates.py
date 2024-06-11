@@ -34,7 +34,7 @@ void sendEvent_send(unsigned int signal);
 \#include <assert.h>
 \#include <string.h>
 \#include "sendEvent.h"
-\#include "SMEvents/SMEventsSerializableAc.hpp"
+\#include "Fw/Types/SMEventsSerializableAc.hpp"
 \#include "$(implHdr)"
 \#include "$(smname).hpp"
 

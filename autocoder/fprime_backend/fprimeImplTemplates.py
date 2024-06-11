@@ -45,7 +45,7 @@ class FprimeImplTemplate:
 #ifndef _SIGNAL_GEN_HPP_
 #define _SIGNAL_GEN_HPP_
                                 
-\#include "SMEvents/SMEventsSerializableAc.hpp"
+\#include "Fw/Types/SMEventsSerializableAc.hpp"
 \#include "$(smname).hpp"
 
 namespace $(namespace) {
