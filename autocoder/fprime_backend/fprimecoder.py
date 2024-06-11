@@ -46,7 +46,7 @@ codeImplTemplate = FprimeImplTemplate()
 # -----------------------------------------------------------------------  
 def printSmHeader(smname: str, root: ElementTreeType, namespace: str):
         
-    hFile = open(smname+".h", "w")
+    hFile = open(smname+".hpp", "w")
     eventList = []
     trans = root.iter('tran')
     for tran in trans:
@@ -396,185 +396,6 @@ def printEnumFpp(smname: str, root: ElementTreeType, namespace: str):
     return 
 
 # -----------------------------------------------------------------------
-# printBaseHeader
-#
-# Print the state machine Base Header file
-# -----------------------------------------------------------------------  
-def printBaseHeader(state_machines,
-                    nameSpace,
-                    component,
-                    componentPath,
-                    autoHeaderFile,
-                    componentBase):
-    
-    fileName = component + "SmBase.hpp"
-    print ("Generating " + fileName)
-    file = open(fileName, "w")
-    file.write(codeTemplate.smBaseHeader(state_machines,
-                                             nameSpace,
-                                             component,
-                                             componentPath,
-                                             autoHeaderFile,
-                                             componentBase))
-    
-    file.close()
-
-# -----------------------------------------------------------------------
-# printBaseCpp
-#
-# Print the state machine Base cpp file
-# -----------------------------------------------------------------------  
-def printBaseCpp(state_machines,
-                 nameSpace,
-                 component,
-                 componentPath,
-                 autoHeaderFile,
-                 componentBase):
-    
-    fileName = component + "SmBase.cpp"
-    print ("Generating " + fileName)
-    file = open(fileName, "w")
-    file.write(codeTemplate.smBaseCpp(state_machines,
-                                      nameSpace,
-                                      component,
-                                      componentPath,
-                                      autoHeaderFile,
-                                      componentBase))
-    
-    file.close()
-
-# -----------------------------------------------------------------------
-# printSMEvents
-#
-# Print the SMEvents fpp file
-# -----------------------------------------------------------------------  
-def printSMEvents():
-    
-    fileName = "SMEvents.fpp"
-    print ("Generating " + fileName)
-    file = open(fileName, "w")
-    file.write(codeTemplate.smEvents())
-    
-    file.close()
-
-# -----------------------------------------------------------------------
-# printInternalQ
-#
-# Print the Internal input queue fppi
-# -----------------------------------------------------------------------  
-def printInternalQ(state_machines):
-    
-    fileName = "state-machine.fppi"
-    print ("Generating " + fileName)
-    file = open(fileName, "w")
-    file.write(codeTemplate.internalQ(state_machines))
-    
-    file.close()
-
-
-# -----------------------------------------------------------------------
-# update_cmakelists
-#
-# Update the CMakeLists.txt
-# -----------------------------------------------------------------------  
-
-def update_cmakelists(marker, new_file):
-    from enum import Enum, auto
-
-    class State(Enum):
-        FIND_SOURCE_LIST = auto()
-        FIND_END_LIST = auto()
-        FILE_ADDED = auto()
-
-    new_file_entry = f'    "${{CMAKE_CURRENT_LIST_DIR}}/{new_file}"'
-    marker_string = "set("+marker
-    state = State.FIND_SOURCE_LIST
-    new_line = []
-    with open("CMakeLists.txt", 'r') as file:
-        for line in file:
-            if state == State.FIND_SOURCE_LIST:
-                 new_line.append(line.rstrip())
-                 if marker_string in line:
-                      state = State.FIND_END_LIST
-            elif state == State.FIND_END_LIST:
-                    if ")" in line:
-                        new_line.append(new_file_entry)
-                        new_line.append(line.rstrip())
-                        state = State.FILE_ADDED
-                    else:
-                        if new_file in line:
-                             new_line.append(line.rstrip())
-                             state = State.FILE_ADDED
-                        else:
-                            new_line.append(line.rstrip())
-
-            elif state == State.FILE_ADDED:
-                 new_line.append(line.rstrip())
-
-    with open("CMakeLists.txt", 'w') as file:
-         for line in new_line:
-              file.write(f'{line}\n')                  
-
-# -----------------------------------------------------------------------
-# generateSMBase
-#
-# -----------------------------------------------------------------------
-def generateSMBase():
-    CONFIG_JSON_FILE = "configSm.json"
-    CMAKE_FILE = "CMakeLists.txt"
-
-
-    if not os.path.exists(CONFIG_JSON_FILE):
-        print("*** Error: You need the file: " + CONFIG_JSON_FILE)
-        print("See ../models/TestModels/fprime_interface/fprime/configSm.json as an example")
-        return
-
-    if not os.path.exists(CMAKE_FILE):
-        print("*** Error: You need the file: " + CMAKE_FILE)
-        return
-
-    with open(CONFIG_JSON_FILE, 'r') as file:
-        json_data = json.load(file)
-
-    # Creating an instance of FprimeConfig from the JSON data
-    config = FprimeConfig(**json_data)
-
-    nameSpace = config.nameSpace
-    component = config.component
-    componentPath = config.componentPath
-    autoHeaderFile = config.autoHeaderFile
-    componentBase = config.componentBase
-    state_machines = config.state_machines
-
-    printBaseHeader(state_machines,
-                    nameSpace,
-                    component,
-                    componentPath,
-                    autoHeaderFile,
-                    componentBase)
-
-    printBaseCpp(state_machines,
-                    nameSpace,
-                    component,
-                    componentPath,
-                    autoHeaderFile,
-                    componentBase)
-    
-    printSMEvents()
-
-    printInternalQ(state_machines)
-
-    print("Updating CMakeLists.txt")
-    for state in state_machines:
-        update_cmakelists("SOURCE_FILES", state.stateName+".cpp")
-        update_cmakelists("UT_SOURCE_FILES", state.stateName+".cpp")
-    
-    update_cmakelists("SOURCE_FILES", component + "SmBase.cpp")
-    update_cmakelists("SOURCE_FILES", "SMEvents.fpp")
-    update_cmakelists("UT_SOURCE_FILES", component + "SmBase.cpp")
-    update_cmakelists("UT_SOURCE_FILES", "SMEvents.fpp")
-
-# -----------------------------------------------------------------------
 # generateCode
 #
 # This function generates the following code:
@@ -618,7 +439,7 @@ def generateCode(smname: str, statechart: ElementTreeType, noImpl: bool, namespa
     printSmHeader(smname, flatchart, namespace)
     
     # Generate the state-machine implementation file
-    print ("Generating " + smname + ".h")
+    print ("Generating " + smname + ".hpp")
     printSmCode(smname, flatchart, namespace)
 
     # Generate the states enumeration fpp

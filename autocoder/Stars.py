@@ -110,57 +110,52 @@ parser.add_argument("-noImpl", help="Don't generate the Impl files", action="sto
 parser.add_argument("-noSignals", help="Don't generate the Signals header file", action="store_true")
 parser.add_argument("-namespace", help="Fprime namespace")
 parser.add_argument("-debug", help="prints out the models", action = "store_true")
-parser.add_argument("-smbase", help="Generates the component state-machine base class", action = "store_true")
 
 
 args = parser.parse_args()
 
-if args.smbase:
-     # Just do the state machine base class generation
-     fprimecoder.generateSMBase()
+# Do the state machine autocoder
+inputFile = args.model
+
+suff = os.path.basename(inputFile).split('.')[1]
+
+if suff == 'qm':
+    root: ElementTreeType = etree.parse(inputFile)
+elif suff == 'xml':
+    root = CameoParser.processCameo(inputFile, args.debug)
+elif suff == 'plantuml':
+    root = UmlParser.processUml(inputFile, args.debug)
 else:
-    # Do the state machine autocoder
-    inputFile = args.model
+    print("Unknown suffix {0} on file {1}".format(suff, inputFile))
+    sys.exit(0)
 
-    suff = os.path.basename(inputFile).split('.')[1]
+package: ElementTreeType = root.find('package')
+className = package.find('class')
+statechart: ElementTreeType = className.find('statechart')
+# Process the states by adding an index attribute
+smname: str = className.get('name')
 
-    if suff == 'qm':
-        root: ElementTreeType = etree.parse(inputFile)
-    elif suff == 'xml':
-        root = CameoParser.processCameo(inputFile, args.debug)
-    elif suff == 'plantuml':
-        root = UmlParser.processUml(inputFile, args.debug)
+# Perform state-machine semantics checking
+checkFaults.checkStateMachine(smname, statechart)
+
+if args.backend == "c++":
+    cppcoder.generateCode(smname, statechart, args.noImpl)
+    
+if args.backend == "c":
+    ccoder.generateCode(smname, statechart, args.noImpl)
+    
+if args.backend == "qf":
+    qfcoder.generateCode(smname, statechart, args.noImpl, args.noSignals)
+
+if args.backend == "test":
+    testcoder.generateCode(smname, statechart)
+    
+if args.backend == 'fprime':
+    if (args.namespace is None):
+        print("*** Error - missing namespace argument for the fprime backend")
+        exit(0)
     else:
-        print("Unknown suffix {0} on file {1}".format(suff, inputFile))
-        sys.exit(0)
-
-    package: ElementTreeType = root.find('package')
-    className = package.find('class')
-    statechart: ElementTreeType = className.find('statechart')
-    # Process the states by adding an index attribute
-    smname: str = className.get('name')
-
-    # Perform state-machine semantics checking
-    checkFaults.checkStateMachine(smname, statechart)
-
-    if args.backend == "c++":
-        cppcoder.generateCode(smname, statechart, args.noImpl)
-        
-    if args.backend == "c":
-        ccoder.generateCode(smname, statechart, args.noImpl)
-        
-    if args.backend == "qf":
-        qfcoder.generateCode(smname, statechart, args.noImpl, args.noSignals)
-
-    if args.backend == "test":
-        testcoder.generateCode(smname, statechart)
-        
-    if args.backend == 'fprime':
-        if (args.namespace is None):
-            print("*** Error - missing namespace argument for the fprime backend")
-            exit(0)
-        else:
-                fprimecoder.generateCode(smname, statechart, args.noImpl, args.namespace)
+            fprimecoder.generateCode(smname, statechart, args.noImpl, args.namespace)
             
         
     
