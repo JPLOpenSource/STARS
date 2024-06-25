@@ -7,30 +7,31 @@ skinparam class {
     BorderColor Black
 }
 
-interface SimpleIf <<interface>> {
+interface StateMachineIf <<interface>> {
 
 }
 
-class SignalGenSmBase <<component>> {
-
-}
-
-class SignalGen <<component>> {
-
-}
-
-class Simple <<state-machine>> {
+class StateMachineBase <<component>> {
 
 }
 
 
-class SignalGenComponentBase {
+class StateMachine <<state-machine>> {
 
 }
 
-SignalGenSmBase <|-- SignalGen : Inheritance
-SignalGenComponentBase <|-- SignalGenSmBase : Inheritance
-SignalGenSmBase .right.|> SimpleIf : Implements
-SignalGenSmBase *-- Simple : Composition
+class ComponentImpl <<component>> {
+
+}
+
+
+class ComponentBase {
+
+}
+
+StateMachineBase <|-- ComponentImpl : Inheritance
+ComponentBase <|-- StateMachineBase : Inheritance
+StateMachineBase .right.|> StateMachineIf : Implements
+StateMachineBase *-- StateMachine : Composition
 
 @enduml

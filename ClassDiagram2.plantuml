@@ -1,0 +1,32 @@
+@startuml ClassDiagram
+'skinparam Style strictuml
+
+' Set global class color
+skinparam class {
+    BackgroundColor LightBlue
+    BorderColor Black
+}
+
+class StateMachine <<state-machine>> {
+
+}
+
+class ComponentImpl <<component>> {
+
+}
+
+class StateMachineIf <<interface>> {
+
+}
+
+
+class ComponentBase {
+
+}
+
+ComponentBase <|-- ComponentImpl : Inheritance
+ComponentBase *-- StateMachine : Composition
+ComponentBase .right.|> StateMachineIf : Implements
+
+
+@enduml
