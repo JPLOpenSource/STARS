@@ -50,7 +50,7 @@ class FprimeImplTemplate:
 
 namespace $(namespace) {
 
-class $(component) : public $(smname)If {
+class $(component) : public $(smname)_Interface {
   public:
       $(smname) sm;
       

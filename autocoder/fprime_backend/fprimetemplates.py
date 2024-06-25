@@ -162,7 +162,7 @@ namespace Fw {
 
 namespace $(namespace) {
 
-class $(smname)If {
+class $(smname)_Interface {
   public:
     #for $function in $implFunctions
     virtual $function = 0;
@@ -173,11 +173,11 @@ class $(smname)If {
 class $(smname) {
                                  
   private:
-    $(smname)If *parent;
+    $(smname)_Interface *parent;
                                  
   public:
                                  
-    $(smname)($(smname)If* parent) : parent(parent) {}
+    $(smname)($(smname)_Interface* parent) : parent(parent) {}
   
     enum $(smname)States {
 #for $state in $stateList
@@ -328,7 +328,7 @@ namespace $nameSpace {
 
     class $(component)SmBase : public $(componentBase)
     #for $state in $state_machines
-        ,public $(state.stateName)If
+        ,public $(state.stateName)_Interface
     #end for
                                 
     {
