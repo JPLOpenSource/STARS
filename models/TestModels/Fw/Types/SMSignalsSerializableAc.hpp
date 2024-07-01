@@ -1,5 +1,5 @@
 /*
- * SMEvents.hpp
+ * SMSignals.hpp
  *
  *  Created on: Thursday, 06 January 2022
  *  Author:     watney
@@ -13,7 +13,7 @@ typedef unsigned int U32;
 typedef int NATIVE_INT_TYPE;
 
 namespace Fw {
-class SMEvents {
+class SMSignals {
 
 
 public:
@@ -22,21 +22,21 @@ public:
         SERIALIZED_SIZE =
         sizeof(U32) +
         sizeof(U8)*128
-    }; //!< serializable size of SMEvents
+    }; //!< serializable size of SMSignals
 
-    SMEvents() {
+    SMSignals() {
         this->m_eventSignal = 0;
         for (NATIVE_INT_TYPE _mem = 0; _mem < 128; _mem++) {
             this->m_payload[_mem] = 0;
         }
     }
 
-    SMEvents(const SMEvents* src); //!< pointer copy constructor
-    SMEvents(const SMEvents& src); //!< reference copy constructor
-    SMEvents(U32 eventSignal, const U8* payload, NATIVE_INT_TYPE payloadSize); //!< constructor with arguments
-    SMEvents(U32 eventSignal, const U8 payload); //!< constructor with arguments with scalars for array arguments
-    SMEvents& operator=(const SMEvents& src); //!< equal operator
-    bool operator==(const SMEvents& src) const; //!< equality operator
+    SMSignals(const SMSignals* src); //!< pointer copy constructor
+    SMSignals(const SMSignals& src); //!< reference copy constructor
+    SMSignals(U32 eventSignal, const U8* payload, NATIVE_INT_TYPE payloadSize); //!< constructor with arguments
+    SMSignals(U32 eventSignal, const U8 payload); //!< constructor with arguments with scalars for array arguments
+    SMSignals& operator=(const SMSignals& src); //!< equal operator
+    bool operator==(const SMSignals& src) const; //!< equality operator
 
     void set(U32 eventSignal, const U8* payload, NATIVE_INT_TYPE payloadSize); //!< set values
 

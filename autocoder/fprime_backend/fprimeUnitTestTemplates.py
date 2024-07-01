@@ -34,7 +34,7 @@ void sendEvent_send(unsigned int signal);
 \#include <assert.h>
 \#include <string.h>
 \#include "sendEvent.h"
-\#include "Fw/Types/SMEventsSerializableAc.hpp"
+\#include "Fw/Types/SMSignalsSerializableAc.hpp"
 \#include "$(implHdr)"
 \#include "$(smname).hpp"
 
@@ -43,7 +43,7 @@ extern $(namespace)::$(component) component;
 
 void sendEvent_send(unsigned int signal) {
     // Instantiate an event
-    Fw::SMEvents event;
+    Fw::SMSignals event;
     char signalName[100];
     
     switch (signal) {

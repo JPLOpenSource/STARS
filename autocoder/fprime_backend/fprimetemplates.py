@@ -44,7 +44,7 @@ class FprimeTemplate:
             if args == "":
                 template = Template("""bool $(smname)_$(action)()""")
             elif args == "e":
-                template = Template("""bool $(smname)_$(action)(const Fw::SMEvents *e)""")
+                template = Template("""bool $(smname)_$(action)(const Fw::SMSignals *e)""")
             elif args.isdigit():
                 template = Template("""bool $(smname)_$(action)(int arg)""")
             else:
@@ -62,7 +62,7 @@ class FprimeTemplate:
             if args == "":
                 template = Template("""bool $(namespace)::$(component)::$(smname)_$(action)()""")
             elif args == "e":
-                template = Template("""bool $($namespace)::$(component)::$(smname)_$(action)(const Fw::SMEvents *e)""")
+                template = Template("""bool $($namespace)::$(component)::$(smname)_$(action)(const Fw::SMSignals *e)""")
             elif args.isdigit():
                 template = Template("""bool $(namespace)::$(component)::$(smname)_$(action)(int arg)""")
             else:
@@ -96,7 +96,7 @@ class FprimeTemplate:
             if args == "":
                 template = Template("""void $(smname)_$(action)()""")
             elif args == "e":
-                template = Template("""void $(smname)_$(action)(const Fw::SMEvents *e)""")
+                template = Template("""void $(smname)_$(action)(const Fw::SMSignals *e)""")
             elif args.isdigit():
                 template = Template("""void $(smname)_$(action)(int arg)""")
             else:
@@ -115,7 +115,7 @@ class FprimeTemplate:
             if args == "":
                 template = Template("""void $(namespace)::$(component)::$(smname)_$(action)()""")   
             elif args == "e":
-                template = Template("""void $(namespace)::$(component)::$(smname)_$(action)(const Fw::SMEvents *e)""")         
+                template = Template("""void $(namespace)::$(component)::$(smname)_$(action)(const Fw::SMSignals *e)""")         
             elif args.isdigit():
                 template = Template("""void $(namespace)::$(component)::$(smname)_$(action)(int arg)""")         
             else:
@@ -157,7 +157,7 @@ $(transition)
 #define $(smname.upper())_H_
 
 namespace Fw {
-  class SMEvents;
+  class SMSignals;
 }
 
 namespace $(namespace) {
@@ -196,7 +196,7 @@ class $(smname) {
     void * extension;
 
     void init();
-    void update(const Fw::SMEvents *e);
+    void update(const Fw::SMSignals *e);
 
 };
 
@@ -227,7 +227,7 @@ class $(smname) {
     
 \#include "stdio.h"
 \#include "assert.h"
-\#include "Fw/Types/SMEventsSerializableAc.hpp"
+\#include "Fw/Types/SMSignalsSerializableAc.hpp"
 \#include "$(smname).hpp"
 
 
@@ -237,7 +237,7 @@ $transition
 }
 
 
-void $(namespace)::$(smname)::update(const Fw::SMEvents *e)
+void $(namespace)::$(smname)::update(const Fw::SMSignals *e)
 {
     switch (this->state) {
     """)
@@ -343,7 +343,7 @@ namespace $nameSpace {
             void sendEvent(U32 eventSignal, StateMachine::SmId id);
 
             // Internal Interface handler for sendEvents
-            void sendEvents_internalInterfaceHandler(const Fw::SMEvents& ev);
+            void sendEvents_internalInterfaceHandler(const Fw::SMSignals& ev);
                                 
             // Instantiate the state machines
             #for $state in $state_machines
@@ -416,13 +416,13 @@ void $(nameSpace)::$(component)SmBase::init(
 
 void $(nameSpace)::$(component)SmBase:: sendEvent(U32 eventSignal, StateMachine::SmId id) {
                                 
-    Fw::SMEvents event;
+    Fw::SMSignals event;
     event.seteventSignal(eventSignal);
     event.setsmId(id);
     sendEvents_internalInterfaceInvoke(event);
 }
 
-void $(nameSpace)::$(component)SmBase::sendEvents_internalInterfaceHandler(const Fw::SMEvents& ev)
+void $(nameSpace)::$(component)SmBase::sendEvents_internalInterfaceHandler(const Fw::SMSignals& ev)
 {
     U16 id = ev.getsmId();
     switch (id) {
@@ -449,16 +449,16 @@ void $(nameSpace)::$(component)SmBase::sendEvents_internalInterfaceHandler(const
             return str(template)
         
 # -------------------------------------------------------------------------------
-# smEvents
+# smSignals
 # -------------------------------------------------------------------------------           
-        def smEvents(self) -> str:
+        def smSignalss(self) -> str:
 
             template = Template("""
 # This is an Auto generate file from the STARS Autocoder
 
 module Fw {
 
-    struct SMEvents {
+    struct SMSignals {
         smId : U32
         eventSignal: U32
         payload: [128] U8
@@ -479,7 +479,7 @@ module Fw {
 # This is an Auto generate file from the STARS Autocoder
                                 
 @ internal port for handling state-machine Events
-internal port sendEvents(ev: Fw.SMEvents) 
+internal port sendEvents(ev: Fw.SMSignals) 
                                 
 #for $state in $state_machines
     include "$(state.stateName).fppi"
