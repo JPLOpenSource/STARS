@@ -175,13 +175,13 @@ def getXmlStateMachine(xmlFileNode):
             return e 
 
 # -----------------------------------------------------------------------
-# processCameo
+# getXmiModel
 #
-# Process the input CAMEO xmi xml file and return a qm file
+# Process the input CAMEO xmi and return an xmiModel
 # -----------------------------------------------------------------------
-def processCameo(xmlfile, debug):
+def getXmiModel(xmlfile: str):
     global XMI_ID, XMI_TYPE, xmiModel
-    print("Hello, welcome to the CAMEO xml parser")
+    print(f'Parsing file: {xmlfile}')
         
     (nsmap, xmlFileNode) = getXmlFileNode(xmlfile)
 
@@ -200,13 +200,8 @@ def processCameo(xmlfile, debug):
     # 
     populateXmiModel(xmlFileNode, xmiModel)
 
-    if debug:
-        xmiModel.print()
+    return xmiModel
 
-    #
-    # Convert the xmi model to the qm model
-    #
-    return xmiToQm.translateXmiModelToQmFile(xmiModel, debug)
 
 
 

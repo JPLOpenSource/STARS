@@ -90,9 +90,12 @@ import qf_backend.qfcoder as qfcoder
 import cpp_backend.cppcoder as cppcoder
 import fprime_backend.fprimecoder as fprimecoder
 import test_backend.testcoder as testcoder
+import fprime_backend.fppcoder as fppcoder
 import checkFaults
 import CameoParser
 import UmlParser
+import xmiToQm
+
 
 from typing import Any
 ElementTreeType = Any
@@ -122,9 +125,11 @@ suff = os.path.basename(inputFile).split('.')[1]
 if suff == 'qm':
     root: ElementTreeType = etree.parse(inputFile)
 elif suff == 'xml':
-    root = CameoParser.processCameo(inputFile, args.debug)
+    xmiModel = CameoParser.getXmiModel(inputFile)
+    root = xmiToQm.translateXmiModelToQmFile(xmiModel, args.debug)
 elif suff == 'plantuml':
-    root = UmlParser.processUml(inputFile, args.debug)
+    xmiModel = UmlParser.getXmiModel(inputFile)
+    root =  xmiToQm.translateXmiModelToQmFile(xmiModel, args.debug)
 else:
     print("Unknown suffix {0} on file {1}".format(suff, inputFile))
     sys.exit(0)
@@ -155,7 +160,12 @@ if args.backend == 'fprime':
         print("*** Error - missing namespace argument for the fprime backend")
         exit(0)
     else:
+            # Currently we can only generate the FPP state machine code for PlantUML or MagicDraw inputs
+            if suff == "plantuml" or suff == "xml":
+                fppcoder.generateCode(xmiModel)
+
             fprimecoder.generateCode(smname, statechart, args.noImpl, args.namespace)
+
             
         
     
