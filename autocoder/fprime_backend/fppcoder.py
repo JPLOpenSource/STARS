@@ -8,6 +8,8 @@ from anytree import Node, PreOrderIter
 import re
 
 def getActionNames(input_string):
+    if input_string is None:
+        return None
     # Use regex to find all procedural names before the '(' and ignore everything after
     procedural_names = re.findall(r'\b\w+(?=\()', input_string)
     # Join the names with commas
@@ -51,7 +53,7 @@ def processNode(node, model, fppFile, level = 0):
             if exitExpr:
                 fppFile.write(f"{indent}{exitExpr}\n")
             processNode(child, model, fppFile, level+1)
-            fppFile.write(f"{indent}}}\n")
+            fppFile.write(f"{indent}}}\n\n")
        
 # -----------------------------------------------------------------------
 # getInitTranstions
@@ -101,6 +103,36 @@ def moveTransitions(model):
             model.moveTransition(trans, state)
 
 
+def getStateMachineMethods(model):
+    actionSet = set()
+    guardSet = set()
+    signalSet = set()
+
+    for child in PreOrderIter(model.tree):
+        if child.name == "STATE":
+            actionSet.add(getActionNames(child.entry))
+            actionSet.add(getActionNames(child.exit))
+        if child.name == "TRANSITION":
+            actionSet.add(getActionNames(child.action))
+            guardSet.add(getActionNames(child.guard))
+            signalSet.add(child.event)
+        if child.name == "JUNCTION":
+            actionSet.add(getActionNames(child.ifAction))
+            actionSet.add(getActionNames(child.elseAction))
+            guardSet.add(getActionNames(child.guard))
+        if child.name == "INITIAL":
+            actionSet.add(getActionNames(child.action))
+
+    # Remove empty strings
+    actionSet = {item for item in actionSet if item}
+    guardSet = {item for item in guardSet if item}
+    signalSet = {item for item in signalSet if item}
+
+    flatActions = {a.strip() for action in actionSet for a in action.split(',')}
+
+
+    return (flatActions, guardSet, signalSet)
+
 # -----------------------------------------------------------------------
 # printFpp
 #
@@ -108,7 +140,7 @@ def moveTransitions(model):
 # -----------------------------------------------------------------------  
 def generateCode(xmiModel):
     stateMachine = xmiModel.tree.stateMachine
-    
+
     print ("Generating " + stateMachine + ".fpp")
 
     fppFile = open(stateMachine +".fpp", "w")
@@ -121,7 +153,22 @@ def generateCode(xmiModel):
 
     moveTransitions(xmiModel)
 
-    fppFile.write(f"state machine {xmiModel.tree.stateMachine} {{\n")
+    (actions, guards, signals) = getStateMachineMethods(xmiModel)
+
+    fppFile.write(f"state machine {xmiModel.tree.stateMachine} {{\n\n")
+
+    for action in actions:
+        fppFile.write(f"  action {action}\n")
+    fppFile.write("\n")
+
+    for guard in guards:
+        fppFile.write(f"  guard {guard}\n")
+    fppFile.write("\n")
+
+    for signal in signals:
+        fppFile.write(f"  signal {signal}\n")
+    fppFile.write("\n")
+        
     processNode(currentNode, xmiModel, fppFile, 1)
     fppFile.write(f"}}\n")
 
