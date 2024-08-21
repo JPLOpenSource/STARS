@@ -115,7 +115,7 @@ class xmiModel:
 
     def getRoot(self):
         return self.tree
-
+    
     def getPackageName(self):
         return self.tree.package
 

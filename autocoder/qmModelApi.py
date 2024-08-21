@@ -50,7 +50,7 @@ class qmModel:
 
     def getStateMachineName(self):
         return self.tree.stateMachine
-
+    
     #-----------------------------------------------------------------------
     # assignAbsolutePositions
     #

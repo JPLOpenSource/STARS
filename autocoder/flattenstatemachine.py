@@ -146,7 +146,6 @@ def get_tran_target(tran: ElementTreeType) -> Optional[str]:
                 
     return root.get('name')
 
-
 # -----------------------------------------------------------------------
 # get_this_state
 #
