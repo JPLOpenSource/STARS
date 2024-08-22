@@ -64,6 +64,9 @@ def getInitTransitions(model):
     psuedoStateList = model.psuedoStateList
     transTargetSet = model.transTargets
 
+    print(f'psuedoStateList = {psuedoStateList}')
+    print(f'transTargetSet = {transTargetSet}')
+
     for trans in PreOrderIter(model.tree):
         if trans.name == "TRANSITION":
             # If the transition source is a psuedostate and no other transition goes into that psuedostate
@@ -86,8 +89,8 @@ def getJunctions(model):
                 if child.name == "TRANSITION":
                     if psId == child.source:
                         transList.append(child)
-            assert len(transList) == 2, f"{len(transList)} transitions found, expected 2"
-            model.addJunction(transList, ps)
+            if len(transList) == 2:
+                model.addJunction(transList, ps)
 
 # -----------------------------------------------------------------------
 # moveTransitions
@@ -152,6 +155,8 @@ def generateCode(xmiModel):
     getJunctions(xmiModel)
 
     moveTransitions(xmiModel)
+
+    xmiModel.print()
 
     (actions, guards, signals) = getStateMachineMethods(xmiModel)
 

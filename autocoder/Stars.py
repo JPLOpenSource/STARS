@@ -148,7 +148,6 @@ checkFaults.checkStateMachine(smname, statechart)
 # Only do the QM to XMI translation after the semanics have been checked.
 if suff == 'qm':
     xmiModel = QmParser.getXmiModel(inputFile)
-
 if args.backend == "c++":
     cppcoder.generateCode(smname, statechart, args.noImpl)
     
@@ -166,7 +165,7 @@ if args.backend == 'fprime':
         print("*** Error - missing namespace argument for the fprime backend")
         exit(0)
     else:
-            # if suff == "plantuml" or suff == "xml":
+            #xmiModel.print()
             fppcoder.generateCode(xmiModel)
             fprimecoder.generateCode(smname, statechart, args.noImpl, args.namespace)
 

@@ -12,6 +12,7 @@ import xmiModelApi
 import flattenstatemachine as flatt
 import qmlib
 from anytree import Node
+import sys
 
 
 class UniqueNumberGenerator:
@@ -27,8 +28,6 @@ class UniqueNumberGenerator:
     def get_unique_number(self):
         return next(self.generator)  # Return the next unique number
 
-
-
 # -------------------------------------------------------------------------
 # parseTrans
 #
@@ -37,17 +36,20 @@ class UniqueNumberGenerator:
 def parseTrans(qmModel, xmiModel, xmiNode, number_gen):
     source = xmiNode.id
     target = int(qmModel.get('target')) if qmModel.get('target') else None
-    kind = qmModel.get('kind')
-    
-    if target is not None or kind == "internal":  
-        guard = qmlib.pick_guard(qmModel)
-        action = flatt.pick_action(qmModel)
-        event = qmModel.get('trig')
-        xmiModel.addTransition(source, target, event, guard, action, kind, xmiNode)
-    else:
-        psNode = xmiModel.addPsuedostate(number_gen.get_unique_number(), xmiNode)
-        for choice in qmModel.findall("choice"):
+    kind = qmModel.get('kind')    
+    guard = qmlib.pick_guard(qmModel)
+    action = flatt.pick_action(qmModel)
+    event = qmModel.get('trig')
+
+    if target is None:
+        choices = qmModel.findall("choice")
+        psId = number_gen.get_unique_number()
+        psNode = xmiModel.addPsuedostate(psId, xmiNode)
+        xmiModel.addTransition(source, psId, event, guard, action, kind)
+        for choice in choices:
             parseTrans(choice, xmiModel, psNode, number_gen)
+    else:
+        xmiModel.addTransition(source, target, event, guard, action, kind)
 
 # -------------------------------------------------------------------------
 # parseStateTree
@@ -70,7 +72,7 @@ def parseStateTree(qmModel, xmiModel, xmiNode, number_gen):
         state_id = int(state.get('id'))
         thisNode = xmiModel.addState(stateName, xmiNode, entry, exit, state_id)
         parseStateTree(state, xmiModel, thisNode, number_gen)
-
+    
 # -------------------------------------------------------------------------
 # populateXmiModel
 #
@@ -127,10 +129,10 @@ def getXmiModel(xmlfile: str):
     number_gen = UniqueNumberGenerator()
         
     modelName, qmModel = getXmlFileNode(xmlfile)
-    print(f"modelName = {modelName}")
     xmiModel = xmiModelApi.xmiModel(modelName + "Package", modelName)
 
     populateXmiModel(qmModel, xmiModel, number_gen)
+
 
     return xmiModel
 

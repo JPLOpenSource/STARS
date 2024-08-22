@@ -31,7 +31,7 @@ class xmiModel:
         self.idMap[id] = thisNode
         return thisNode
 
-    def addTransition(self, source, target, event, guard, action, kind, parent):
+    def addTransition(self, source, target, event, guard, action, kind, parent=tree):
         thisNode=Node("TRANSITION", 
                       source=source, 
                       target=target, 
@@ -57,7 +57,7 @@ class xmiModel:
         return thisNode
 
     def addPsuedostate(self, id, parent):
-        thisNode = Node("PSUEDOSTATE", id = id, parent = parent)
+        thisNode = Node("PSUEDOSTATE", id = id, parent = parent, stateName = "J"+str(id))
         self.idMap[id] = thisNode
         self.psuedoStateList.append(id)
         return thisNode
