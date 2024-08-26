@@ -29,13 +29,12 @@ class FprimeTemplate:
             if args == "":
                 template = Template("""if ( parent->$(smname)_$(action)() ) {""")
             else:
-                template = Template("""if (parent->$(smname)_$(action)($(args)) ) {""")       
+                template = Template("""if (parent->$(smname)_$(action)(data) ) {""")       
 
             template.smname = smname
             template.action = action
             template.args = args
             return str(template)  
-
 
 # -------------------------------------------------------------------------------
 # guardSignature
@@ -44,7 +43,7 @@ class FprimeTemplate:
             if args == "":
                 template = Template("""bool $(smname)_$(action)()""")
             elif args == "e":
-                template = Template("""bool $(smname)_$(action)(const Fw::SMSignals *e)""")
+                template = Template("""bool $(smname)_$(action)(const Fw::SMSignalBuffer &data)""")
             elif args.isdigit():
                 template = Template("""bool $(smname)_$(action)(int arg)""")
             else:
@@ -62,7 +61,7 @@ class FprimeTemplate:
             if args == "":
                 template = Template("""bool $(namespace)::$(component)::$(smname)_$(action)()""")
             elif args == "e":
-                template = Template("""bool $($namespace)::$(component)::$(smname)_$(action)(const Fw::SMSignals *e)""")
+                template = Template("""bool $($namespace)::$(component)::$(smname)_$(action)(const Fw::SMSignalBuffer &data)""")
             elif args.isdigit():
                 template = Template("""bool $(namespace)::$(component)::$(smname)_$(action)(int arg)""")
             else:
@@ -81,7 +80,7 @@ class FprimeTemplate:
             if args == "":
                 template = Template("""parent->$(smname)_$(action)();""")   
             else:
-                template = Template("""parent->$(smname)_$(action)($(args));""")         
+                template = Template("""parent->$(smname)_$(action)(data);""")         
      
             template.smname = smname
             template.action = action
@@ -96,7 +95,7 @@ class FprimeTemplate:
             if args == "":
                 template = Template("""void $(smname)_$(action)()""")
             elif args == "e":
-                template = Template("""void $(smname)_$(action)(const Fw::SMSignals *e)""")
+                template = Template("""void $(smname)_$(action)(const Fw::SMSignalBuffer &data)""")
             elif args.isdigit():
                 template = Template("""void $(smname)_$(action)(int arg)""")
             else:
@@ -115,7 +114,7 @@ class FprimeTemplate:
             if args == "":
                 template = Template("""void $(namespace)::$(component)::$(smname)_$(action)()""")   
             elif args == "e":
-                template = Template("""void $(namespace)::$(component)::$(smname)_$(action)(const Fw::SMSignals *e)""")         
+                template = Template("""void $(namespace)::$(component)::$(smname)_$(action)(const Fw::SMSignalBuffer &data)""")         
             elif args.isdigit():
                 template = Template("""void $(namespace)::$(component)::$(smname)_$(action)(int arg)""")         
             else:
@@ -155,7 +154,9 @@ $(transition)
            
 #ifndef $(smname.upper())_H_
 #define $(smname.upper())_H_
-
+                                
+\#include <Fw/SMSignal/SMSignalBuffer.hpp>
+                                 
 namespace Fw {
   class SMSignals;
 }
@@ -196,7 +197,7 @@ class $(smname) {
     void * extension;
 
     void init();
-    void update(const Fw::SMSignals *e);
+    void update(const $(smname)Events signal, const Fw::SMSignalBuffer &data);
 
 };
 
@@ -237,7 +238,7 @@ $transition
 }
 
 
-void $(namespace)::$(smname)::update(const Fw::SMSignals *e)
+void $(namespace)::$(smname)::update(const $(smname)Events signal, const Fw::SMSignalBuffer &data)
 {
     switch (this->state) {
     """)
@@ -257,7 +258,7 @@ void $(namespace)::$(smname)::update(const Fw::SMSignals *e)
             */
             case $state:
             
-            switch (e->geteventSignal()) {
+            switch (signal) {
 """)
             template.state = state
             return str(template)
