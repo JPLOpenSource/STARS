@@ -43,7 +43,12 @@ class FprimeTemplate:
             if args == "":
                 template = Template("""bool $(smname)_$(action)()""")
             elif args == "e":
-                template = Template("""bool $(smname)_$(action)(const FwEnumStoreType stateMachineId, const $(smname)_Interface::$(smname)Events signal, const Fw::SMSignalBuffer &data)""")
+                template = Template("""
+bool $(smname)_$(action)(
+    const FwEnumStoreType stateMachineId, 
+    const $(smname)_Interface::$(smname)Events signal, 
+    const Fw::SMSignalBuffer &data
+)""")
             elif args.isdigit():
                 template = Template("""bool $(smname)_$(action)(int arg)""")
             else:
@@ -61,7 +66,12 @@ class FprimeTemplate:
             if args == "":
                 template = Template("""bool $(namespace)::$(component)::$(smname)_$(action)()""")
             elif args == "e":
-                template = Template("""bool $(namespace)::$(component)::$(smname)_$(action)(const FwEnumStoreType stateMachineId, const $(smname)_Interface::$(smname)Events signal, const Fw::SMSignalBuffer &data)""")         
+                template = Template("""
+bool $(namespace)::$(component)::$(smname)_$(action)(
+    const FwEnumStoreType stateMachineId, 
+    const $(smname)_Interface::$(smname)Events signal, 
+    const Fw::SMSignalBuffer &data
+)""")         
 
             elif args.isdigit():
                 template = Template("""bool $(namespace)::$(component)::$(smname)_$(action)(int arg)""")
@@ -96,7 +106,12 @@ class FprimeTemplate:
             if args == "":
                 template = Template("""void $(smname)_$(action)()""")
             elif args == "e":
-                template = Template("""void $(smname)_$(action)(const FwEnumStoreType stateMachineId, const $(smname)_Interface::$(smname)Events signal, const Fw::SMSignalBuffer &data)""")
+                template = Template("""
+void $(smname)_$(action)(
+    const FwEnumStoreType stateMachineId, 
+    const $(smname)_Interface::$(smname)Events signal, 
+    const Fw::SMSignalBuffer &data
+)""")
             elif args.isdigit():
                 template = Template("""void $(smname)_$(action)(int arg)""")
             else:
@@ -115,7 +130,12 @@ class FprimeTemplate:
             if args == "":
                 template = Template("""void $(namespace)::$(component)::$(smname)_$(action)()""")   
             elif args == "e":
-                template = Template("""void $(namespace)::$(component)::$(smname)_$(action)(const FwEnumStoreType stateMachineId, const $(smname)_Interface::$(smname)Events signal, const Fw::SMSignalBuffer &data)""")         
+                template = Template("""
+void $(namespace)::$(component)::$(smname)_$(action)(
+    const FwEnumStoreType stateMachineId, 
+    const $(smname)_Interface::$(smname)Events signal, 
+    const Fw::SMSignalBuffer &data
+)""")         
             elif args.isdigit():
                 template = Template("""void $(namespace)::$(component)::$(smname)_$(action)(int arg)""")         
             else:
@@ -241,7 +261,11 @@ $transition
 }
 
 
-void $(namespace)::$(smname)::update(const FwEnumStoreType stateMachineId, const $(smname)_Interface::$(smname)Events signal, const Fw::SMSignalBuffer &data)
+void $(namespace)::$(smname)::update(
+    const FwEnumStoreType stateMachineId, 
+    const $(smname)_Interface::$(smname)Events signal, 
+    const Fw::SMSignalBuffer &data
+)
 {
     switch (this->state) {
     """)
