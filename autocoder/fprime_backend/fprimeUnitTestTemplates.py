@@ -65,7 +65,7 @@ void sendEvent_send($(namespace)::$(smname)_Interface::$(smname)Events signal) {
 
 
     printf("\\n--> %s\\n", signalName);
-    component.sm.update(signal, data);
+    component.sm.update(0, signal, data);
 }
 """)
             template.smname = smname

@@ -158,6 +158,7 @@ $(transition)
 #define $(smname.upper())_H_
                                 
 \#include <Fw/SMSignal/SMSignalBuffer.hpp>
+\#include <config/FpConfig.hpp>
                                  
 namespace Fw {
   class SMSignals;
@@ -199,7 +200,7 @@ class $(smname) {
     void * extension;
 
     void init();
-    void update(const $(smname)_Interface::$(smname)Events signal, const Fw::SMSignalBuffer &data);
+    void update(const FwEnumStoreType stateMachineId, const $(smname)_Interface::$(smname)Events signal, const Fw::SMSignalBuffer &data);
 
 };
 
@@ -240,7 +241,7 @@ $transition
 }
 
 
-void $(namespace)::$(smname)::update(const $(smname)_Interface::$(smname)Events signal, const Fw::SMSignalBuffer &data)
+void $(namespace)::$(smname)::update(const FwEnumStoreType stateMachineId, const $(smname)_Interface::$(smname)Events signal, const Fw::SMSignalBuffer &data)
 {
     switch (this->state) {
     """)
