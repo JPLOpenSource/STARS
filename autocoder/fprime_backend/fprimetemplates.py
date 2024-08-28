@@ -27,7 +27,7 @@ class FprimeTemplate:
 # ------------------------------------------------------------------------------- 
         def ifGuard(self, smname: str, action: str, args: str) -> str:  
             if args == "":
-                template = Template("""if ( parent->$(smname)_$(action)() ) {""")
+                template = Template("""if ( parent->$(smname)_$(action)(stateMachineId) ) {""")
             else:
                 template = Template("""if (parent->$(smname)_$(action)(stateMachineId, signal, data) ) {""")       
 
@@ -41,14 +41,12 @@ class FprimeTemplate:
 # -------------------------------------------------------------------------------   
         def guardSignature(self, smname: str, action: str, args: str) -> str:
             if args == "":
-                template = Template("""bool $(smname)_$(action)()""")
+                template = Template("""bool $(smname)_$(action)(const FwEnumStoreType stateMachineId)""")
             elif args == "e":
-                template = Template("""
-bool $(smname)_$(action)(
-    const FwEnumStoreType stateMachineId, 
-    const $(smname)_Interface::$(smname)Events signal, 
-    const Fw::SMSignalBuffer &data
-)""")
+                template = Template("""bool $(smname)_$(action)(
+        const FwEnumStoreType stateMachineId, 
+        const $(smname)_Interface::$(smname)Events signal, 
+        const Fw::SMSignalBuffer &data)""")
             elif args.isdigit():
                 template = Template("""bool $(smname)_$(action)(int arg)""")
             else:
@@ -64,14 +62,12 @@ bool $(smname)_$(action)(
 # -------------------------------------------------------------------------------   
         def guardDef(self, smname: str, action: str, component: str, args: str, namespace) -> str:
             if args == "":
-                template = Template("""bool $(namespace)::$(component)::$(smname)_$(action)()""")
+                template = Template("""bool $(namespace)::$(component)::$(smname)_$(action)(const FwEnumStoreType stateMachineId)""")
             elif args == "e":
-                template = Template("""
-bool $(namespace)::$(component)::$(smname)_$(action)(
-    const FwEnumStoreType stateMachineId, 
-    const $(smname)_Interface::$(smname)Events signal, 
-    const Fw::SMSignalBuffer &data
-)""")         
+                template = Template("""bool $(namespace)::$(component)::$(smname)_$(action)(
+        const FwEnumStoreType stateMachineId, 
+        const $(smname)_Interface::$(smname)Events signal, 
+        const Fw::SMSignalBuffer &data)""")         
 
             elif args.isdigit():
                 template = Template("""bool $(namespace)::$(component)::$(smname)_$(action)(int arg)""")
@@ -89,7 +85,7 @@ bool $(namespace)::$(component)::$(smname)_$(action)(
 # -------------------------------------------------------------------------------   
         def action(self, smname: str, action: str, args: str) -> str:
             if args == "":
-                template = Template("""parent->$(smname)_$(action)();""")   
+                template = Template("""parent->$(smname)_$(action)(stateMachineId);""")   
             else:
                 template = Template("""parent->$(smname)_$(action)(stateMachineId, signal, data);""")         
      
@@ -104,14 +100,12 @@ bool $(namespace)::$(component)::$(smname)_$(action)(
 # -------------------------------------------------------------------------------   
         def actionSignature(self, smname: str, action: str, args: str) -> str:
             if args == "":
-                template = Template("""void $(smname)_$(action)()""")
+                template = Template("""void $(smname)_$(action)(const FwEnumStoreType stateMachineId)""")
             elif args == "e":
-                template = Template("""
-void $(smname)_$(action)(
-    const FwEnumStoreType stateMachineId, 
-    const $(smname)_Interface::$(smname)Events signal, 
-    const Fw::SMSignalBuffer &data
-)""")
+                template = Template(""" void $(smname)_$(action)(
+        const FwEnumStoreType stateMachineId, 
+        const $(smname)_Interface::$(smname)Events signal, 
+        const Fw::SMSignalBuffer &data)""")
             elif args.isdigit():
                 template = Template("""void $(smname)_$(action)(int arg)""")
             else:
@@ -128,14 +122,12 @@ void $(smname)_$(action)(
 # -------------------------------------------------------------------------------   
         def actionDef(self, smname: str, action: str, component: str, args: str, namespace: str) -> str:
             if args == "":
-                template = Template("""void $(namespace)::$(component)::$(smname)_$(action)()""")   
+                template = Template("""void $(namespace)::$(component)::$(smname)_$(action)(const FwEnumStoreType stateMachineId)""")   
             elif args == "e":
-                template = Template("""
-void $(namespace)::$(component)::$(smname)_$(action)(
-    const FwEnumStoreType stateMachineId, 
-    const $(smname)_Interface::$(smname)Events signal, 
-    const Fw::SMSignalBuffer &data
-)""")         
+                template = Template("""void $(namespace)::$(component)::$(smname)_$(action)(
+        const FwEnumStoreType stateMachineId, 
+        const $(smname)_Interface::$(smname)Events signal, 
+        const Fw::SMSignalBuffer &data)""")         
             elif args.isdigit():
                 template = Template("""void $(namespace)::$(component)::$(smname)_$(action)(int arg)""")         
             else:
@@ -195,7 +187,9 @@ class $(smname)_Interface {
     };
 
 #for $function in $implFunctions
+                                 
     virtual $function = 0;
+                                 
 #end for
                                                                   
 };
@@ -219,9 +213,12 @@ class $(smname) {
 
     void * extension;
 
-    void init();
-    void update(const FwEnumStoreType stateMachineId, const $(smname)_Interface::$(smname)Events signal, const Fw::SMSignalBuffer &data);
-
+    void init(const FwEnumStoreType stateMachineId);
+    void update(
+        const FwEnumStoreType stateMachineId, 
+        const $(smname)_Interface::$(smname)Events signal, 
+        const Fw::SMSignalBuffer &data
+    );
 };
 
 }
@@ -255,7 +252,7 @@ class $(smname) {
 \#include "$(smname).hpp"
 
 
-void $(namespace)::$(smname)::init()
+void $(namespace)::$(smname)::init(const FwEnumStoreType stateMachineId)
 {
 $transition
 }

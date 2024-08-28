@@ -156,7 +156,7 @@ $(namespace)::$(component) component;
 int main(void) {
 
     // Initialize the component
-    component.init();
+    component.init(0);
 
     // Drive the state-machine
     testDrv();
