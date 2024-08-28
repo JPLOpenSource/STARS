@@ -25,7 +25,7 @@
      </tran>
      <tran trig="EV2">
       <choice target="../../../2">
-       <guard brief="g2(e)"/>
+       <guard brief="g2()"/>
        <choice_glyph conn="88,66,5,2,36,-5">
         <action box="13,0,27,6"/>
        </choice_glyph>
@@ -43,7 +43,7 @@
      <entry brief="s2Entry(); s2Entry2(); foo()"/>
      <exit brief="s2Exit(); s2Exit2()"/>
      <tran trig="EV1" target="../../1">
-      <action brief="a1(e); a2(e); foo()"/>
+      <action brief="a1(e); a2(); foo()"/>
       <tran_glyph conn="111,55,3,1,-41">
        <action box="-28,-3,33,3"/>
       </tran_glyph>

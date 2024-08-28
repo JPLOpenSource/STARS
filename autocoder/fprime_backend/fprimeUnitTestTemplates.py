@@ -20,7 +20,7 @@ class FprimeUnitTestTemplate:
 #define _SEND_EVENT_H
 \#include "$(smname).hpp"
 
-void sendEvent_send($(namespace)::$(smname)::$(smname)Events signal);
+void sendEvent_send($(namespace)::$(smname)_Interface::$(smname)Events signal);
 
 #endif
 """)
@@ -45,7 +45,7 @@ void sendEvent_send($(namespace)::$(smname)::$(smname)Events signal);
 extern $(namespace)::$(component) component;
 
 
-void sendEvent_send($(namespace)::$(smname)::$(smname)Events signal) {
+void sendEvent_send($(namespace)::$(smname)_Interface::$(smname)Events signal) {
     // Instantiate an event
     char signalName[100];
     Fw::SMSignalBuffer data;
@@ -54,7 +54,7 @@ void sendEvent_send($(namespace)::$(smname)::$(smname)Events signal) {
 
     #for $sig in $triggerList
 
-    case $(namespace)::$(smname)::$(sig):
+    case $(namespace)::$(smname)_Interface::$(smname)Events::$(sig):
         strcpy(signalName, "$(sig)");
         break;    
     #end for
@@ -81,7 +81,7 @@ void sendEvent_send($(namespace)::$(smname)::$(smname)Events signal) {
 # testDrv for unit test
 # -------------------------------------------------------------------------------               
         def testDrv(self, line, smname, namespace):
-            sendEventTemplate = Template("""    sendEvent_send($(namespace)::$(smname)::$(smname)Events::$(event)_SIG);
+            sendEventTemplate = Template("""    sendEvent_send($(namespace)::$(smname)_Interface::$(smname)Events::$(event)_SIG);
 """)
             guardTemplate = Template("""    extern bool $(guard)Boolean;
     $(guard)Boolean = $(guardVal);

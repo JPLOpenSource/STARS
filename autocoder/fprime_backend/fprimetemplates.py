@@ -29,7 +29,7 @@ class FprimeTemplate:
             if args == "":
                 template = Template("""if ( parent->$(smname)_$(action)() ) {""")
             else:
-                template = Template("""if (parent->$(smname)_$(action)(data) ) {""")       
+                template = Template("""if (parent->$(smname)_$(action)(signal, data) ) {""")       
 
             template.smname = smname
             template.action = action
@@ -43,7 +43,7 @@ class FprimeTemplate:
             if args == "":
                 template = Template("""bool $(smname)_$(action)()""")
             elif args == "e":
-                template = Template("""bool $(smname)_$(action)(const Fw::SMSignalBuffer &data)""")
+                template = Template("""bool $(smname)_$(action)(const $(smname)_Interface::$(smname)Events signal, const Fw::SMSignalBuffer &data)""")
             elif args.isdigit():
                 template = Template("""bool $(smname)_$(action)(int arg)""")
             else:
@@ -61,7 +61,8 @@ class FprimeTemplate:
             if args == "":
                 template = Template("""bool $(namespace)::$(component)::$(smname)_$(action)()""")
             elif args == "e":
-                template = Template("""bool $($namespace)::$(component)::$(smname)_$(action)(const Fw::SMSignalBuffer &data)""")
+                template = Template("""bool $(namespace)::$(component)::$(smname)_$(action)(const $(smname)_Interface::$(smname)Events signal, const Fw::SMSignalBuffer &data)""")         
+
             elif args.isdigit():
                 template = Template("""bool $(namespace)::$(component)::$(smname)_$(action)(int arg)""")
             else:
@@ -80,7 +81,7 @@ class FprimeTemplate:
             if args == "":
                 template = Template("""parent->$(smname)_$(action)();""")   
             else:
-                template = Template("""parent->$(smname)_$(action)(data);""")         
+                template = Template("""parent->$(smname)_$(action)(signal, data);""")         
      
             template.smname = smname
             template.action = action
@@ -95,7 +96,7 @@ class FprimeTemplate:
             if args == "":
                 template = Template("""void $(smname)_$(action)()""")
             elif args == "e":
-                template = Template("""void $(smname)_$(action)(const Fw::SMSignalBuffer &data)""")
+                template = Template("""void $(smname)_$(action)(const $(smname)_Interface::$(smname)Events signal, const Fw::SMSignalBuffer &data)""")
             elif args.isdigit():
                 template = Template("""void $(smname)_$(action)(int arg)""")
             else:
@@ -114,7 +115,7 @@ class FprimeTemplate:
             if args == "":
                 template = Template("""void $(namespace)::$(component)::$(smname)_$(action)()""")   
             elif args == "e":
-                template = Template("""void $(namespace)::$(component)::$(smname)_$(action)(const Fw::SMSignalBuffer &data)""")         
+                template = Template("""void $(namespace)::$(component)::$(smname)_$(action)(const $(smname)_Interface::$(smname)Events signal, const Fw::SMSignalBuffer &data)""")         
             elif args.isdigit():
                 template = Template("""void $(namespace)::$(component)::$(smname)_$(action)(int arg)""")         
             else:
@@ -129,14 +130,15 @@ class FprimeTemplate:
 # -------------------------------------------------------------------------------
 # stateTransition
 # -------------------------------------------------------------------------------   
-        def stateTransition(self, signal: str, transition: str) -> str:
+        def stateTransition(self, signal: str, transition: str, smname) -> str:
             template = Template("""
-                case $(signal):
+                case $(smname)_Interface::$(smname)Events::$(signal):
 $(transition)
                     break;
     """)
             template.signal = signal
             template.transition = transition
+            template.smname = smname
             return str(template)
         
         
@@ -165,9 +167,15 @@ namespace $(namespace) {
 
 class $(smname)_Interface {
   public:
-    #for $function in $implFunctions
+    enum $(smname)Events {
+#for $event in $eventList
+      $event,
+#end for
+    };
+
+#for $function in $implFunctions
     virtual $function = 0;
-    #end for
+#end for
                                                                   
 };
 
@@ -185,19 +193,13 @@ class $(smname) {
       $state,
 #end for
     };
-
-    enum $(smname)Events {
-#for $event in $eventList
-      $event,
-#end for
-    };
     
     enum $(smname)States state;
 
     void * extension;
 
     void init();
-    void update(const $(smname)Events signal, const Fw::SMSignalBuffer &data);
+    void update(const $(smname)_Interface::$(smname)Events signal, const Fw::SMSignalBuffer &data);
 
 };
 
@@ -238,7 +240,7 @@ $transition
 }
 
 
-void $(namespace)::$(smname)::update(const $(smname)Events signal, const Fw::SMSignalBuffer &data)
+void $(namespace)::$(smname)::update(const $(smname)_Interface::$(smname)Events signal, const Fw::SMSignalBuffer &data)
 {
     switch (this->state) {
     """)
