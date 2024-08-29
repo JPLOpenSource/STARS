@@ -45,7 +45,7 @@ class FprimeTemplate:
             elif args == "e":
                 template = Template("""bool $(smname)_$(action)(
         const FwEnumStoreType stateMachineId, 
-        const $(smname)_Interface::$(smname)Events signal, 
+        const $(smname)_Interface::$(smname)_Signals signal, 
         const Fw::SMSignalBuffer &data)""")
             elif args.isdigit():
                 template = Template("""bool $(smname)_$(action)(int arg)""")
@@ -66,7 +66,7 @@ class FprimeTemplate:
             elif args == "e":
                 template = Template("""bool $(namespace)::$(component)::$(smname)_$(action)(
         const FwEnumStoreType stateMachineId, 
-        const $(smname)_Interface::$(smname)Events signal, 
+        const $(smname)_Interface::$(smname)_Signals signal, 
         const Fw::SMSignalBuffer &data)""")         
 
             elif args.isdigit():
@@ -104,7 +104,7 @@ class FprimeTemplate:
             elif args == "e":
                 template = Template(""" void $(smname)_$(action)(
         const FwEnumStoreType stateMachineId, 
-        const $(smname)_Interface::$(smname)Events signal, 
+        const $(smname)_Interface::$(smname)_Signals signal, 
         const Fw::SMSignalBuffer &data)""")
             elif args.isdigit():
                 template = Template("""void $(smname)_$(action)(int arg)""")
@@ -126,7 +126,7 @@ class FprimeTemplate:
             elif args == "e":
                 template = Template("""void $(namespace)::$(component)::$(smname)_$(action)(
         const FwEnumStoreType stateMachineId, 
-        const $(smname)_Interface::$(smname)Events signal, 
+        const $(smname)_Interface::$(smname)_Signals signal, 
         const Fw::SMSignalBuffer &data)""")         
             elif args.isdigit():
                 template = Template("""void $(namespace)::$(component)::$(smname)_$(action)(int arg)""")         
@@ -144,7 +144,7 @@ class FprimeTemplate:
 # -------------------------------------------------------------------------------   
         def stateTransition(self, signal: str, transition: str, smname) -> str:
             template = Template("""
-                case $(smname)_Interface::$(smname)Events::$(signal):
+                case $(smname)_Interface::$(smname)_Signals::$(signal):
 $(transition)
                     break;
     """)
@@ -172,15 +172,11 @@ $(transition)
 \#include <Fw/SMSignal/SMSignalBuffer.hpp>
 \#include <config/FpConfig.hpp>
                                  
-namespace Fw {
-  class SMSignals;
-}
-
 namespace $(namespace) {
 
 class $(smname)_Interface {
   public:
-    enum $(smname)Events {
+    enum $(smname)_Signals {
 #for $event in $eventList
       $event,
 #end for
@@ -203,20 +199,18 @@ class $(smname) {
                                  
     $(smname)($(smname)_Interface* parent) : parent(parent) {}
   
-    enum $(smname)States {
+    enum $(smname)_States {
 #for $state in $stateList
       $state,
 #end for
     };
     
-    enum $(smname)States state;
-
-    void * extension;
+    enum $(smname)_States state;
 
     void init(const FwEnumStoreType stateMachineId);
     void update(
         const FwEnumStoreType stateMachineId, 
-        const $(smname)_Interface::$(smname)Events signal, 
+        const $(smname)_Interface::$(smname)_Signals signal, 
         const Fw::SMSignalBuffer &data
     );
 };
@@ -260,7 +254,7 @@ $transition
 
 void $(namespace)::$(smname)::update(
     const FwEnumStoreType stateMachineId, 
-    const $(smname)_Interface::$(smname)Events signal, 
+    const $(smname)_Interface::$(smname)_Signals signal, 
     const Fw::SMSignalBuffer &data
 )
 {
@@ -311,47 +305,4 @@ void $(namespace)::$(smname)::update(
     }
 }
 """)
-            return str(template)
-
-# -------------------------------------------------------------------------------
-# smSignals
-# -------------------------------------------------------------------------------           
-        def smSignalss(self) -> str:
-
-            template = Template("""
-# This is an Auto generate file from the STARS Autocoder
-
-module Fw {
-
-    struct SMSignals {
-        smId : U32
-        eventSignal: U32
-        payload: [128] U8
-    }
-
-}       
-                                
-            """)
-            return str(template)
-        
-# -------------------------------------------------------------------------------
-# internalQ
-# -------------------------------------------------------------------------------           
-        def internalQ(self, state_machines) -> str:
-            
-            template = Template("""
-                                
-# This is an Auto generate file from the STARS Autocoder
-                                
-@ internal port for handling state-machine Events
-internal port sendEvents(ev: Fw.SMSignals) 
-                                
-#for $state in $state_machines
-    include "$(state.stateName).fppi"
-#end for
-
-                                
-            """)
-
-            template.state_machines = state_machines
             return str(template)
