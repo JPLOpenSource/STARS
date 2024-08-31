@@ -1,3 +1,3 @@
 
-MODEL = Complex_Composite
+MODEL = Complex_Composite.qm
 include ../../Common_Fprime_Makefile

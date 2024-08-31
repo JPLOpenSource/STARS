@@ -1,5 +1,5 @@
 
 
-MODEL = Cases
-include ../../Common_QF_Cameo_Makefile
+MODEL = Cases.xml
+include ../../Common_QF_Makefile
 

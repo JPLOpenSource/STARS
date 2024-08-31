@@ -1,0 +1,42 @@
+
+--> DONE_SIG
+SeqDispatcherImpl_unknownSeqFinished()
+SeqDispatcherImpl_incrSeqAvailable()
+
+--> RUN_SIG
+SeqDispatcherImpl_seqRunOut()
+SeqDispatcherImpl_decSeqAvailable()
+SeqDispatcherImpl_noWait() is 1
+
+--> START_SIG
+SeqDispatcherImpl_seqRunningNotFile() is 0
+
+--> START_SIG
+SeqDispatcherImpl_seqRunningNotFile() is 1
+SeqDispatcherImpl_unexpectedSeqStart()
+
+--> RUN_SIG
+SeqDispatcherImpl_invalidSequencer()
+SeqDispatcherImpl_sendExecutionError()
+
+--> DONE_SIG
+SeqDispatcherImpl_incrSeqAvailable()
+
+--> START_SIG
+SeqDispatcherImpl_decSeqAvailable()
+
+--> DONE_SIG
+SeqDispatcherImpl_incrSeqAvailable()
+
+--> RUN_SIG
+SeqDispatcherImpl_seqRunOut()
+SeqDispatcherImpl_decSeqAvailable()
+SeqDispatcherImpl_noWait() is 0
+
+--> RUN_SIG
+SeqDispatcherImpl_invalidSequencer()
+SeqDispatcherImpl_sendExecutionError()
+
+--> DONE_SIG
+SeqDispatcherImpl_sendCmdResponse()
+SeqDispatcherImpl_incrSeqAvailable()

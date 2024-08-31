@@ -1,5 +1,6 @@
 
 
-MODEL = Simple
-include ../../Common_UML_Makefile
+MODEL = Simple.plantuml
+include ../../Common_C_Makefile
+
 

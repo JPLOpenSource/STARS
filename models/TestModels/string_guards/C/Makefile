@@ -1,5 +1,5 @@
 
 
-MODEL = String_Guards
+MODEL = String_Guards.qm
 include ../../Common_C_Makefile
 

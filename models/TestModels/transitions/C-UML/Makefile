@@ -1,5 +1,5 @@
 
 
-MODEL = Transitions
-include ../../Common_UML_Makefile
+MODEL = Transitions.plantuml
+include ../../Common_QF_Makefile
 

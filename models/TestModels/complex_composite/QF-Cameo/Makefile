@@ -1,5 +1,5 @@
 
 
-MODEL = Complex_Composite
-include ../../Common_QF_Cameo_Makefile
+MODEL = Complex_Composite.xml
+include ../../Common_QF_Makefile
 

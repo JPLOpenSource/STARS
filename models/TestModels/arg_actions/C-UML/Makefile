@@ -1,5 +1,5 @@
 
 
-MODEL = Arg_Actions
-include ../../Common_UML_Makefile
+MODEL = Arg_Actions.plantuml
+include ../../Common_C_Makefile
 

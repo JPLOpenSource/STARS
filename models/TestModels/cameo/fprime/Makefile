@@ -1,3 +1,3 @@
 
-MODEL = Cameo
-include ../../Common_Fprime_Cameo_Makefile
+MODEL = Cameo.xml
+include ../../Common_Fprime_Makefile

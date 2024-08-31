@@ -1,5 +1,5 @@
 
 
-MODEL = Cameo
-include ../../Common_QF_Cameo_Makefile
+MODEL = Cameo.plantuml
+include Common_QF_Makefile
 

@@ -1,5 +1,5 @@
 
 
-MODEL = Complex_Composite
-include ../../Common_UML_Makefile
+MODEL = Complex_Composite.plantuml
+include ../../Common_C_Makefile
 

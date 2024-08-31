@@ -1,5 +1,5 @@
 
 
-MODEL = String_Guards
-include ../../Common_UML_Makefile
+MODEL = String_Guards.plantuml
+include ../../Common_C_Makefile
 

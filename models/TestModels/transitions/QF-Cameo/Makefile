@@ -1,5 +1,5 @@
 
 
-MODEL = Transitions
-include ../../Common_QF_Cameo_Makefile
+MODEL = Transitions.xml
+include ../../Common_QF_Makefile
 

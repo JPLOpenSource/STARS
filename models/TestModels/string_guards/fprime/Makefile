@@ -1,3 +1,3 @@
 
-MODEL = String_Guards
+MODEL = String_Guards.qm
 include ../../Common_Fprime_Makefile

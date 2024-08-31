@@ -1,5 +1,5 @@
 
 
-MODEL = Cameo
-include ../../Common_C_Cameo_Makefile
+MODEL = Cameo.xml
+include ../../Common_C_Makefile
 

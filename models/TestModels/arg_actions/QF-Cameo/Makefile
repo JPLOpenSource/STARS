@@ -1,5 +1,5 @@
 
 
-MODEL = Arg_Actions
-include ../../Common_QF_Cameo_Makefile
+MODEL = Arg_Actions.xml
+include ../../Common_QF_Makefile
 

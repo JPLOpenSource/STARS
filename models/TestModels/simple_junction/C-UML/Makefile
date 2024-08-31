@@ -1,5 +1,5 @@
 
 
-MODEL = Simple_Junction
-include ../../Common_UML_Makefile
+MODEL = Simple_Junction.plantuml
+include ../../Common_C_Makefile
 

@@ -1,5 +1,5 @@
 
 
-MODEL = Complex_Junction
-include ../../Common_QF_Cameo_Makefile
+MODEL = Complex_Junction.xml
+include ../../Common_QF_Makefile
 

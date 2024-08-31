@@ -1,5 +1,18 @@
 # Blinky Model
 
+The Blinky Model in this directory is specified in:
+
+* QM state machine drawing tool (Blinky.qm)
+* PlantUML (Blinky.plantuml)
+* MagicDraw Cameo (Blinky.xml)
+
+The output from STARS is in:
+
+* C
+* C++
+* Fprime
+* Quantum Framework (QF)
+
 ## Quantum Modeler
 
 image::BlinkyQM.png[]
@@ -27,12 +40,6 @@ On --> Off : TIMEOUT
 image::BlinkyUML.png[]
 
 
-* Run the autocoder and build the executable model for C back-end 
+* Run the autocoder, build the executable model and run the unit tests 
 ** make 
-
-* Execute the model using the C back-end
-** make run
-
-* Run the unit tests for C back-end
-** make ut
 

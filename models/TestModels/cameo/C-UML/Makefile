@@ -1,5 +1,5 @@
 
 
-MODEL = Cameo
-include ../../Common_UML_Makefile
+MODEL = Cameo.plantuml
+include ../../Common_C_Makefile
 

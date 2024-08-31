@@ -1,5 +1,5 @@
 
 
-MODEL = Multiple_Actions
-include ../../Common_UML_Makefile
+MODEL = Multiple_Actions.plantuml
+include ../../Common_C_Makefile
 

@@ -1,5 +1,5 @@
 
 
-MODEL = Cases
-include ../../Common_UML_Makefile
+MODEL = Cases.plantuml
+include ../../Common_C_Makefile
 

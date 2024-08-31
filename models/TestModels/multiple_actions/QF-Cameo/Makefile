@@ -1,5 +1,5 @@
 
 
-MODEL = Multiple_Actions
-include ../../Common_QF_Cameo_Makefile
+MODEL = Multiple_Actions.xml
+include ../../Common_QF_Makefile
 

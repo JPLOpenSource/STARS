@@ -1,5 +1,5 @@
 
 
-MODEL = Actions
-include ../../Common_QF_Cameo_Makefile
+MODEL = Actions.xml
+include ../../Common_QF_Makefile
 
