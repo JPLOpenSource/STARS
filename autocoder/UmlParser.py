@@ -393,7 +393,6 @@ def createXmi(parseList: ParserElement, model: xmiModel, root: xmiModel, stateId
 #   The result of translating the XMI model to a QM file, typically used for further processing or code generation.
 # -----------------------------------------------------------------------------------------------------------------
 def processUml(umlFileName: str, debug: int = 0) -> ElementTreeType:
-    
     global XMI_ID, XMI_TYPE
     print("Hello, welcome to the Plant UML parser")
     print(f'Parsing file: {umlFileName}')

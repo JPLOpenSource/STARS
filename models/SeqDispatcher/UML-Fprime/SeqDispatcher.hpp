@@ -9,7 +9,7 @@
 #ifndef SEQDISPATCHER_H_
 #define SEQDISPATCHER_H_
                                 
-#include <Fw/SMSignal/SMSignalBuffer.hpp>
+#include <Fw/Sm/SMSignalBuffer.hpp>
 #include <config/FpConfig.hpp>
                                  
 namespace Ref {

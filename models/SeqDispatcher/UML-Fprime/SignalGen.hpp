@@ -4,7 +4,7 @@
 #ifndef _SIGNAL_GEN_HPP_
 #define _SIGNAL_GEN_HPP_
                                 
-#include "Fw/Types/SMSignalsSerializableAc.hpp"
+#include "Fw/Sm/SMSignalBuffer.hpp"
 #include "SeqDispatcher.hpp"
 #include <config/FpConfig.hpp>
 

@@ -37,8 +37,7 @@ void sendEvent_send($(namespace)::$(smname)_Interface::$(smname)_Signals signal)
 \#include <assert.h>
 \#include <string.h>
 \#include "sendEvent.h"
-\#include "Fw/Types/SMSignalsSerializableAc.hpp"
-\#include "Fw/SMSignal/SMSignalBuffer.hpp"
+\#include "Fw/Sm/SMSignalBuffer.hpp"
 \#include "$(implHdr)"
 \#include "$(smname).hpp"
 

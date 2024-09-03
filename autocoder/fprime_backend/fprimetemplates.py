@@ -169,7 +169,7 @@ $(transition)
 #ifndef $(smname.upper())_H_
 #define $(smname.upper())_H_
                                 
-\#include <Fw/SMSignal/SMSignalBuffer.hpp>
+\#include <Fw/Sm/SMSignalBuffer.hpp>
 \#include <config/FpConfig.hpp>
                                  
 namespace $(namespace) {
@@ -242,7 +242,6 @@ class $(smname) {
     
 \#include "stdio.h"
 \#include "assert.h"
-\#include "Fw/Types/SMSignalsSerializableAc.hpp"
 \#include "$(smname).hpp"
 
 

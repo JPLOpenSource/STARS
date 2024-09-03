@@ -8,7 +8,6 @@
     
 #include "stdio.h"
 #include "assert.h"
-#include "Fw/Types/SMSignalsSerializableAc.hpp"
 #include "SeqDispatcher.hpp"
 
 

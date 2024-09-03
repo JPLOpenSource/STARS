@@ -3,8 +3,7 @@
 #include <assert.h>
 #include <string.h>
 #include "sendEvent.h"
-#include "Fw/Types/SMSignalsSerializableAc.hpp"
-#include "Fw/SMSignal/SMSignalBuffer.hpp"
+#include "Fw/Sm/SMSignalBuffer.hpp"
 #include "SignalGen.hpp"
 #include "SeqDispatcher.hpp"
 
