@@ -240,8 +240,7 @@ class $(smname) {
 //
 // ======================================================================            
     
-\#include "stdio.h"
-\#include "assert.h"
+\#include <Fw/Types/Assert.hpp>
 \#include "$(smname).hpp"
 
 
@@ -300,7 +299,7 @@ void $(namespace)::$(smname)::update(
         def stateMachineFinalBreak(self) -> str:
             template = Template("""
         default:
-        assert(0);
+        FW_ASSERT(0);
     }
 }
 """)

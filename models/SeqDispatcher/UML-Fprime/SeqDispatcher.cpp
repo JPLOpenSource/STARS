@@ -6,8 +6,7 @@
 //
 // ======================================================================            
     
-#include "stdio.h"
-#include "assert.h"
+#include <Fw/Types/Assert.hpp>
 #include "SeqDispatcher.hpp"
 
 
@@ -126,6 +125,6 @@ void Ref::SeqDispatcher::update(
             break;
     
         default:
-        assert(0);
+        FW_ASSERT(0);
     }
 }
