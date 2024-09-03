@@ -45,7 +45,7 @@ class FprimeImplTemplate:
 #ifndef _SIGNAL_GEN_HPP_
 #define _SIGNAL_GEN_HPP_
                                 
-\#include "Fw/Sm/SMSignalBuffer.hpp"
+\#include "Fw/Sm/SmSignalBuffer.hpp"
 \#include "$(smname).hpp"
 \#include <config/FpConfig.hpp>
 

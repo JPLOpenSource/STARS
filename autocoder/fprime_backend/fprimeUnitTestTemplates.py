@@ -37,7 +37,7 @@ void sendEvent_send($(namespace)::$(smname)_Interface::$(smname)_Signals signal)
 \#include <assert.h>
 \#include <string.h>
 \#include "sendEvent.h"
-\#include "Fw/Sm/SMSignalBuffer.hpp"
+\#include "Fw/Sm/SmSignalBuffer.hpp"
 \#include "$(implHdr)"
 \#include "$(smname).hpp"
 
@@ -47,7 +47,7 @@ extern $(namespace)::$(component) component;
 void sendEvent_send($(namespace)::$(smname)_Interface::$(smname)_Signals signal) {
     // Instantiate an event
     char signalName[100];
-    Fw::SMSignalBuffer data;
+    Fw::SmSignalBuffer data;
     
     switch (signal) {
 

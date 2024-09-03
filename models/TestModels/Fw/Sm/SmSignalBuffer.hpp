@@ -3,7 +3,7 @@
 
 namespace Fw {
 
-    typedef int SMSignalBuffer;
+    typedef int SmSignalBuffer;
 
 
 }

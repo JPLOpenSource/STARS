@@ -46,7 +46,7 @@ class FprimeTemplate:
                 template = Template("""bool $(smname)_$(action)(
         const FwEnumStoreType stateMachineId, 
         const $(smname)_Interface::$(smname)_Signals signal, 
-        const Fw::SMSignalBuffer &data)""")
+        const Fw::SmSignalBuffer &data)""")
             elif args.isdigit():
                 template = Template("""bool $(smname)_$(action)(int arg)""")
             else:
@@ -67,7 +67,7 @@ class FprimeTemplate:
                 template = Template("""bool $(namespace)::$(component)::$(smname)_$(action)(
         const FwEnumStoreType stateMachineId, 
         const $(smname)_Interface::$(smname)_Signals signal, 
-        const Fw::SMSignalBuffer &data)""")         
+        const Fw::SmSignalBuffer &data)""")         
 
             elif args.isdigit():
                 template = Template("""bool $(namespace)::$(component)::$(smname)_$(action)(int arg)""")
@@ -105,7 +105,7 @@ class FprimeTemplate:
                 template = Template(""" void $(smname)_$(action)(
         const FwEnumStoreType stateMachineId, 
         const $(smname)_Interface::$(smname)_Signals signal, 
-        const Fw::SMSignalBuffer &data)""")
+        const Fw::SmSignalBuffer &data)""")
             elif args.isdigit():
                 template = Template("""void $(smname)_$(action)(int arg)""")
             else:
@@ -127,7 +127,7 @@ class FprimeTemplate:
                 template = Template("""void $(namespace)::$(component)::$(smname)_$(action)(
         const FwEnumStoreType stateMachineId, 
         const $(smname)_Interface::$(smname)_Signals signal, 
-        const Fw::SMSignalBuffer &data)""")         
+        const Fw::SmSignalBuffer &data)""")         
             elif args.isdigit():
                 template = Template("""void $(namespace)::$(component)::$(smname)_$(action)(int arg)""")         
             else:
@@ -169,7 +169,7 @@ $(transition)
 #ifndef $(smname.upper())_H_
 #define $(smname.upper())_H_
                                 
-\#include <Fw/Sm/SMSignalBuffer.hpp>
+\#include <Fw/Sm/SmSignalBuffer.hpp>
 \#include <config/FpConfig.hpp>
                                  
 namespace $(namespace) {
@@ -211,7 +211,7 @@ class $(smname) {
     void update(
         const FwEnumStoreType stateMachineId, 
         const $(smname)_Interface::$(smname)_Signals signal, 
-        const Fw::SMSignalBuffer &data
+        const Fw::SmSignalBuffer &data
     );
 };
 
@@ -253,7 +253,7 @@ $transition
 void $(namespace)::$(smname)::update(
     const FwEnumStoreType stateMachineId, 
     const $(smname)_Interface::$(smname)_Signals signal, 
-    const Fw::SMSignalBuffer &data
+    const Fw::SmSignalBuffer &data
 )
 {
     switch (this->state) {
