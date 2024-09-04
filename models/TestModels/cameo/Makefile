@@ -1,132 +1,76 @@
-all: c-depend qf-depend cpp-depend fprime-depend qf-cameo-depend uml-depend
-ut: c-ut qf-ut cpp-ut fprime-ut qf-cameo-ut uml-ut
-run: c-run qf-run cpp-run fprime-run qf-cameo-run uml-run
-clean: c-clean qf-clean cpp-clean fprime-clean qf-cameo-clean uml-clean
+MAKEFLAGS += --no-print-directory
 
+all: UML-C-depend \
+     UML-CPP-depend \
+     UML-QF-depend \
+     UML-Fprime-depend \
+     Cameo-C-depend \
+     Cameo-CPP-depend \
+     Cameo-QF-depend \
+     Cameo-Fprime-depend
 
-C: c-depend
-QF: qf-depend
-CPP: cpp-depend
-FPRIME: fprime-depend
-QF-Cameo: qf-cameo-depend
-UML: uml-depend
+ut:  UML-C-ut \
+     UML-CPP-ut \
+     UML-QF-ut \
+     UML-Fprime-ut \
+     Cameo-C-ut \
+     Cameo-CPP-ut \
+     Cameo-QF-ut \
+     Cameo-Fprime-ut
 
-uml-depend:
-	@cd C-UML; \
-        make
-	@cd ..
+# ---------------
+# All targets
+# ---------------
 
-c-depend:
-	@cd C; \
-        make
-	@cd ..
+UML-C-depend:
+	cd UML-C && make clean && make
 
-qf-depend:
-	@cd QF; \
-        make
-	@cd ..
+UML-CPP-depend:
+	cd UML-CPP && make clean && make
 
-qf-cameo-depend:
-	@cd QF-Cameo; \
-        make
-	@cd ..
+UML-QF-depend:
+	cd UML-QF && make clean && make
 
-cpp-depend:
-	@cd C++; \
-        make
-	@cd ..
+UML-Fprime-depend:
+	cd UML-Fprime && make clean && make
 
-fprime-depend:
-	@cd fprime; \
-	make
-	@cd ..
+Cameo-C-depend:
+	cd Cameo-C && make clean && make
 
-uml-clean:
-	@cd C-UML; \
-        make clean
-	@cd ..
+Cameo-CPP-depend:
+	cd Cameo-CPP && make clean && make
 
-c-clean:
-	@cd C; \
-        make clean
-	@cd ..
+Cameo-QF-depend:
+	cd Cameo-QF && make clean && make
 
-qf-clean:
-	@cd QF; \
-        make clean
-	@cd ..
+Cameo-Fprime-depend:
+	cd Cameo-Fprime && make clean && make
 
-qf-cameo-clean:
-	@cd QF-Cameo; \
-        make clean
-	@cd ..
+# ---------------
+# UT targets
+# ---------------
 
-cpp-clean:
-	@cd C++; \
-        make clean
-	@cd ..
+UML-C-ut:
+	@cd UML-C && make ut
 
-fprime-clean:
-	@cd fprime; \
-	make clean
-	@cd ..
+UML-CPP-ut:
+	@cd UML-CPP && make ut
 
-uml-ut:
-	@cd C-UML; \
-	make ut
-	@cd ..
+UML-QF-ut:
+	@cd UML-QF && make ut
 
-c-ut:
-	@cd C; \
-	make ut
-	@cd ..
+UML-Fprime-ut:
+	@cd UML-Fprime && make ut
 
-qf-ut:
-	@cd QF; \
-	make ut
-	@cd ..
+Cameo-C-ut:
+	@cd Cameo-C && make ut
 
-qf-cameo-ut:
-	@cd QF-Cameo; \
-	make ut
-	@cd ..
+Cameo-CPP-ut:
+	@cd Cameo-CPP && make ut
 
-cpp-ut:
-	@cd C++; \
-	make ut
-	@cd ..
+Cameo-QF-ut:
+	@cd Cameo-QF && make ut
 
-fprime-ut:
-	@cd fprime; \
-	make ut
-	@cd ..
+Cameo-Fprime-ut:
+	@cd Cameo-Fprime && make ut
 
-c-run:
-	@cd C; \
-	make run
-	@cd ..
-
-uml-run:
-	@cd C-UML; \
-	make run
-	@cd ..
-
-qf-run:
-	@cd QF; \
-	make run
-	@cd ..
-
-qf-cameo-run:
-	@cd QF-Cameo; \
-	make run
-	@cd ..
-
-cpp-run:
-	@cd C++; \
-	make run
-	@cd ..
-
-fprime-run:
-	@cd fprime; \
-	make run
-	@cd ..

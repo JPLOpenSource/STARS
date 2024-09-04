@@ -1,8 +1,0 @@
-To build:
-- make
-
-To run
-- ./test
-
-To diff the output against the gold copy:
-- diff ../goldy.txt <(./test)

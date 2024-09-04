@@ -14,15 +14,18 @@ class FprimeUnitTestTemplate:
 # -------------------------------------------------------------------------------
 # sendEventHeaderFile for unit test
 # -------------------------------------------------------------------------------               
-        def sendEventHeaderFile(self):
+        def sendEventHeaderFile(self, smname, namespace):
             template = Template("""        
 #ifndef _SEND_EVENT_H
 #define _SEND_EVENT_H
+\#include "$(smname).hpp"
 
-void sendEvent_send(unsigned int signal);
+void sendEvent_send($(namespace)::$(smname)_Interface::$(smname)_Signals signal);
 
 #endif
 """)
+            template.smname = smname
+            template.namespace = namespace
             return str(template)
 
 # -------------------------------------------------------------------------------
@@ -34,23 +37,23 @@ void sendEvent_send(unsigned int signal);
 \#include <assert.h>
 \#include <string.h>
 \#include "sendEvent.h"
-\#include "Fw/Types/SMSignalsSerializableAc.hpp"
+\#include "Fw/Sm/SmSignalBuffer.hpp"
 \#include "$(implHdr)"
 \#include "$(smname).hpp"
 
 extern $(namespace)::$(component) component;
 
 
-void sendEvent_send(unsigned int signal) {
+void sendEvent_send($(namespace)::$(smname)_Interface::$(smname)_Signals signal) {
     // Instantiate an event
-    Fw::SMSignals event;
     char signalName[100];
+    Fw::SmSignalBuffer data;
     
     switch (signal) {
 
     #for $sig in $triggerList
 
-    case $(namespace)::$(smname)::$(sig):
+    case $(namespace)::$(smname)_Interface::$(smname)_Signals::$(sig):
         strcpy(signalName, "$(sig)");
         break;    
     #end for
@@ -61,8 +64,7 @@ void sendEvent_send(unsigned int signal) {
 
 
     printf("\\n--> %s\\n", signalName);
-    event.seteventSignal(signal);
-    component.sm.update(&event);
+    component.sm.update(0, signal, data);
 }
 """)
             template.smname = smname
@@ -78,7 +80,7 @@ void sendEvent_send(unsigned int signal) {
 # testDrv for unit test
 # -------------------------------------------------------------------------------               
         def testDrv(self, line, smname, namespace):
-            sendEventTemplate = Template("""    sendEvent_send($(namespace)::$(smname)::$(event)_SIG);
+            sendEventTemplate = Template("""    sendEvent_send($(namespace)::$(smname)_Interface::$(smname)_Signals::$(event)_SIG);
 """)
             guardTemplate = Template("""    extern bool $(guard)Boolean;
     $(guard)Boolean = $(guardVal);
@@ -108,9 +110,9 @@ void sendEvent_send(unsigned int signal) {
         def testDrvStart(self, smname, component):
             template = Template("""
 \#include <stdio.h>
+\#include "$(smname).hpp"
 \#include "sendEvent.h"
 \#include "$(component).hpp"
-\#include "$(smname).hpp"
 
 void testDrv() {
 """)
@@ -153,7 +155,7 @@ $(namespace)::$(component) component;
 int main(void) {
 
     // Initialize the component
-    component.init();
+    component.init(0);
 
     // Drive the state-machine
     testDrv();

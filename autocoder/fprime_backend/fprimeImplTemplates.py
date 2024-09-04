@@ -45,8 +45,9 @@ class FprimeImplTemplate:
 #ifndef _SIGNAL_GEN_HPP_
 #define _SIGNAL_GEN_HPP_
                                 
-\#include "Fw/Types/SMSignalsSerializableAc.hpp"
+\#include "Fw/Sm/SmSignalBuffer.hpp"
 \#include "$(smname).hpp"
+\#include <config/FpConfig.hpp>
 
 namespace $(namespace) {
 
@@ -56,7 +57,7 @@ class $(component) : public $(smname)_Interface {
       
       $(component)() : sm(this) {}
                                 
-      void init();
+      void init(const FwEnumStoreType stateMachineId);
                                 
       #for $func in $funcList
       $func override;
@@ -90,8 +91,8 @@ bool $(function.name)Boolean;
 #end for
 
 
-void $(namespace)::$(component)::init() {
-    sm.init();
+void $(namespace)::$(component)::init(const FwEnumStoreType stateMachineId) {
+    sm.init(stateMachineId);
 }
                                 
 #for $function in $guardFunctions

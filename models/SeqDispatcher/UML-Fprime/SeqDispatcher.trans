@@ -1,0 +1,10 @@
+InitialState = Available, Event = Done, guard = None, action = unknownSeqFinished();incrSeqAvailable(e), TargetState = Available
+InitialState = Available, Event = Run, guard = None, action = seqRunOut(e);decSeqAvailable(e), TargetState = Block
+InitialState = Available, Event = Run, guard = noWait(e), action = seqRunOut(e);decSeqAvailable(e), TargetState = NonBlock
+InitialState = Available, Event = Start, guard = None, action = decSeqAvailable(e), TargetState = NonBlock
+InitialState = NonBlock, Event = Done, guard = None, action = incrSeqAvailable(e), TargetState = Available
+InitialState = NonBlock, Event = Start, guard = seqRunningNotFile(e), action = unexpectedSeqStart(e), TargetState = NonBlock
+InitialState = NonBlock, Event = Run, guard = None, action = invalidSequencer(e);sendExecutionError(e), TargetState = NonBlock
+InitialState = Block, Event = Done, guard = None, action = sendCmdResponse(e);incrSeqAvailable(e), TargetState = Available
+InitialState = Block, Event = Start, guard = seqRunningNotFile(e), action = unexpectedSeqStart(e), TargetState = Block
+InitialState = Block, Event = Run, guard = None, action = invalidSequencer(e);sendExecutionError(e), TargetState = Block

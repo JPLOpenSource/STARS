@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model version="5.2.2" links="0">
+ <framework name="qpc"/>
+ <package name="package1" stereotype="0x00">
+  <class name="SeqDispatcher" superclass="qpc::QHsm">
+   <statechart properties="0x01">
+    <initial target="../1">
+     <initial_glyph conn="30,39,5,0,7,7">
+      <action box="0,-2,10,2"/>
+     </initial_glyph>
+    </initial>
+    <state name="Available">
+     <tran trig="Done">
+      <action brief="unknownSeqFinished(e); incrSeqAvailable(e)"/>
+      <tran_glyph conn="30,52,3,-1,39">
+       <action box="1,-3,56,4"/>
+      </tran_glyph>
+     </tran>
+     <tran trig="Start" target="../../2">
+      <action brief="decSeqAvailable(e)"/>
+      <tran_glyph conn="46,46,0,0,-26,120,12">
+       <action box="2,-11,50,4"/>
+      </tran_glyph>
+     </tran>
+     <tran trig="Run">
+      <action brief="seqRunOut(e); decSeqAvailable(e)"/>
+      <choice target="../../../2/3">
+       <choice_glyph conn="102,68,5,3,47">
+        <action box="1,0,10,2"/>
+       </choice_glyph>
+      </choice>
+      <choice target="../../../2/4">
+       <guard brief="noWait(e)"/>
+       <choice_glyph conn="102,68,4,2,10,79,-7">
+        <action box="3,7,21,5"/>
+       </choice_glyph>
+      </choice>
+      <tran_glyph conn="50,64,2,-1,4,52">
+       <action box="1,5,56,5"/>
+      </tran_glyph>
+     </tran>
+     <state_glyph node="30,46,51,18"/>
+    </state>
+    <state name="Running">
+     <initial target="../4">
+      <initial_glyph conn="199,67,5,1,-13">
+       <action box="0,-2,10,2"/>
+      </initial_glyph>
+     </initial>
+     <tran trig="Start">
+      <choice>
+       <guard brief="seqRunningNotFile(e)"/>
+       <action brief="unexpectedSeqStart(e)"/>
+       <choice_glyph conn="159,40,5,-1,66">
+        <action box="3,-3,91,5"/>
+       </choice_glyph>
+      </choice>
+      <tran_glyph conn="132,40,3,-1,27">
+       <action box="1,-3,13,4"/>
+      </tran_glyph>
+     </tran>
+     <tran trig="Run">
+      <action brief="invalidSequencer(e); sendExecutionError(e)"/>
+      <tran_glyph conn="132,48,3,-1,72">
+       <action box="2,-3,69,4"/>
+      </tran_glyph>
+     </tran>
+     <state name="Block">
+      <tran trig="Done" target="../../../1">
+       <action brief="sendCmdResponse(e); incrSeqAvailable(e)"/>
+       <tran_glyph conn="153,63,0,1,-4,-72">
+        <action box="-67,-7,45,3"/>
+       </tran_glyph>
+      </tran>
+      <state_glyph node="149,63,9,8"/>
+     </state>
+     <state name="NonBlock">
+      <tran trig="Done" target="../../../1">
+       <action brief="incrSeqAvailable(e)"/>
+       <tran_glyph conn="181,63,0,1,-9,-100">
+        <action box="0,-6,46,5"/>
+       </tran_glyph>
+      </tran>
+      <state_glyph node="174,63,12,8"/>
+     </state>
+     <state_glyph node="132,32,108,56"/>
+    </state>
+    <state_diagram size="258,137"/>
+   </statechart>
+  </class>
+ </package>
+</model>

@@ -1,0 +1,32 @@
+
+@startuml
+
+[*] --> Available
+
+state Available {
+    Available:Internal: Done / unknownSeqFinished(); incrSeqAvailable(e) 
+}
+
+state Running {
+    state c1 <<choice>>
+    [*] --> NonBlock
+    Running:Internal: Start [seqRunningNotFile(e)] / unexpectedSeqStart(e)
+    Running:Internal: Run / invalidSequencer(e); sendExecutionError(e)
+
+    state NonBlock {
+    }
+
+    state Block {
+    }
+}
+
+Available --> c1 : Run /seqRunOut(e); decSeqAvailable(e)
+c1 --> Block
+c1 --> NonBlock : [noWait(e)]
+NonBlock --> Available : Done / incrSeqAvailable(e)
+Block --> Available : Done / sendCmdResponse(e); incrSeqAvailable(e)
+Available --> Running : Start / decSeqAvailable(e)
+
+
+
+@enduml

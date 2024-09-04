@@ -27,24 +27,26 @@ class FprimeTemplate:
 # ------------------------------------------------------------------------------- 
         def ifGuard(self, smname: str, action: str, args: str) -> str:  
             if args == "":
-                template = Template("""if ( parent->$(smname)_$(action)() ) {""")
+                template = Template("""if ( parent->$(smname)_$(action)(stateMachineId) ) {""")
             else:
-                template = Template("""if (parent->$(smname)_$(action)($(args)) ) {""")       
+                template = Template("""if (parent->$(smname)_$(action)(stateMachineId, signal, data) ) {""")       
 
             template.smname = smname
             template.action = action
             template.args = args
             return str(template)  
 
-
 # -------------------------------------------------------------------------------
 # guardSignature
 # -------------------------------------------------------------------------------   
         def guardSignature(self, smname: str, action: str, args: str) -> str:
             if args == "":
-                template = Template("""bool $(smname)_$(action)()""")
+                template = Template("""bool $(smname)_$(action)(const FwEnumStoreType stateMachineId)""")
             elif args == "e":
-                template = Template("""bool $(smname)_$(action)(const Fw::SMSignals *e)""")
+                template = Template("""bool $(smname)_$(action)(
+        const FwEnumStoreType stateMachineId, 
+        const $(smname)_Interface::$(smname)_Signals signal, 
+        const Fw::SmSignalBuffer &data)""")
             elif args.isdigit():
                 template = Template("""bool $(smname)_$(action)(int arg)""")
             else:
@@ -60,9 +62,13 @@ class FprimeTemplate:
 # -------------------------------------------------------------------------------   
         def guardDef(self, smname: str, action: str, component: str, args: str, namespace) -> str:
             if args == "":
-                template = Template("""bool $(namespace)::$(component)::$(smname)_$(action)()""")
+                template = Template("""bool $(namespace)::$(component)::$(smname)_$(action)(const FwEnumStoreType stateMachineId)""")
             elif args == "e":
-                template = Template("""bool $($namespace)::$(component)::$(smname)_$(action)(const Fw::SMSignals *e)""")
+                template = Template("""bool $(namespace)::$(component)::$(smname)_$(action)(
+        const FwEnumStoreType stateMachineId, 
+        const $(smname)_Interface::$(smname)_Signals signal, 
+        const Fw::SmSignalBuffer &data)""")         
+
             elif args.isdigit():
                 template = Template("""bool $(namespace)::$(component)::$(smname)_$(action)(int arg)""")
             else:
@@ -79,9 +85,9 @@ class FprimeTemplate:
 # -------------------------------------------------------------------------------   
         def action(self, smname: str, action: str, args: str) -> str:
             if args == "":
-                template = Template("""parent->$(smname)_$(action)();""")   
+                template = Template("""parent->$(smname)_$(action)(stateMachineId);""")   
             else:
-                template = Template("""parent->$(smname)_$(action)($(args));""")         
+                template = Template("""parent->$(smname)_$(action)(stateMachineId, signal, data);""")         
      
             template.smname = smname
             template.action = action
@@ -94,9 +100,12 @@ class FprimeTemplate:
 # -------------------------------------------------------------------------------   
         def actionSignature(self, smname: str, action: str, args: str) -> str:
             if args == "":
-                template = Template("""void $(smname)_$(action)()""")
+                template = Template("""void $(smname)_$(action)(const FwEnumStoreType stateMachineId)""")
             elif args == "e":
-                template = Template("""void $(smname)_$(action)(const Fw::SMSignals *e)""")
+                template = Template(""" void $(smname)_$(action)(
+        const FwEnumStoreType stateMachineId, 
+        const $(smname)_Interface::$(smname)_Signals signal, 
+        const Fw::SmSignalBuffer &data)""")
             elif args.isdigit():
                 template = Template("""void $(smname)_$(action)(int arg)""")
             else:
@@ -113,9 +122,12 @@ class FprimeTemplate:
 # -------------------------------------------------------------------------------   
         def actionDef(self, smname: str, action: str, component: str, args: str, namespace: str) -> str:
             if args == "":
-                template = Template("""void $(namespace)::$(component)::$(smname)_$(action)()""")   
+                template = Template("""void $(namespace)::$(component)::$(smname)_$(action)(const FwEnumStoreType stateMachineId)""")   
             elif args == "e":
-                template = Template("""void $(namespace)::$(component)::$(smname)_$(action)(const Fw::SMSignals *e)""")         
+                template = Template("""void $(namespace)::$(component)::$(smname)_$(action)(
+        const FwEnumStoreType stateMachineId, 
+        const $(smname)_Interface::$(smname)_Signals signal, 
+        const Fw::SmSignalBuffer &data)""")         
             elif args.isdigit():
                 template = Template("""void $(namespace)::$(component)::$(smname)_$(action)(int arg)""")         
             else:
@@ -130,14 +142,15 @@ class FprimeTemplate:
 # -------------------------------------------------------------------------------
 # stateTransition
 # -------------------------------------------------------------------------------   
-        def stateTransition(self, signal: str, transition: str) -> str:
+        def stateTransition(self, signal: str, transition: str, smname) -> str:
             template = Template("""
-                case $(signal):
+                case $(smname)_Interface::$(smname)_Signals::$(signal):
 $(transition)
                     break;
     """)
             template.signal = signal
             template.transition = transition
+            template.smname = smname
             return str(template)
         
         
@@ -155,18 +168,25 @@ $(transition)
            
 #ifndef $(smname.upper())_H_
 #define $(smname.upper())_H_
-
-namespace Fw {
-  class SMSignals;
-}
-
+                                
+\#include <Fw/Sm/SmSignalBuffer.hpp>
+\#include <config/FpConfig.hpp>
+                                 
 namespace $(namespace) {
 
 class $(smname)_Interface {
   public:
-    #for $function in $implFunctions
+    enum $(smname)_Signals {
+#for $event in $eventList
+      $event,
+#end for
+    };
+
+#for $function in $implFunctions
+                                 
     virtual $function = 0;
-    #end for
+                                 
+#end for
                                                                   
 };
 
@@ -179,25 +199,20 @@ class $(smname) {
                                  
     $(smname)($(smname)_Interface* parent) : parent(parent) {}
   
-    enum $(smname)States {
+    enum $(smname)_States {
 #for $state in $stateList
       $state,
 #end for
     };
-
-    enum $(smname)Events {
-#for $event in $eventList
-      $event,
-#end for
-    };
     
-    enum $(smname)States state;
+    enum $(smname)_States state;
 
-    void * extension;
-
-    void init();
-    void update(const Fw::SMSignals *e);
-
+    void init(const FwEnumStoreType stateMachineId);
+    void update(
+        const FwEnumStoreType stateMachineId, 
+        const $(smname)_Interface::$(smname)_Signals signal, 
+        const Fw::SmSignalBuffer &data
+    );
 };
 
 }
@@ -225,19 +240,21 @@ class $(smname) {
 //
 // ======================================================================            
     
-\#include "stdio.h"
-\#include "assert.h"
-\#include "Fw/Types/SMSignalsSerializableAc.hpp"
+\#include <Fw/Types/Assert.hpp>
 \#include "$(smname).hpp"
 
 
-void $(namespace)::$(smname)::init()
+void $(namespace)::$(smname)::init(const FwEnumStoreType stateMachineId)
 {
 $transition
 }
 
 
-void $(namespace)::$(smname)::update(const Fw::SMSignals *e)
+void $(namespace)::$(smname)::update(
+    const FwEnumStoreType stateMachineId, 
+    const $(smname)_Interface::$(smname)_Signals signal, 
+    const Fw::SmSignalBuffer &data
+)
 {
     switch (this->state) {
     """)
@@ -257,7 +274,7 @@ void $(namespace)::$(smname)::update(const Fw::SMSignals *e)
             */
             case $state:
             
-            switch (e->geteventSignal()) {
+            switch (signal) {
 """)
             template.state = state
             return str(template)
@@ -282,211 +299,8 @@ void $(namespace)::$(smname)::update(const Fw::SMSignals *e)
         def stateMachineFinalBreak(self) -> str:
             template = Template("""
         default:
-        assert(0);
+        FW_ASSERT(0);
     }
 }
 """)
-            return str(template)
-
-
-
-
-# -------------------------------------------------------------------------------
-# smBaseHeader
-# -------------------------------------------------------------------------------           
-        def smBaseHeader(self, 
-                        state_machines,
-                        nameSpace: str,
-                        component: str,
-                        componentPath: str,
-                        autoHeaderFile: str,
-                        componentBase: str) -> str: 
-            template = Template("""
-#ifndef $(component.upper())_SM_BASE_HPP
-#define $(component.upper())_SM_BASE_HPP
-// ======================================================================
-// \\title  $(component)SmBase.hpp
-// \\author Auto-generated
-// \\brief  Header file for the state machine base class
-//
-// ======================================================================            
-\#include "$(componentPath)/$(autoHeaderFile)"
-#for $state in $state_machines
-\#include "$(componentPath)/$(state.stateName).h"
-#end for
-                                
-namespace $nameSpace {
-    namespace StateMachine {
-        typedef enum {
-        #for $state in $state_machines
-            #for $impl in $state.stateMachineInstance
-            $(impl.upper()),
-            #end for
-        #end for
-        } SmId;                           
-    };
-
-    class $(component)SmBase : public $(componentBase)
-    #for $state in $state_machines
-        ,public $(state.stateName)_Interface
-    #end for
-                                
-    {
-        public:
-            $(component)SmBase(const char* const compName);
-            void init(
-                        NATIVE_INT_TYPE queueDepth,
-                        NATIVE_INT_TYPE instance
-            );
-            
-            // Interface to send an event to the state-machine
-            void sendEvent(U32 eventSignal, StateMachine::SmId id);
-
-            // Internal Interface handler for sendEvents
-            void sendEvents_internalInterfaceHandler(const Fw::SMSignals& ev);
-                                
-            // Instantiate the state machines
-            #for $state in $state_machines
-                #for $impl in $state.stateMachineInstance
-            $state.stateName $(impl);
-                #end for
-            #end for
-            
-                                
-    };
-}
-#endif
-
-            """)
-            template.state_machines = state_machines
-            template.nameSpace = nameSpace
-            template.component = component
-            template.componentPath = componentPath
-            template.autoHeaderFile = autoHeaderFile
-            template.componentBase = componentBase
-            return str(template)
-        
-# -------------------------------------------------------------------------------
-# smBaseCpp
-# -------------------------------------------------------------------------------           
-        def smBaseCpp(self,
-                      state_machines,
-                      nameSpace: str,
-                      component: str,
-                      componentPath: str,
-                      autoHeaderFile: str,
-                      componentBase: str) -> str: 
-            template = Template("""
-// ======================================================================
-// \\title  $(component)SmBase.cpp
-// \\author Auto-generated
-// \\brief  Cpp file for the state machine base class
-//
-// ======================================================================            
-\#include "$(componentPath)/$(component)SmBase.hpp"
-#for $state in $state_machines
-\#include "$(componentPath)/$(state.stateName).h"
-#end for
-                                
-$(nameSpace)::$(component)SmBase::$(component)SmBase(const char* const compName):
-    $(componentBase)(compName)
-    #for $state in $state_machines
-        #for $impl in $state.stateMachineInstance
-    ,$(impl)(this)
-        #end for
-    #end for
-{
-                                
-}                               
-
-void $(nameSpace)::$(component)SmBase::init(
-            NATIVE_INT_TYPE queueDepth,
-            NATIVE_INT_TYPE instance)
-{
-    $(componentBase)::init(queueDepth, instance);
-                                
-    // Initialize the state machine
-    #for $state in $state_machines
-        #for $impl in $state.stateMachineInstance
-    $(impl).init();
-        #end for
-    #end for
-    
-} 
-
-void $(nameSpace)::$(component)SmBase:: sendEvent(U32 eventSignal, StateMachine::SmId id) {
-                                
-    Fw::SMSignals event;
-    event.seteventSignal(eventSignal);
-    event.setsmId(id);
-    sendEvents_internalInterfaceInvoke(event);
-}
-
-void $(nameSpace)::$(component)SmBase::sendEvents_internalInterfaceHandler(const Fw::SMSignals& ev)
-{
-    U16 id = ev.getsmId();
-    switch (id) {
-                                
-        #for $state in $state_machines
-            #for $impl in $state.stateMachineInstance
-        case StateMachine::$impl.upper():
-            this->$(impl).update(&ev);
-            break;
-            #end for
-        #end for
-        default:
-            FW_ASSERT(0);
-    }
-
-}
-            """)
-            template.state_machines = state_machines
-            template.nameSpace = nameSpace
-            template.component = component
-            template.componentPath = componentPath
-            template.autoHeaderFile = autoHeaderFile
-            template.componentBase = componentBase
-            return str(template)
-        
-# -------------------------------------------------------------------------------
-# smSignals
-# -------------------------------------------------------------------------------           
-        def smSignalss(self) -> str:
-
-            template = Template("""
-# This is an Auto generate file from the STARS Autocoder
-
-module Fw {
-
-    struct SMSignals {
-        smId : U32
-        eventSignal: U32
-        payload: [128] U8
-    }
-
-}       
-                                
-            """)
-            return str(template)
-        
-# -------------------------------------------------------------------------------
-# internalQ
-# -------------------------------------------------------------------------------           
-        def internalQ(self, state_machines) -> str:
-            
-            template = Template("""
-                                
-# This is an Auto generate file from the STARS Autocoder
-                                
-@ internal port for handling state-machine Events
-internal port sendEvents(ev: Fw.SMSignals) 
-                                
-#for $state in $state_machines
-    include "$(state.stateName).fppi"
-#end for
-
-                                
-            """)
-
-            template.state_machines = state_machines
             return str(template)

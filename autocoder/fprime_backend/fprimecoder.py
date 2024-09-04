@@ -179,7 +179,7 @@ def printStateTransition(state: ElementTreeType, smname: str, tran: ElementTreeT
 
     signal = tran.get('trig').upper() + "_SIG"
     transition = qmlib.format_C(printFlatTransition(smname, tran), 24)
-    cFile.write(codeTemplate.stateTransition(signal, transition))
+    cFile.write(codeTemplate.stateTransition(signal, transition, smname))
 
     dfs_find_target_state(tran, targetStates, guardList, actionList)
 
@@ -235,7 +235,7 @@ def printUnitCode(smname: str, implHdr: str, component: str, namespace: str, roo
     sendEventCFile = open("sendEvent.cpp", "w")
     
     mainFile.write(unitTestTemplate.mainFile(implHdr, component, namespace))
-    sendEventHFile.write(unitTestTemplate.sendEventHeaderFile())
+    sendEventHFile.write(unitTestTemplate.sendEventHeaderFile(smname, namespace))
     
     
     trans = root.iter("tran")

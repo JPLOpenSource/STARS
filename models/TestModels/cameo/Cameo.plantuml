@@ -18,8 +18,8 @@ state Running {
     [*] --> c2
     c2 --> StateS3: [guard4()]
     c2 --> StateS2
-    Running:Entry: runningEntry(10)
-    Running:Exit: runningExit(20)
+    Running:Entry: runningEntry()
+    Running:Exit: runningExit()
     state StateS2 {
         StateS2:Entry: s2Entry()
         StateS2:Exit: s2Exit()
@@ -37,6 +37,6 @@ Running --> c3: Ev4/a4()
 c3 --> Running: /a2()
 c3 --> StateS1: [guard3()]
 Running --> c3: Ev3
-Running --> StateS1: Ev1[guard2(4)]/a1(3)
+Running --> StateS1: Ev1[guard2()]/a1()
 StateS1 --> Running: Ev2/a2()
 @enduml

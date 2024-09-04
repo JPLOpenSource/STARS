@@ -410,10 +410,3 @@ def getXmiModel(umlFileName: str):
 
     return xmiModel
     
-
-
-
-
-            
-        
-

@@ -1,29 +1,39 @@
 MAKEFLAGS += --no-print-directory
 
-all: cpp-depend
-ut: cpp-ut
-run: cpp-run
-clean: cpp-clean
+all: QM-C-depend \
+     QM-CPP-depend \
+     QM-QF-depend \
+     QM-Fprime-depend \
+     UML-C-depend \
+     UML-Fprime-depend \
+     Cameo-C-depend \
+     Cameo-QF-depend \
+     Cameo-Fprime-depend
 
-CPP: cpp-depend
+QM-C-depend:
+	cd QM-C && make clean && make && make ut
 
-cpp-depend:
-	cd C++; \
-        make
-	cd ..
+QM-CPP-depend:
+	cd QM-CPP && make clean && make && make ut
 
-cpp-ut:
-	@cd C++; \
-	make ut
-	@cd ..
+QM-QF-depend:
+	cd QM-QF && make clean && make && make ut
 
-cpp-run:
-	@cd C++; \
-	make run
-	@cd ..
+QM-Fprime-depend:
+	cd QM-Fprime && make clean && make && make ut
 
-cpp-clean:
-	@cd C++; \
-	make clean
-	@cd ..
+UML-C-depend:
+	cd UML-C && make clean && make && make ut
+
+UML-Fprime-depend:
+	cd UML-Fprime && make clean && make && make ut
+
+Cameo-C-depend:
+	cd Cameo-C && make clean && make && make ut
+
+Cameo-QF-depend:
+	cd Cameo-QF && make clean && make && make ut
+
+Cameo-Fprime-depend:
+	cd Cameo-Fprime && make clean && make && make ut
 

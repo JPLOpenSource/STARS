@@ -1,27 +1,29 @@
 BACK-END = c++ 
-GOLDY = goldy.txt
-IMPL = $(MODEL)Impl
+GOLDY ?= goldy.txt
+MODEL_BASE = $(basename $(MODEL))
+IMPL = $(MODEL_BASE)Impl
+BASE_DIR ?= ../../../../
 
 all: autocode build
 
 autocode:
 	@printf "**** Running the state-machine autocoder ****\n"
-	../../../../autocoder/Stars.py -backend $(BACK-END) -model ../$(MODEL).qm
+	$(BASE_DIR)autocoder/Stars.py -backend $(BACK-END) -model ../$(MODEL)
 
 build:
 	@printf "**** Building an executable model ****\n"
-	gcc -c -Wall $(MODEL).cpp -o $(MODEL).o
+	gcc -c -Wall $(MODEL_BASE).cpp -o $(MODEL_BASE).o
 	gcc -c -Wall $(IMPL).cpp -o $(IMPL).o
 	gcc -c -Wall testDrv.cpp -o testDrv.o
 	gcc -c -Wall sendEvent.cpp -o sendEvent.o
-	gcc -Wall main.cpp $(MODEL).o $(IMPL).o testDrv.o sendEvent.o -o test
+	gcc -Wall main.cpp $(MODEL_BASE).o $(IMPL).o testDrv.o sendEvent.o -o test
 
 run:
 	@printf "**** Running the executable model ****\n"
 	./test
 
 ut:
-	@./../../../../autocoder/test/run.py $(MODEL) $(GOLDY) $(BACK-END)
+	@./$(BASE_DIR)autocoder/test/run.py $(MODEL) $(GOLDY) $(BACK-END)
 
 clean:
 	rm -rf test
