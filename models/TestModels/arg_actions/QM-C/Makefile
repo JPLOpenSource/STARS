@@ -1,2 +1,2 @@
-MODEL = Arg_actions.qm
+MODEL = Arg_Actions.qm
 include ../../Common_C_Makefile

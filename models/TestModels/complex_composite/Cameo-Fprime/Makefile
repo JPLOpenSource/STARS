@@ -1,2 +1,2 @@
-MODEL = Complex_composite.xml
+MODEL = Complex_Composite.xml
 include ../../Common_Fprime_Makefile

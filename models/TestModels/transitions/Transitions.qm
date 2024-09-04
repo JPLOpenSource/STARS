@@ -74,8 +74,8 @@
       <exit brief="s11Exit()"/>
       <tran trig="Ev4" target="../..">
        <action brief="a3()"/>
-       <tran_glyph conn="94,85,1,1,33">
-        <action box="0,-2,10,2"/>
+       <tran_glyph conn="94,85,1,1,35,13,-2">
+        <action box="3,-3,13,5"/>
        </tran_glyph>
       </tran>
       <state_glyph node="66,80,28,11">

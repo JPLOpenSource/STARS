@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 import os
 
+def capitalize_words(name):
+    return '_'.join([word.capitalize() for word in name.split('_')])
+
 def create_directories_and_makefiles(base_dirs):
     # List of directories to create
     dirs = [
@@ -43,7 +46,7 @@ def create_directories_and_makefiles(base_dirs):
             backend = backends[backend_key]
             
             # Capitalize only the first letter of the directory name
-            model_name = base_dir.capitalize()
+            model_name = capitalize_words(base_dir)
 
             # Create the Makefile content
             makefile_content = f"MODEL = {model_name}.{ext}\n"

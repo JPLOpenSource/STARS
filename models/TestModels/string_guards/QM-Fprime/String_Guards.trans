@@ -1,0 +1,7 @@
+InitialState = Bar, Event = Ev2, guard = None, action = barExit();farEntry(), TargetState = Far
+InitialState = Far, Event = Ev1, guard = g1();g2();g3(), action = b2();b3();b4();farExit();barEntry(), TargetState = Bar
+InitialState = Far, Event = Ev1, guard = g1();g2(), action = b2();b3();a3();farExit();farEntry(), TargetState = Far
+InitialState = Far, Event = Ev1, guard = g1(), action = b2();a2();farExit();farEntry(), TargetState = Far
+InitialState = Far, Event = Ev1, guard = None, action = a1();farExit();farEntry(), TargetState = Far
+InitialState = Far, Event = Ev2, guard = g4(), action = a5();a6();farExit();barEntry(), TargetState = Bar
+InitialState = Far, Event = Ev2, guard = g4();g5(), action = a5();a4();farExit();farEntry(), TargetState = Far

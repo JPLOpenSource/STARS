@@ -1,2 +1,2 @@
-MODEL = String_guards.xml
+MODEL = String_Guards.xml
 include ../../Common_CPP_Makefile

@@ -1,2 +1,2 @@
-MODEL = Complex_composite.qm
+MODEL = Complex_Composite.qm
 include ../../Common_QF_Makefile

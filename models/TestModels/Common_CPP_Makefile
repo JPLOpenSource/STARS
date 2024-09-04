@@ -1,5 +1,5 @@
 BACK-END = c++ 
-GOLDY = goldy.txt
+GOLDY ?= goldy.txt
 MODEL_BASE = $(basename $(MODEL))
 IMPL = $(MODEL_BASE)Impl
 BASE_DIR ?= ../../../../
@@ -23,7 +23,7 @@ run:
 	./test
 
 ut:
-	@./$(BASE_DIR)autocoder/test/run.py $(MODEL_BASE) $(GOLDY) $(BACK-END)
+	@./$(BASE_DIR)autocoder/test/run.py $(MODEL) $(GOLDY) $(BACK-END)
 
 clean:
 	rm -rf test

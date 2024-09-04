@@ -1,0 +1,5 @@
+InitialState = Diag, Event = Ev1, guard = g1(), action = a1();DiagExit();OffExit();OffEntry();DiagEntry(), TargetState = Diag
+InitialState = Diag, Event = Ev1, guard = None, action = a2();a3();a4();DiagExit();OffExit();OffEntry();DiagEntry(), TargetState = Diag
+InitialState = Diag, Event = Ev1, guard = g3(), action = a2();a3();a6();DiagExit();OffExit();OnEntry();InitEntry(), TargetState = Init
+InitialState = Diag, Event = Ev1, guard = g2(), action = a2();a5();DiagExit();OffExit();OnEntry();InitEntry(), TargetState = Init
+InitialState = Init, Event = Ev1, guard = None, action = InitExit();OnExit();OffEntry();DiagEntry(), TargetState = Diag

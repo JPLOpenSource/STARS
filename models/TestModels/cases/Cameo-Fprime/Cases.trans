@@ -1,0 +1,3 @@
+InitialState = Diag, Event = EV1, guard = None, action = A1();DiagExit();offexit();OnEntry();InitEntry(), TargetState = Init
+InitialState = Diag, Event = EV1, guard = G1(), action = DiagExit();offexit();OFFENTRY();DiagEntry(), TargetState = Diag
+InitialState = Init, Event = ev2, guard = None, action = InitExit();OnExit();OFFENTRY();DiagEntry(), TargetState = Diag

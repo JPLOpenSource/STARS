@@ -1,2 +1,2 @@
-MODEL = Multiple_actions.qm
+MODEL = Multiple_Actions.qm
 include ../../Common_QF_Makefile

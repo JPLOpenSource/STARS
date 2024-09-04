@@ -1,5 +1,5 @@
 BACK-END = fprime
-GOLDY = goldy.txt
+GOLDY ?= goldy.txt
 MODEL_BASE = $(basename $(MODEL))
 NAMESPACE = Ref
 BASE_DIR ?= ../../../../
@@ -25,7 +25,7 @@ run:
 	./test
 
 ut:
-	@./$(BASE_DIR)autocoder/test/run.py $(MODEL_BASE) $(GOLDY) $(BACK-END)
+	@./$(BASE_DIR)autocoder/test/run.py $(MODEL) $(GOLDY) $(BACK-END)
 
 
 clean:

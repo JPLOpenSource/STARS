@@ -1,2 +1,2 @@
-MODEL = Simple_composite.xml
+MODEL = Simple_Composite.xml
 include ../../Common_QF_Makefile

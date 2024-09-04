@@ -22,6 +22,8 @@ TransitionsImpl_a2()
 --> EV4_SIG
 TransitionsImpl_a3()
 TransitionsImpl_s11Exit()
+TransitionsImpl_s1Exit()
+TransitionsImpl_s1Entry()
 TransitionsImpl_s11Entry()
 
 --> EV5_SIG

@@ -1,2 +1,2 @@
-MODEL = Complex_composite.plantuml
+MODEL = Complex_Composite.plantuml
 include ../../Common_QF_Makefile

@@ -1,2 +1,2 @@
-MODEL = Simple_junction.plantuml
+MODEL = Simple_Junction.plantuml
 include ../../Common_QF_Makefile
