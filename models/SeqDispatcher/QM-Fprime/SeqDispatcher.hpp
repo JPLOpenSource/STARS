@@ -9,7 +9,7 @@
 #ifndef SEQDISPATCHER_H_
 #define SEQDISPATCHER_H_
                                 
-#include <Fw/Sm/SMSignalBuffer.hpp>
+#include <Fw/Sm/SmSignalBuffer.hpp>
 #include <config/FpConfig.hpp>
                                  
 namespace Ref {
@@ -26,61 +26,61 @@ class SeqDispatcher_Interface {
     virtual bool SeqDispatcher_noWait(
         const FwEnumStoreType stateMachineId, 
         const SeqDispatcher_Interface::SeqDispatcher_Signals signal, 
-        const Fw::SMSignalBuffer &data) = 0;
+        const Fw::SmSignalBuffer &data) = 0;
                                  
                                  
     virtual bool SeqDispatcher_seqRunningNotFile(
         const FwEnumStoreType stateMachineId, 
         const SeqDispatcher_Interface::SeqDispatcher_Signals signal, 
-        const Fw::SMSignalBuffer &data) = 0;
+        const Fw::SmSignalBuffer &data) = 0;
                                  
                                  
     virtual  void SeqDispatcher_unknownSeqFinished(
         const FwEnumStoreType stateMachineId, 
         const SeqDispatcher_Interface::SeqDispatcher_Signals signal, 
-        const Fw::SMSignalBuffer &data) = 0;
+        const Fw::SmSignalBuffer &data) = 0;
                                  
                                  
     virtual  void SeqDispatcher_incrSeqAvailable(
         const FwEnumStoreType stateMachineId, 
         const SeqDispatcher_Interface::SeqDispatcher_Signals signal, 
-        const Fw::SMSignalBuffer &data) = 0;
+        const Fw::SmSignalBuffer &data) = 0;
                                  
                                  
     virtual  void SeqDispatcher_decSeqAvailable(
         const FwEnumStoreType stateMachineId, 
         const SeqDispatcher_Interface::SeqDispatcher_Signals signal, 
-        const Fw::SMSignalBuffer &data) = 0;
+        const Fw::SmSignalBuffer &data) = 0;
                                  
                                  
     virtual  void SeqDispatcher_seqRunOut(
         const FwEnumStoreType stateMachineId, 
         const SeqDispatcher_Interface::SeqDispatcher_Signals signal, 
-        const Fw::SMSignalBuffer &data) = 0;
+        const Fw::SmSignalBuffer &data) = 0;
                                  
                                  
     virtual  void SeqDispatcher_sendCmdResponse(
         const FwEnumStoreType stateMachineId, 
         const SeqDispatcher_Interface::SeqDispatcher_Signals signal, 
-        const Fw::SMSignalBuffer &data) = 0;
+        const Fw::SmSignalBuffer &data) = 0;
                                  
                                  
     virtual  void SeqDispatcher_unexpectedSeqStart(
         const FwEnumStoreType stateMachineId, 
         const SeqDispatcher_Interface::SeqDispatcher_Signals signal, 
-        const Fw::SMSignalBuffer &data) = 0;
+        const Fw::SmSignalBuffer &data) = 0;
                                  
                                  
     virtual  void SeqDispatcher_invalidSequencer(
         const FwEnumStoreType stateMachineId, 
         const SeqDispatcher_Interface::SeqDispatcher_Signals signal, 
-        const Fw::SMSignalBuffer &data) = 0;
+        const Fw::SmSignalBuffer &data) = 0;
                                  
                                  
     virtual  void SeqDispatcher_sendExecutionError(
         const FwEnumStoreType stateMachineId, 
         const SeqDispatcher_Interface::SeqDispatcher_Signals signal, 
-        const Fw::SMSignalBuffer &data) = 0;
+        const Fw::SmSignalBuffer &data) = 0;
                                  
                                                                   
 };
@@ -106,7 +106,7 @@ class SeqDispatcher {
     void update(
         const FwEnumStoreType stateMachineId, 
         const SeqDispatcher_Interface::SeqDispatcher_Signals signal, 
-        const Fw::SMSignalBuffer &data
+        const Fw::SmSignalBuffer &data
     );
 };
 

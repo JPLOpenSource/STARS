@@ -3,7 +3,7 @@
 #include <assert.h>
 #include <string.h>
 #include "sendEvent.h"
-#include "Fw/Sm/SMSignalBuffer.hpp"
+#include "Fw/Sm/SmSignalBuffer.hpp"
 #include "SignalGen.hpp"
 #include "SeqDispatcher.hpp"
 
@@ -13,7 +13,7 @@ extern Ref::SignalGen component;
 void sendEvent_send(Ref::SeqDispatcher_Interface::SeqDispatcher_Signals signal) {
     // Instantiate an event
     char signalName[100];
-    Fw::SMSignalBuffer data;
+    Fw::SmSignalBuffer data;
     
     switch (signal) {
 

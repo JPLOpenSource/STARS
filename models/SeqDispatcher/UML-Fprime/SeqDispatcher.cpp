@@ -20,7 +20,7 @@ void Ref::SeqDispatcher::init(const FwEnumStoreType stateMachineId)
 void Ref::SeqDispatcher::update(
     const FwEnumStoreType stateMachineId, 
     const SeqDispatcher_Interface::SeqDispatcher_Signals signal, 
-    const Fw::SMSignalBuffer &data
+    const Fw::SmSignalBuffer &data
 )
 {
     switch (this->state) {
