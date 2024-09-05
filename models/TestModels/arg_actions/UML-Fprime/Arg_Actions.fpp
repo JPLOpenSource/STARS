@@ -1,22 +1,22 @@
 state machine Arg_Actions {
 
-  action s1Exit
   action a1
-  action s1Exit2
-  action s2Entry2
+  action a2
+  action foo
   action s1Entry
   action s1Entry2
-  action s2Exit2
-  action a2
-  action s2Exit
-  action foo
+  action s1Exit
+  action s1Exit2
   action s2Entry
+  action s2Entry2
+  action s2Exit
+  action s2Exit2
 
   guard g1
   guard g2
 
-  signal EV2
   signal EV1
+  signal EV2
 
   state S1 {
    entry do { s1Entry, s1Entry2, foo }

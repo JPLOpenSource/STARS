@@ -17,6 +17,11 @@ def getActionNames(input_string):
     return output_string
 
 
+# -----------------------------------------------------------------------
+# processNode
+#
+# Process the XMI model into FPP
+# -----------------------------------------------------------------------
 def processNode(node, model, fppFile, level = 0):
     indent = "  " * level
 
@@ -162,15 +167,15 @@ def generateCode(xmiModel):
 
     fppFile.write(f"state machine {xmiModel.tree.stateMachine} {{\n\n")
 
-    for action in actions:
+    for action in sorted(actions):
         fppFile.write(f"  action {action}\n")
     fppFile.write("\n")
 
-    for guard in guards:
+    for guard in sorted(guards):
         fppFile.write(f"  guard {guard}\n")
     fppFile.write("\n")
 
-    for signal in signals:
+    for signal in sorted(signals):
         fppFile.write(f"  signal {signal}\n")
     fppFile.write("\n")
         

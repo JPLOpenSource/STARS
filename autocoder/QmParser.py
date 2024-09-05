@@ -31,30 +31,37 @@ class UniqueNumberGenerator:
 # -------------------------------------------------------------------------
 # parseTrans
 #
-# Recursively parse the xmi file root and populate the xmiModel
+# Recursively parse a qm model and populate the xmiModel
 # --------------------------------------------------------------------------
 def parseTrans(qmModel, xmiModel, xmiNode, number_gen):
     source = xmiNode.id
     target = int(qmModel.get('target')) if qmModel.get('target') else None
-    kind = qmModel.get('kind')    
+    kind = qmModel.get('kind')  
     guard = qmlib.pick_guard(qmModel)
     action = flatt.pick_action(qmModel)
     event = qmModel.get('trig')
 
     if target is None:
         choices = qmModel.findall("choice")
-        psId = number_gen.get_unique_number()
-        psNode = xmiModel.addPsuedostate(psId, xmiNode)
-        xmiModel.addTransition(source, psId, event, guard, action, kind)
-        for choice in choices:
-            parseTrans(choice, xmiModel, psNode, number_gen)
+        if len(choices) == 2:
+            psId = number_gen.get_unique_number()
+            psNode = xmiModel.addPsuedostate(psId, xmiNode)
+            xmiModel.addTransition(source, psId, event, guard, action, kind)
+            for choice in choices:
+                parseTrans(choice, xmiModel, psNode, number_gen)
+        else:
+            target = int(choices[0].get('target'))
+            guard = qmlib.pick_guard(choices[0])
+            action = qmlib.pick_action(choices[0])
+            xmiModel.addTransition(source, target, event, guard, action, kind)
+
     else:
         xmiModel.addTransition(source, target, event, guard, action, kind)
 
 # -------------------------------------------------------------------------
 # parseStateTree
 #
-# Recursively parse the xmi file root and populate the xmiModel
+# Recursively parse the qm model and populate the xmiModel
 # --------------------------------------------------------------------------
 def parseStateTree(qmModel, xmiModel, xmiNode, number_gen):
 
@@ -76,7 +83,7 @@ def parseStateTree(qmModel, xmiModel, xmiNode, number_gen):
 # -------------------------------------------------------------------------
 # populateXmiModel
 #
-# Recursively parse the input xml File nodes root and populate the xmiModel
+# Recursively parse the qm model and populate the xmiModel
 # --------------------------------------------------------------------------
 def populateXmiModel(qmModel, xmiModel, number_gen):
     # Add a unique ID to every state
@@ -99,8 +106,6 @@ def populateXmiModel(qmModel, xmiModel, number_gen):
             choices = list(tran.iter("choice"))
             if len(choices) == 0:
                 tran.set("kind", "internal")
-            else:
-                tran.set("kind", "None")
 
     parseStateTree(qmModel, xmiModel, xmiModel.tree, number_gen)
 
@@ -130,7 +135,7 @@ def getXmiModel(xmlfile: str):
         
     modelName, qmModel = getXmlFileNode(xmlfile)
     xmiModel = xmiModelApi.xmiModel(modelName + "Package", modelName)
-
+   
     populateXmiModel(qmModel, xmiModel, number_gen)
 
 

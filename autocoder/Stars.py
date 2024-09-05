@@ -84,6 +84,7 @@ import sys
 if sys.version_info[0] < 3:
     raise Exception("Must be using Python 3")
 
+from anytree import RenderTree
 import argparse
 import c_backend.ccoder as ccoder 
 import qf_backend.qfcoder as qfcoder
@@ -139,6 +140,7 @@ else:
 package: ElementTreeType = root.find('package')
 className = package.find('class')
 statechart: ElementTreeType = className.find('statechart')
+
 # Process the states by adding an index attribute
 smname: str = className.get('name')
 
