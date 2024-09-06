@@ -69,9 +69,6 @@ def getInitTransitions(model):
     psuedoStateList = model.psuedoStateList
     transTargetSet = model.transTargets
 
-    print(f'psuedoStateList = {psuedoStateList}')
-    print(f'transTargetSet = {transTargetSet}')
-
     for trans in PreOrderIter(model.tree):
         if trans.name == "TRANSITION":
             # If the transition source is a psuedostate and no other transition goes into that psuedostate
@@ -147,6 +144,7 @@ def getStateMachineMethods(model):
 # Print the FPP for state machine
 # -----------------------------------------------------------------------  
 def generateCode(xmiModel):
+    xmiModel.print()
     stateMachine = xmiModel.tree.stateMachine
 
     print ("Generating " + stateMachine + ".fpp")
@@ -161,7 +159,7 @@ def generateCode(xmiModel):
 
     moveTransitions(xmiModel)
 
-    xmiModel.print()
+    #xmiModel.print()
 
     (actions, guards, signals) = getStateMachineMethods(xmiModel)
 

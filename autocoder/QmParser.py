@@ -45,7 +45,7 @@ def parseTrans(qmModel, xmiModel, xmiNode, number_gen):
         choices = qmModel.findall("choice")
         if len(choices) == 2:
             psId = number_gen.get_unique_number()
-            psNode = xmiModel.addPsuedostate(psId, xmiNode)
+            psNode = xmiModel.addPsuedostate(psId)
             xmiModel.addTransition(source, psId, event, guard, action, kind)
             for choice in choices:
                 parseTrans(choice, xmiModel, psNode, number_gen)
@@ -56,7 +56,7 @@ def parseTrans(qmModel, xmiModel, xmiNode, number_gen):
             xmiModel.addTransition(source, target, event, guard, action, kind)
 
     else:
-        xmiModel.addTransition(source, target, event, guard, action, kind)
+        xmiModel.addTransition(source, target, event, guard, action, kind, xmiNode.parent)
 
 # -------------------------------------------------------------------------
 # parseStateTree

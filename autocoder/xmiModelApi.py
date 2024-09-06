@@ -56,7 +56,7 @@ class xmiModel:
         transition.parent = None
         return thisNode
 
-    def addPsuedostate(self, id, parent):
+    def addPsuedostate(self, id, parent=tree):
         thisNode = Node("PSUEDOSTATE", id = id, parent = parent, stateName = "J"+str(id))
         self.idMap[id] = thisNode
         self.psuedoStateList.append(id)

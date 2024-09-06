@@ -1,0 +1,18 @@
+---------------- xmi Model ------------
+Node('/xmiModel', package='CasesPackage', stateMachine='Cases')
+├── Node('/xmiModel/PSUEDOSTATE', id=4, stateName='J4')
+├── Node('/xmiModel/TRANSITION', action=None, event=None, guard=None, kind=None, source=4, target=2)
+├── Node('/xmiModel/STATE', entry='OnEntry()', exit='OnExit()', id=0, stateName='on')
+│   ├── Node('/xmiModel/STATE/PSUEDOSTATE', id=5, stateName='J5')
+│   ├── Node('/xmiModel/STATE/TRANSITION', action=None, event=None, guard=None, kind=None, source=5, target=1)
+│   └── Node('/xmiModel/STATE/STATE', entry='InitEntry()', exit='InitExit()', id=1, stateName='Init')
+├── Node('/xmiModel/TRANSITION', action=None, event='ev2', guard=None, kind=None, source=0, target=2)
+├── Node('/xmiModel/STATE', entry='OFFENTRY()', exit='offexit()', id=2, stateName='OFF')
+│   ├── Node('/xmiModel/STATE/PSUEDOSTATE', id=6, stateName='J6')
+│   ├── Node('/xmiModel/STATE/TRANSITION', action=None, event=None, guard=None, kind=None, source=6, target=3)
+│   ├── Node('/xmiModel/STATE/PSUEDOSTATE', id=7, stateName='J7')
+│   ├── Node('/xmiModel/STATE/TRANSITION', action=None, event=None, guard='G1()', kind=None, source=7, target=2)
+│   ├── Node('/xmiModel/STATE/TRANSITION', action='A1()', event=None, guard=None, kind=None, source=7, target=0)
+│   └── Node('/xmiModel/STATE/STATE', entry='DiagEntry()', exit='DiagExit()', id=3, stateName='Diag')
+└── Node('/xmiModel/TRANSITION', action=None, event='EV1', guard=None, kind=None, source=2, target=7)
+------------------end------------------
