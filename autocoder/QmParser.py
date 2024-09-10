@@ -52,17 +52,6 @@ def parseTrans(qmModel, xmiModel, xmiNode, number_gen):
                 parseTrans(choice, xmiModel, psNode, number_gen)
         else:
             xmiModel.addTransition(source, target, event, guard, action, kind)
-            # targetArg = choices[0].get('target')
-            # if targetArg is not None:
-            #     target = int(targetArg)
-            #     guard = qmlib.pick_guard(choices[0])
-            #     action = qmlib.pick_action(choices[0])
-            #     xmiModel.addTransition(source, target, event, guard, action, kind)
-            # else:
-            #     psId = number_gen.get_unique_number()
-            #     psNode = xmiModel.addPsuedostate(psId)
-            #     xmiModel.addTransition(source, psId, event, guard, action, kind)
-            #     parseTrans(choices[0], xmiModel, psNode, number_gen)
     else:
         xmiModel.addTransition(source, target, event, guard, action, kind, xmiNode.parent)
 
@@ -181,9 +170,6 @@ def getXmiModel(xmlfile: str):
     modelName, qmModel = getXmlFileNode(xmlfile)
 
     qmModel = fixQMThing(qmModel)
-
-    xml_string = ET.tostring(qmModel, encoding='unicode')
-    print(xml_string)
 
     xmiModel = xmiModelApi.xmiModel(modelName + "Package", modelName)
    

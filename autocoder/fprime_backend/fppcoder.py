@@ -144,7 +144,6 @@ def getStateMachineMethods(model):
 # Print the FPP for state machine
 # -----------------------------------------------------------------------  
 def generateCode(xmiModel):
-    xmiModel.print()
     stateMachine = xmiModel.tree.stateMachine
 
     print ("Generating " + stateMachine + ".fpp")
@@ -158,8 +157,6 @@ def generateCode(xmiModel):
     getJunctions(xmiModel)
 
     moveTransitions(xmiModel)
-
-    #xmiModel.print()
 
     (actions, guards, signals) = getStateMachineMethods(xmiModel)
 

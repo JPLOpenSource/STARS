@@ -167,7 +167,6 @@ if args.backend == 'fprime':
         print("*** Error - missing namespace argument for the fprime backend")
         exit(0)
     else:
-            #xmiModel.print()
             fppcoder.generateCode(xmiModel)
             fprimecoder.generateCode(smname, statechart, args.noImpl, args.namespace)
 
