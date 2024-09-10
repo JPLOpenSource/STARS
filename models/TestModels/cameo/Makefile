@@ -60,7 +60,7 @@ UML-QF-ut:
 	@cd UML-QF && make ut
 
 UML-Fprime-ut:
-	@cd UML-Fprime && make ut
+	@cd UML-Fprime && make ut && make checkfpp
 
 Cameo-C-ut:
 	@cd Cameo-C && make ut
@@ -72,5 +72,5 @@ Cameo-QF-ut:
 	@cd Cameo-QF && make ut
 
 Cameo-Fprime-ut:
-	@cd Cameo-Fprime && make ut
+	@cd Cameo-Fprime && make ut && make checkfpp
 
