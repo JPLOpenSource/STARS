@@ -13,6 +13,7 @@ import flattenstatemachine as flatt
 import qmlib
 from anytree import Node
 import sys
+import xml.etree.ElementTree as ET
 
 
 class UniqueNumberGenerator:
@@ -50,11 +51,18 @@ def parseTrans(qmModel, xmiModel, xmiNode, number_gen):
             for choice in choices:
                 parseTrans(choice, xmiModel, psNode, number_gen)
         else:
-            target = int(choices[0].get('target'))
-            guard = qmlib.pick_guard(choices[0])
-            action = qmlib.pick_action(choices[0])
             xmiModel.addTransition(source, target, event, guard, action, kind)
-
+            # targetArg = choices[0].get('target')
+            # if targetArg is not None:
+            #     target = int(targetArg)
+            #     guard = qmlib.pick_guard(choices[0])
+            #     action = qmlib.pick_action(choices[0])
+            #     xmiModel.addTransition(source, target, event, guard, action, kind)
+            # else:
+            #     psId = number_gen.get_unique_number()
+            #     psNode = xmiModel.addPsuedostate(psId)
+            #     xmiModel.addTransition(source, psId, event, guard, action, kind)
+            #     parseTrans(choices[0], xmiModel, psNode, number_gen)
     else:
         xmiModel.addTransition(source, target, event, guard, action, kind, xmiNode.parent)
 
@@ -125,6 +133,43 @@ def getXmlFileNode(xmlfile):
 
         
 # -----------------------------------------------------------------------
+# fixQMThing
+#
+# The QM modeling tool does not support guards on transitions.
+# These are specified in the xml file as a transition to a single
+# choice.
+#
+# This routine makes a fix where it looks for transitions with a single
+# choice and then adds the children directly under the transition,
+# essentilly moving everything up.
+# -----------------------------------------------------------------------
+def fixQMThing(qmModel):
+    for tran in qmModel.iter("tran"):
+        choices = tran.findall("choice")
+        if len(choices) == 1:
+
+            choice_children = list(choices[0])
+
+            for child in choice_children:
+                tran.append(child)
+
+            # Remove the <choice> node after moving its children 
+            # But first check if the choice had a target attribute
+            target = choices[0].get('target')
+            if target is not None:
+                tran.set('target', target)
+            tran.remove(choices[0])
+
+            # Look for all the targets and move them up as well.
+            for child in list(tran.iter()):
+                target = child.get('target')
+                if target is not None:
+                    child.set('target', target[3:])
+
+    return qmModel
+
+
+# -----------------------------------------------------------------------
 # getXmiModel
 #
 # Process the input QM and return an xmiModel
@@ -134,6 +179,12 @@ def getXmiModel(xmlfile: str):
     number_gen = UniqueNumberGenerator()
         
     modelName, qmModel = getXmlFileNode(xmlfile)
+
+    qmModel = fixQMThing(qmModel)
+
+    xml_string = ET.tostring(qmModel, encoding='unicode')
+    print(xml_string)
+
     xmiModel = xmiModelApi.xmiModel(modelName + "Package", modelName)
    
     populateXmiModel(qmModel, xmiModel, number_gen)

@@ -1,17 +1,17 @@
 state machine Simple_Composite {
 
+  action s11Entry
+  action s11Exit
+  action s12Entry
+  action s12Exit
+  action s1Entry
   action s1Exit
   action s2Entry
   action s2Exit
-  action s11Exit
-  action s1Entry
-  action s12Exit
-  action s11Entry
-  action s12Entry
 
 
-  signal Ev2
   signal Ev1
+  signal Ev2
 
   state S1 {
    entry do { s1Entry }
@@ -28,6 +28,7 @@ state machine Simple_Composite {
       on Ev2 enter S11
     }
 
+    initial enter S11
     on Ev1 enter S2
   }
 
@@ -38,5 +39,4 @@ state machine Simple_Composite {
   }
 
   initial enter S1
-  initial enter S11
 }

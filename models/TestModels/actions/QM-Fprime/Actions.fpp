@@ -1,10 +1,10 @@
 state machine Actions {
 
   action a2
+  action s1Entry
+  action s1Exit
   action s2Entry
   action s2Exit
-  action s1Exit
-  action s1Entry
 
   guard g1
 
@@ -13,7 +13,7 @@ state machine Actions {
   state S1 {
    entry do { s1Entry }
    exit do { s1Exit }
-    on EV1
+    on EV1 if g1 enter S2
   }
 
   state S2 {

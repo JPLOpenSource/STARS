@@ -22,7 +22,6 @@ state ON {
 state c1 <<choice>>
 state c2 <<choice>>
 state c3 <<choice>>
-state c4 <<choice>>
 state c5 <<choice>>
 
 ON --> OFF: Ev2
@@ -33,8 +32,7 @@ c2 --> OFF: /a2()
 c2 --> c3: [g2()]/b3()
 c3 --> OFF: /a3()
 c3 --> ON: [g3()]/b4()
-OFF --> c4: Ev2
-c4 --> c5: [g4()]/a5()
+OFF --> c5: Ev2 [g4()]/a5()
 c5 --> OFF: [g5()]/a4()
 c5 --> ON: /a6()
 

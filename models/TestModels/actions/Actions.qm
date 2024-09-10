@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<model version="5.0.1" links="0">
+<model version="5.2.2" links="0">
  <framework name="qpc"/>
  <package name="package1" stereotype="0x00">
   <class name="Actions" superclass="qpc::QHsm">
@@ -16,11 +16,11 @@
       <choice target="../../../2">
        <guard brief="g1()"/>
        <choice_glyph conn="83,50,5,3,24">
-        <action box="8,-2,10,2"/>
+        <action box="8,-3,14,4"/>
        </choice_glyph>
       </choice>
       <tran_glyph conn="69,50,1,-1,14">
-       <action box="4,-3,10,2"/>
+       <action box="4,-3,11,4"/>
       </tran_glyph>
      </tran>
      <state_glyph node="48,45,21,14">
@@ -34,12 +34,12 @@
      <tran trig="EV1" target="../../1">
       <action brief="a2()"/>
       <tran_glyph conn="107,55,3,1,-38">
-       <action box="-20,-2,10,2"/>
+       <action box="-23,-3,17,5"/>
       </tran_glyph>
      </tran>
      <state_glyph node="107,46,21,15">
-      <entry box="1,2,12,2"/>
-      <exit box="1,4,13,3"/>
+      <entry box="1,2,17,5"/>
+      <exit box="1,7,17,5"/>
      </state_glyph>
     </state>
     <state_diagram size="258,137"/>

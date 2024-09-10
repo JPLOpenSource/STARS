@@ -1,27 +1,27 @@
 state machine Cameo {
 
   action S1Entry
-  action s3Exit
-  action s3Entry
-  action runningExit
-  action a4
-  action a1
-  action s2Exit
-  action runningEntry
-  action s2Entry
   action S1Exit
+  action a1
   action a2
+  action a4
+  action runningEntry
+  action runningExit
+  action s2Entry
+  action s2Exit
+  action s3Entry
+  action s3Exit
 
   guard guard
   guard guard2
   guard guard3
   guard guard4
 
+  signal Ev1
   signal Ev2
+  signal Ev3
   signal Ev4
   signal Ev5
-  signal Ev3
-  signal Ev1
 
   state StateS1 {
    entry do { S1Entry }
