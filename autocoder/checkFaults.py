@@ -12,6 +12,8 @@ import flattenstatemachine as flatt
 import collections
 import qmlib
 from Cheetah.Template import Template
+from qmlib import ElementTreeType
+
 
 class bcolors:
     HEADER = '\033[95m'
@@ -209,14 +211,14 @@ class BadEvent(Exception):
 # Check for initial transition
 #
 # -----------------------------------------------------------------------
-def initialTransition(root):
-    states = root.findall('state')
+def initialTransition(qmRoot: ElementTreeType):
+    states = qmRoot.findall('state')
     statesList = [state.get('name') for state in states]
         
     if len(states) == 0:
         return
     
-    init = root.findall('initial')
+    init = qmRoot.findall('initial')
     if len(init) == 0:
         raise MissingInit(statesList)
     
@@ -243,8 +245,8 @@ def dupList(a):
 # Check for unique state names
 #
 # -----------------------------------------------------------------------
-def stateNames(root):
-    states = root.iter("state")
+def stateNames(qmRoot: ElementTreeType):
+    states = qmRoot.iter("state")
         
     nameList = [state.get('name').upper() for state in states]
             
@@ -307,8 +309,8 @@ def checkTransition(state, tran):
 # Check that junctions have one and only one guard.
 #
 # -----------------------------------------------------------------------
-def junctionGuards(root):
-    states = root.iter("state")
+def junctionGuards(qmRoot: ElementTreeType):
+    states = qmRoot.iter("state")
     for state in states:
         trans = state.findall('tran')
         for tran in trans:
@@ -366,8 +368,8 @@ def checkAction(action, tran):
 # Check that entry and exit actions are correctly specified
 #
 # -----------------------------------------------------------------------
-def entryExitArgs(root):
-    states = root.iter("state")
+def entryExitArgs(qmRoot: ElementTreeType):
+    states = qmRoot.iter("state")
     for state in states:
         checkEntryExitAction(flatt.pick_entry(state), state)
         checkEntryExitAction(flatt.pick_exit(state), state)
@@ -378,8 +380,8 @@ def entryExitArgs(root):
 # Check that transition actions are correctly specified
 #
 # -----------------------------------------------------------------------
-def actionArgs(root):
-    trans = root.iter('tran')
+def actionArgs(qmRoot: ElementTreeType):
+    trans = qmRoot.iter('tran')
     for tran in trans:
         actions = tran.iter('action')
         for action in actions:
@@ -391,8 +393,8 @@ def actionArgs(root):
 # Check that a transition has an event
 #
 # -----------------------------------------------------------------------
-def checkEvents(root):
-    trans = root.iter('tran')
+def checkEvents(qmRoot: ElementTreeType):
+    trans = qmRoot.iter('tran')
     for tran in trans:
         if tran.get('trig').isspace() or not tran.get('trig'):
             raise BadEvent(tran)
@@ -403,15 +405,15 @@ def checkEvents(root):
 # Check the state-machine for valid semantics
 #
 # -----------------------------------------------------------------------
-def checkStateMachine(smname, root):
+def checkStateMachine(smname: str, qmRoot: ElementTreeType):
     errorMessage = "\n*** Error parsing the state-machine: '{0}' ".format(smname)
     try:
-        initialTransition(root)
-        stateNames(root)
-        junctionGuards(root)
-        entryExitArgs(root)
-        actionArgs(root)
-        checkEvents(root)
+        initialTransition(qmRoot)
+        stateNames(qmRoot)
+        junctionGuards(qmRoot)
+        entryExitArgs(qmRoot)
+        actionArgs(qmRoot)
+        checkEvents(qmRoot)
         print("State-machine semantics look good")
     except (MissingInit, MultipleInit, StateNames, GuardError, JunctionError, EntryExitArg, JunctionGuardError, ActionArg, BadEvent) as Argument:
         print(bcolors.FAIL)

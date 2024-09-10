@@ -10,11 +10,9 @@ from lxml import etree
 import sys
 from copy import deepcopy
 from Cheetah.Template import Template  # type: ignore
-import copy
-from typing import Any
-from typing import List, Dict, Tuple, Any, Optional, IO
-
-ElementTreeType = Any
+from typing import List, Dict, Tuple, Optional
+from lxml.etree import _ElementTree
+ElementTreeType = _ElementTree 
 
 # -----------------------------------------------------------------------
 # get_name

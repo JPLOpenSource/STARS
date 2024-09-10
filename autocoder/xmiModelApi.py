@@ -14,7 +14,7 @@ from copy import deepcopy
 import argparse
 
 
-class xmiModel:
+class XmiModel:
     package = ''
     stateMachine = ''
     tree = Node('xmiModel')

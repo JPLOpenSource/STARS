@@ -6,6 +6,7 @@
 # -----------------------------------------------------------------------
 from anytree import Node, PreOrderIter
 import re
+from xmiModelApi import XmiModel
 
 def getActionNames(input_string):
     if input_string is None:
@@ -143,7 +144,7 @@ def getStateMachineMethods(model):
 #
 # Print the FPP for state machine
 # -----------------------------------------------------------------------  
-def generateCode(xmiModel):
+def generateCode(xmiModel: XmiModel):
     stateMachine = xmiModel.tree.stateMachine
 
     print ("Generating " + stateMachine + ".fpp")

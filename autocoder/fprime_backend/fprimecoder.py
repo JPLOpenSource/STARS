@@ -409,7 +409,7 @@ def printEnumFpp(smname: str, root: ElementTreeType, namespace: str):
 # For a user the only important product is the State-machine code, 
 # everything else is only important for the tool developer.
 # ----------------------------------------------------------------------- 
-def generateCode(smname: str, statechart: ElementTreeType, noImpl: bool, namespace: str):
+def generateCode(smname: str, qmRoot: ElementTreeType, noImpl: bool, namespace: str):
     global codeTemplate
     global unitTestTemplate
     global codeImplTemplate
@@ -417,7 +417,7 @@ def generateCode(smname: str, statechart: ElementTreeType, noImpl: bool, namespa
 
     print(f'Generating Fprime C++ backend for state machine {smname}')
 
-    flatchart : ElementTreeType = flatt.flatten_state_machine(statechart)
+    flatchart : ElementTreeType = flatt.flatten_state_machine(qmRoot)
     
     if noImpl == False:
         component = "SignalGen"

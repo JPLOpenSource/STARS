@@ -16,7 +16,7 @@ import xmiModelApi
 import xmiToQm
 import os
 import sys
-from xmiModelApi import xmiModel
+from xmiModelApi import XmiModel
 from qmlib import ElementTreeType
 from pyparsing import ParserElement, ParseException
 from typing import Dict, List
@@ -302,7 +302,7 @@ def createStateDefMap(parseList: ParserElement, thisMap:  Dict[str, Dict[str, st
 # Returns:
 #   None: This function does not return a value but builds the XMI model by modifying the 'model' object.
 # ----------------------------------------------------------------------------------------------------------------
-def createXmi(parseList: ParserElement, model: xmiModel, root: xmiModel, stateIdMap: Dict[str, int], stateFunctions: Dict[str, Dict[str, str]]):
+def createXmi(parseList: ParserElement, model: XmiModel, root: XmiModel, stateIdMap: Dict[str, int], stateFunctions: Dict[str, Dict[str, str]]):
     global global_stateId
 
     # Add states to the XMI
@@ -381,7 +381,7 @@ def createXmi(parseList: ParserElement, model: xmiModel, root: xmiModel, stateId
 #   The function sets up parsing rules, processes the UML file, generates state IDs, defines state functions, 
 #   and constructs the XMI model.
 # ----------------------------------------------------------------------------------------------------------------
-def getXmiModel(umlFileName: str):
+def getXmiModel(umlFileName: str) -> XmiModel:
     global XMI_ID, XMI_TYPE
     print(f'Parsing file: {umlFileName}')
     
@@ -394,7 +394,7 @@ def getXmiModel(umlFileName: str):
 
     modelName = os.path.splitext(umlFileName)[0].split('/')[-1]
     
-    xmiModel = xmiModelApi.xmiModel(modelName + "Package", modelName)
+    xmiModel = xmiModelApi.XmiModel(modelName + "Package", modelName)
     
     stateIdMap = createStateIdMap(parseResults)
 

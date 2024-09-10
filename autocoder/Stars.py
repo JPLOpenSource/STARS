@@ -79,12 +79,12 @@
 # -----------------------------------------------------------------------
 import os
 from lxml import etree
+from typing import Tuple
 import sys
 
 if sys.version_info[0] < 3:
     raise Exception("Must be using Python 3")
 
-from anytree import RenderTree
 import argparse
 import c_backend.ccoder as ccoder 
 import qf_backend.qfcoder as qfcoder
@@ -97,11 +97,46 @@ import CameoParser
 import QmParser
 import UmlParser
 import xmiToQm
-import qmlib
+from xmiModelApi import XmiModel
 
 
-from typing import Any
-ElementTreeType = Any
+from lxml.etree import _ElementTree
+ElementTreeType = _ElementTree 
+
+# -----------------------------------------------------------------------
+# getQmRoot
+#
+# Parse the input model files and return the QM Root which is used
+# for the code generation.
+# -----------------------------------------------------------------------
+def getQmRoot(modelFileName: str) -> Tuple[ElementTreeType, XmiModel, str] :
+
+    suff = os.path.basename(modelFileName).split('.')[1]
+
+    qmRoot: ElementTreeType
+    xmiModel: XmiModel
+    smname: str
+
+    if suff == 'qm':
+        qmRoot = etree.parse(modelFileName)
+        xmiModel = QmParser.getXmiModel(modelFileName)
+    elif suff == 'xml':
+        cameoRoot: ElementTreeType = etree.parse(modelFileName)
+        xmiModel = CameoParser.getXmiModel(cameoRoot)
+        qmRoot = xmiToQm.translateXmiModelToQmFile(xmiModel, args.debug)
+    elif suff == 'plantuml':
+        xmiModel = UmlParser.getXmiModel(modelFileName)
+        qmRoot = xmiToQm.translateXmiModelToQmFile(xmiModel, args.debug)
+    else:
+        print("Unknown suffix {0} on file {1}".format(suff, modelFileName))
+        sys.exit(0)
+
+    package = qmRoot.find('package')
+    className = package.find('class')
+    smname = className.get('name')
+    qmRoot = className.find('statechart')
+
+    return qmRoot, xmiModel, smname
 
 
 # -----------------------------------------------------------------------
@@ -120,47 +155,26 @@ parser.add_argument("-debug", help="prints out the models", action = "store_true
 
 args = parser.parse_args()
 
-# Do the state machine autocoder
-inputFile = args.model
+qmRoot: ElementTreeType
+xmiModel: XmiModel
+smname: str
 
-suff = os.path.basename(inputFile).split('.')[1]
-
-if suff == 'qm':
-    root: ElementTreeType = etree.parse(inputFile)
-elif suff == 'xml':
-    xmiModel = CameoParser.getXmiModel(inputFile)
-    root = xmiToQm.translateXmiModelToQmFile(xmiModel, args.debug)
-elif suff == 'plantuml':
-    xmiModel = UmlParser.getXmiModel(inputFile)
-    root =  xmiToQm.translateXmiModelToQmFile(xmiModel, args.debug)
-else:
-    print("Unknown suffix {0} on file {1}".format(suff, inputFile))
-    sys.exit(0)
-
-package: ElementTreeType = root.find('package')
-className = package.find('class')
-statechart: ElementTreeType = className.find('statechart')
-
-# Process the states by adding an index attribute
-smname: str = className.get('name')
+qmRoot, xmiModel, smname = getQmRoot(args.model)
 
 # Perform state-machine semantics checking
-checkFaults.checkStateMachine(smname, statechart)
+checkFaults.checkStateMachine(smname, qmRoot)
 
-# Only do the QM to XMI translation after the semanics have been checked.
-if suff == 'qm':
-    xmiModel = QmParser.getXmiModel(inputFile)
 if args.backend == "c++":
-    cppcoder.generateCode(smname, statechart, args.noImpl)
+    cppcoder.generateCode(smname, qmRoot, args.noImpl)
     
 if args.backend == "c":
-    ccoder.generateCode(smname, statechart, args.noImpl)
+    ccoder.generateCode(smname, qmRoot, args.noImpl)
     
 if args.backend == "qf":
-    qfcoder.generateCode(smname, statechart, args.noImpl, args.noSignals)
+    qfcoder.generateCode(smname, qmRoot, args.noImpl, args.noSignals)
 
 if args.backend == "test":
-    testcoder.generateCode(smname, statechart)
+    testcoder.generateCode(smname, qmRoot)
     
 if args.backend == 'fprime':
     if (args.namespace is None):
@@ -168,7 +182,7 @@ if args.backend == 'fprime':
         exit(0)
     else:
             fppcoder.generateCode(xmiModel)
-            fprimecoder.generateCode(smname, statechart, args.noImpl, args.namespace)
+            fprimecoder.generateCode(smname, qmRoot, args.noImpl, args.namespace)
 
             
         

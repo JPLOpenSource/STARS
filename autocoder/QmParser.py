@@ -14,6 +14,7 @@ import qmlib
 from anytree import Node
 import sys
 import xml.etree.ElementTree as ET
+from xmiModelApi import XmiModel
 
 
 class UniqueNumberGenerator:
@@ -163,7 +164,7 @@ def fixQMThing(qmModel):
 #
 # Process the input QM and return an xmiModel
 # -----------------------------------------------------------------------
-def getXmiModel(xmlfile: str):
+def getXmiModel(xmlfile: str) -> XmiModel:
     print(f'Parsing file: {xmlfile}')
     number_gen = UniqueNumberGenerator()
         
@@ -171,7 +172,7 @@ def getXmiModel(xmlfile: str):
 
     qmModel = fixQMThing(qmModel)
 
-    xmiModel = xmiModelApi.xmiModel(modelName + "Package", modelName)
+    xmiModel = xmiModelApi.XmiModel(modelName + "Package", modelName)
    
     populateXmiModel(qmModel, xmiModel, number_gen)
 

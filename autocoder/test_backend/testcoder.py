@@ -152,7 +152,7 @@ def defaultAllGuards(flatchart: ElementTreeType, configGuards: List[Guard]) -> L
 # This function
 #
 # ----------------------------------------------------------------------- 
-def generateCode(smname: str, statechart: ElementTreeType):
+def generateCode(smname: str, qmRoot: ElementTreeType):
     global codeTemplate
     global unitTestTemplate
     global codeImplTemplate
@@ -164,7 +164,7 @@ def generateCode(smname: str, statechart: ElementTreeType):
     currentState = config.currentState
     event = config.event
 
-    flatchart = flatt.flatten_state_machine(statechart)
+    flatchart = flatt.flatten_state_machine(qmRoot)
 
     guards = defaultAllGuards(flatchart, config.guards)
 

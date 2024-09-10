@@ -18,7 +18,7 @@ import qmlib
 from qf_backend.qftemplates import QFTemplate
 from qf_backend.qfUnitTestTemplates import QFUnitTestTemplate
 from qf_backend.qfImplTemplates import QFImplTemplate
-
+from qmlib import ElementTreeType
     
 # ---------------------------------------------------------------------------
 # formatTarget
@@ -329,7 +329,7 @@ def changeStateNames(root, parentName):
 #
 # Print the state-machine C file
 # ----------------------------------------------------------------------- 
-def generateCode(smname, statechart, noImpl, noSignals):
+def generateCode(smname: str, qmRoot: ElementTreeType, noImpl: bool, noSignals: bool):
     global backend
     global cFile
     global hFile
@@ -339,7 +339,7 @@ def generateCode(smname, statechart, noImpl, noSignals):
     global codeImplTemplate
     
     # Change the state names in the xml to reflect the state hierarchy
-    changeStateNames(statechart, None)
+    changeStateNames(qmRoot, None)
     
     
     backend = "C Quantum Framework"
@@ -358,13 +358,13 @@ def generateCode(smname, statechart, noImpl, noSignals):
         # Generate the Impl files
         print ("Generating " + smname + "Impl.c")
         print ("Generating " + smname + "Impl.h")
-        printImplCode(smname, statechart)
+        printImplCode(smname, qmRoot)
     
         # Generate the unit test files
         print ("Generating main.c")
         print ("Generating sendEvent.h")
         print ("Generating sendEvent.c")
-        printUnitCode(smname, statechart)
+        printUnitCode(smname, qmRoot)
 
        
     if noSignals == False:
@@ -373,15 +373,15 @@ def generateCode(smname, statechart, noImpl, noSignals):
         hFile = open(smname+".h", "w")
         signalFile = open("StatechartSignals.h", "w")
         print ("Generating StatechartSignals.h")
-        printSignals(smname, statechart)
+        printSignals(smname, qmRoot)
 
     # Generate the header file
     print ("Generating " + smname + ".c")
-    printSmHeader(smname, statechart)
+    printSmHeader(smname, qmRoot)
     
     # Generate the C file
     print ("Generating " + smname + ".h")
-    printSmCode(smname, statechart)
+    printSmCode(smname, qmRoot)
     
 
 

@@ -14,6 +14,12 @@ from copy import deepcopy
 import xmiModelApi
 import xmiToQm
 
+from lxml.etree import _ElementTree
+ElementTreeType = _ElementTree 
+from xmiModelApi import XmiModel
+
+
+
 # -------------------------------------------------------------------------
 # createEventSignalMap
 #
@@ -147,8 +153,7 @@ def populateXmiModel(xmlFileNode, xmiModel):
 #
 # Return the namespace and model element from the input xml file
 # -----------------------------------------------------------------------
-def getXmlFileNode(xmlfile):
-    tree = etree.parse(xmlfile)
+def getXmlFileNode(tree: ElementTreeType):
     root = tree.getroot()
     nsmap = root.nsmap
     doc = root.find('xmi:Documentation', nsmap)
@@ -179,11 +184,10 @@ def getXmlStateMachine(xmlFileNode):
 #
 # Process the input CAMEO xmi and return an xmiModel
 # -----------------------------------------------------------------------
-def getXmiModel(xmlfile: str):
+def getXmiModel(root: ElementTreeType) -> XmiModel:
     global XMI_ID, XMI_TYPE, xmiModel
-    print(f'Parsing file: {xmlfile}')
-        
-    (nsmap, xmlFileNode) = getXmlFileNode(xmlfile)
+
+    (nsmap, xmlFileNode) = getXmlFileNode(root)
 
     XMI_ID = "{"+nsmap['xmi']+"}id"
     XMI_TYPE = "{"+nsmap['xmi']+"}type"
@@ -193,7 +197,7 @@ def getXmiModel(xmlfile: str):
     #
     packageName = xmlFileNode.get('name')
     stateMachine = getXmlStateMachine(xmlFileNode)
-    xmiModel = xmiModelApi.xmiModel(packageName, stateMachine.get('name'))
+    xmiModel = xmiModelApi.XmiModel(packageName, stateMachine.get('name'))
 
     # 
     # Populate the xmi model
