@@ -6,14 +6,11 @@
 # -----------------------------------------------------------------------
 # mypy: ignore-errors
 
-from lxml import etree
 from copy import deepcopy
 import xmiModelApi
 import flattenstatemachine as flatt
 import qmlib
 from anytree import Node
-import sys
-import xml.etree.ElementTree as ET
 from xmiModelApi import XmiModel
 
 from lxml.etree import _ElementTree
@@ -36,18 +33,22 @@ class UniqueNumberGenerator:
 # -------------------------------------------------------------------------
 # parseTrans
 #
-# Recursively parse a qm model and populate the xmiModel
+# Recursively parse a qm transition and populate the xmiModel
 # --------------------------------------------------------------------------
-def parseTrans(qmModel, xmiModel, xmiNode, number_gen):
+def parseTrans(qmTrans: ElementTreeType, 
+               xmiModel: XmiModel, 
+               xmiNode: Node, 
+               number_gen: UniqueNumberGenerator):
+    
     source = xmiNode.id
-    target = int(qmModel.get('target')) if qmModel.get('target') else None
-    kind = qmModel.get('kind')  
-    guard = qmlib.pick_guard(qmModel)
-    action = flatt.pick_action(qmModel)
-    event = qmModel.get('trig')
+    target = int(qmTrans.get('target')) if qmTrans.get('target') else None
+    kind = qmTrans.get('kind')  
+    guard = qmlib.pick_guard(qmTrans)
+    action = flatt.pick_action(qmTrans)
+    event = qmTrans.get('trig')
 
     if target is None:
-        choices = qmModel.findall("choice")
+        choices = qmTrans.findall("choice")
         if len(choices) == 2:
             psId = number_gen.get_unique_number()
             psNode = xmiModel.addPsuedostate(psId)
@@ -64,16 +65,19 @@ def parseTrans(qmModel, xmiModel, xmiNode, number_gen):
 #
 # Recursively parse the qm model and populate the xmiModel
 # --------------------------------------------------------------------------
-def parseStateTree(qmModel, xmiModel, xmiNode, number_gen):
+def parseStateTree(qmRoot: ElementTreeType, 
+                   xmiModel: XmiModel, 
+                   xmiNode: Node, 
+                   number_gen: UniqueNumberGenerator):
 
-    for init in qmModel.findall("initial"):
+    for init in qmRoot.findall("initial"):
         psNode = xmiModel.addPsuedostate(number_gen.get_unique_number(), xmiNode)
         parseTrans(init, xmiModel, psNode, number_gen)
 
-    for tran in qmModel.findall("tran"):
+    for tran in qmRoot.findall("tran"):
         parseTrans(tran, xmiModel, xmiNode, number_gen)
 
-    for state in qmModel.findall("state"):
+    for state in qmRoot.findall("state"):
         stateName = state.get('name')
         entry = flatt.pick_entry(state)
         exit = flatt.pick_exit(state)
@@ -86,7 +90,9 @@ def parseStateTree(qmModel, xmiModel, xmiNode, number_gen):
 #
 # Recursively parse the qm model and populate the xmiModel
 # --------------------------------------------------------------------------
-def populateXmiModel(qmRoot, smname):
+def populateXmiModel(qmRoot: ElementTreeType, 
+                     smname: str) -> XmiModel:
+
     qmFix = fixQMThing(qmRoot)
     number_gen = UniqueNumberGenerator()
     
@@ -128,7 +134,8 @@ def populateXmiModel(qmRoot, smname):
 # choice and then adds the children directly under the transition,
 # essentilly moving everything up.
 # -----------------------------------------------------------------------
-def fixQMThing(qmRoot):
+def fixQMThing(qmRoot: ElementTreeType) -> ElementTreeType:
+
     qmFix = deepcopy(qmRoot)
     for tran in qmFix.iter("tran"):
         choices = tran.findall("choice")
