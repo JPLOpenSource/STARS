@@ -5,6 +5,8 @@ from lxml import etree
 from qmlib import ElementTreeType
 from typing import List, Tuple, Optional, Any
 import qmlib
+import sys
+
 
 
 # ----------------------------------------------------------------------------
@@ -16,7 +18,6 @@ import qmlib
 # Then go through all the leaf states and add transitions from their parents.
 # ----------------------------------------------------------------------------
 def leaf_states_inherit(root: ElementTreeType):
-    
 
     # Go through all the transitions and mark those that are local and self
     trans = root.iter('tran')
@@ -478,19 +479,19 @@ def new_rec(tran: ElementTreeType, parent: ElementTreeType, transActionList: Lis
 # debug, and translate into implementation code.
 # 
 # -----------------------------------------------------------------------------   
-def flatten_state_machine(statechart: ElementTreeType) -> ElementTreeType:
+def flatten_state_machine(qmRoot: ElementTreeType) -> ElementTreeType:
 
-    leaf_states_inherit(statechart)
+    leaf_states_inherit(qmRoot)
 
     flatchart: ElementTreeType = etree.Element("FlatStateChart")
     
-    initialTran = statechart.find('initial')
+    initialTran = qmRoot.find('initial')
     new_initialTran = etree.SubElement(flatchart, 'initial')
 
     transActionList: List[str] = []
     new_rec(initialTran, new_initialTran, transActionList)
 
-    states = statechart.iter("state")
+    states = qmRoot.iter("state")
     for state in states:
         if is_leaf(state):
             new_state = etree.SubElement(flatchart, state.tag, attrib=state.attrib)

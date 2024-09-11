@@ -97,6 +97,7 @@ import CameoParser
 import QmParser
 import UmlParser
 import xmiToQm
+import qmlib
 from xmiModelApi import XmiModel
 
 
@@ -109,13 +110,12 @@ ElementTreeType = _ElementTree
 # Parse the input model files and return the QM Root which is used
 # for the code generation.
 # -----------------------------------------------------------------------
-def getQmRoot(modelFileName: str) -> Tuple[ElementTreeType, XmiModel, str] :
+def getQmRoot(modelFileName: str) -> Tuple[ElementTreeType, XmiModel] :
 
     suff = os.path.basename(modelFileName).split('.')[1]
 
     qmRoot: ElementTreeType
     xmiModel: XmiModel
-    smname: str
 
     if suff == 'qm':
         qmRoot = etree.parse(modelFileName)
@@ -131,12 +131,7 @@ def getQmRoot(modelFileName: str) -> Tuple[ElementTreeType, XmiModel, str] :
         print("Unknown suffix {0} on file {1}".format(suff, modelFileName))
         sys.exit(0)
 
-    package = qmRoot.find('package')
-    className = package.find('class')
-    smname = className.get('name')
-    qmRoot = className.find('statechart')
-
-    return qmRoot, xmiModel, smname
+    return qmRoot, xmiModel
 
 
 # -----------------------------------------------------------------------
@@ -159,22 +154,22 @@ qmRoot: ElementTreeType
 xmiModel: XmiModel
 smname: str
 
-qmRoot, xmiModel, smname = getQmRoot(args.model)
+qmRoot, xmiModel = getQmRoot(args.model)
 
 # Perform state-machine semantics checking
-checkFaults.checkStateMachine(smname, qmRoot)
+checkFaults.checkStateMachine(qmRoot)
 
 if args.backend == "c++":
-    cppcoder.generateCode(smname, qmRoot, args.noImpl)
+    cppcoder.generateCode(qmRoot, args.noImpl)
     
 if args.backend == "c":
-    ccoder.generateCode(smname, qmRoot, args.noImpl)
+    ccoder.generateCode(qmRoot, args.noImpl)
     
 if args.backend == "qf":
-    qfcoder.generateCode(smname, qmRoot, args.noImpl, args.noSignals)
+    qfcoder.generateCode(qmRoot, args.noImpl, args.noSignals)
 
 if args.backend == "test":
-    testcoder.generateCode(smname, qmRoot)
+    testcoder.generateCode(qmRoot)
     
 if args.backend == 'fprime':
     if (args.namespace is None):
@@ -182,7 +177,7 @@ if args.backend == 'fprime':
         exit(0)
     else:
             fppcoder.generateCode(xmiModel)
-            fprimecoder.generateCode(smname, qmRoot, args.noImpl, args.namespace)
+            fprimecoder.generateCode(qmRoot, args.noImpl, args.namespace)
 
             
         

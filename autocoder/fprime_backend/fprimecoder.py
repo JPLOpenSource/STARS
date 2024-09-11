@@ -44,22 +44,22 @@ codeImplTemplate = FprimeImplTemplate()
 #
 # Print the state-machine header file
 # -----------------------------------------------------------------------  
-def printSmHeader(smname: str, root: ElementTreeType, namespace: str):
+def printSmHeader(smname: str, qmRoot: ElementTreeType, namespace: str):
         
     hFile = open(smname+".hpp", "w")
     eventList = []
-    trans = root.iter('tran')
+    trans = qmRoot.iter('tran')
     for tran in trans:
         event = tran.get('trig').upper() + "_SIG"
         if event not in eventList:
             eventList.append(event)
         
     stateList = []
-    states = root.iter('state')
+    states = qmRoot.iter('state')
     for state in states:
         stateList.append(state.get('name'))            
 
-    funcList = get_function_signatures(root, smname)
+    funcList = get_function_signatures(qmRoot, smname)
 
     hFile.write(codeTemplate.fileHeader(smname, stateList, eventList, namespace, funcList ))
         
@@ -202,16 +202,16 @@ def printStateTransition(state: ElementTreeType, smname: str, tran: ElementTreeT
 #
 # Print the state-machine C file
 # -----------------------------------------------------------------------  
-def printSmCode(smname: str, root: ElementTreeType, namespace: str):
+def printSmCode(smname: str, qmRoot: ElementTreeType, namespace: str):
 
     cFile= open(smname+".cpp", "w")
     transFile = open(smname+".trans", "w")
            
-    initialTran = root.find('initial')
+    initialTran = qmRoot.find('initial')
     initialCode = qmlib.format_C(printFlatTransition(smname, initialTran), 4)
     cFile.write(codeTemplate.stateMachineInit(smname, initialCode, namespace))
 
-    states = root.iter("state")
+    states = qmRoot.iter("state")
     for state in states:
         cFile.write(codeTemplate.stateMachineState(state.get('name')))
         trans = state.findall('tran')
@@ -228,7 +228,7 @@ def printSmCode(smname: str, root: ElementTreeType, namespace: str):
 #
 # Print unit test files
 # -----------------------------------------------------------------------  
-def printUnitCode(smname: str, implHdr: str, component: str, namespace: str, root: ElementTreeType):
+def printUnitCode(smname: str, implHdr: str, component: str, namespace: str, qmRoot: ElementTreeType):
     # Open the generated files
     mainFile= open("main.cpp", "w")
     sendEventHFile = open("sendEvent.h", "w")
@@ -238,7 +238,7 @@ def printUnitCode(smname: str, implHdr: str, component: str, namespace: str, roo
     sendEventHFile.write(unitTestTemplate.sendEventHeaderFile(smname, namespace))
     
     
-    trans = root.iter("tran")
+    trans = qmRoot.iter("tran")
     triggerList = []
     for tran in trans:
         trig = tran.get("trig").upper() + "_SIG"
@@ -349,17 +349,17 @@ def get_function_signatures(root: ElementTreeType, smname: str) -> List[str]:
 #
 # Print Component stub files
 # -----------------------------------------------------------------------  
-def printComponentCode(root, smname: str, namespace: str, component: str):
+def printComponentCode(qmRoot: ElementTreeType, smname: str, namespace: str, component: str):
 
     # Open the generated files
     compImplFile = open(component+".cpp", "w")
     compHdrFile = open(component+".hpp", "w")
 
-    funcList = get_function_signatures(root, smname)
+    funcList = get_function_signatures(qmRoot, smname)
 
     compHdrFile.write(codeImplTemplate.componentHdrFile(smname, namespace, component, funcList))
 
-    (guardList, actionList) = get_function_defs(root, smname, namespace, component)
+    (guardList, actionList) = get_function_defs(qmRoot, smname, namespace, component)
 
     compImplFile.write(codeImplTemplate.componentFile(smname, namespace, component, guardList, actionList))
 
@@ -374,7 +374,7 @@ def printComponentCode(root, smname: str, namespace: str, component: str):
 #
 # Print state enumeration fpp
 # -----------------------------------------------------------------------  
-def printEnumFpp(smname: str, root: ElementTreeType, namespace: str):
+def printEnumFpp(smname: str, qmRoot: ElementTreeType, namespace: str):
         
     # Open the generated files
 
@@ -382,7 +382,7 @@ def printEnumFpp(smname: str, root: ElementTreeType, namespace: str):
     file = open(fileName, "w")
     print(f'Generating {fileName}')
     
-    states = root.iter("state")
+    states = qmRoot.iter("state")
     stateList = []
     for state in states:
         stateList.append(state.get('name'))
@@ -409,11 +409,12 @@ def printEnumFpp(smname: str, root: ElementTreeType, namespace: str):
 # For a user the only important product is the State-machine code, 
 # everything else is only important for the tool developer.
 # ----------------------------------------------------------------------- 
-def generateCode(smname: str, qmRoot: ElementTreeType, noImpl: bool, namespace: str):
+def generateCode(qmRoot: ElementTreeType, noImpl: bool, namespace: str):
     global codeTemplate
     global unitTestTemplate
     global codeImplTemplate
 
+    qmRoot, smname = qmlib.get_state_machine(qmRoot)
 
     print(f'Generating Fprime C++ backend for state machine {smname}')
 

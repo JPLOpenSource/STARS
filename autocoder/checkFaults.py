@@ -405,7 +405,8 @@ def checkEvents(qmRoot: ElementTreeType):
 # Check the state-machine for valid semantics
 #
 # -----------------------------------------------------------------------
-def checkStateMachine(smname: str, qmRoot: ElementTreeType):
+def checkStateMachine(qmRoot: ElementTreeType):
+    qmRoot, smname = qmlib.get_state_machine(qmRoot)
     errorMessage = "\n*** Error parsing the state-machine: '{0}' ".format(smname)
     try:
         initialTransition(qmRoot)

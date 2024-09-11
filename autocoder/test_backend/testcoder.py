@@ -152,10 +152,12 @@ def defaultAllGuards(flatchart: ElementTreeType, configGuards: List[Guard]) -> L
 # This function
 #
 # ----------------------------------------------------------------------- 
-def generateCode(smname: str, qmRoot: ElementTreeType):
+def generateCode(qmRoot: ElementTreeType):
     global codeTemplate
     global unitTestTemplate
     global codeImplTemplate
+
+    qmRoot, smname = qmlib.get_state_machine(qmRoot)
 
     with open(TEST_JSON_FILE, 'r') as file:
         json_data = json.load(file)

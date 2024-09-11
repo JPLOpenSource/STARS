@@ -329,7 +329,7 @@ def changeStateNames(root, parentName):
 #
 # Print the state-machine C file
 # ----------------------------------------------------------------------- 
-def generateCode(smname: str, qmRoot: ElementTreeType, noImpl: bool, noSignals: bool):
+def generateCode(qmRoot: ElementTreeType, noImpl: bool, noSignals: bool):
     global backend
     global cFile
     global hFile
@@ -338,6 +338,8 @@ def generateCode(smname: str, qmRoot: ElementTreeType, noImpl: bool, noSignals: 
     global unitTestTemplate
     global codeImplTemplate
     
+    qmRoot, smname = qmlib.get_state_machine(qmRoot)
+
     # Change the state names in the xml to reflect the state hierarchy
     changeStateNames(qmRoot, None)
     
