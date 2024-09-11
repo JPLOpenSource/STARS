@@ -119,7 +119,7 @@ def getQmRoot(modelFileName: str) -> Tuple[ElementTreeType, XmiModel] :
 
     if suff == 'qm':
         qmRoot = etree.parse(modelFileName)
-        xmiModel = QmParser.getXmiModel(modelFileName)
+        xmiModel = QmParser.getXmiModel(qmRoot)
     elif suff == 'xml':
         cameoRoot: ElementTreeType = etree.parse(modelFileName)
         xmiModel = CameoParser.getXmiModel(cameoRoot)

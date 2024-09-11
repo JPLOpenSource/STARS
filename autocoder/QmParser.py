@@ -16,6 +16,9 @@ import sys
 import xml.etree.ElementTree as ET
 from xmiModelApi import XmiModel
 
+from lxml.etree import _ElementTree
+ElementTreeType = _ElementTree 
+
 
 class UniqueNumberGenerator:
     def __init__(self):
@@ -83,14 +86,19 @@ def parseStateTree(qmModel, xmiModel, xmiNode, number_gen):
 #
 # Recursively parse the qm model and populate the xmiModel
 # --------------------------------------------------------------------------
-def populateXmiModel(qmModel, xmiModel, number_gen):
+def populateXmiModel(qmRoot, smname):
+    qmFix = fixQMThing(qmRoot)
+    number_gen = UniqueNumberGenerator()
+    
+    xmiModel = xmiModelApi.XmiModel(smname + "Package", smname)
+
     # Add a unique ID to every state
-    states = qmModel.iter("state")
+    states = qmFix.iter("state")
     for state in states:
         state.set("id", str(number_gen.get_unique_number()))
 
     # Replace the relative target attributes with ID's
-    for node in qmModel.iter():
+    for node in qmFix.iter():
         target = node.get("target")
         if target is not None:
             targetId = flatt.state_from_target(node).get("id")
@@ -98,29 +106,16 @@ def populateXmiModel(qmModel, xmiModel, number_gen):
 
     # Search for internal transitions.  Internal transitions do not have a 
     # target and do not have an option child.  Mark the transition as internal
-    for tran in qmModel.iter("tran"):
+    for tran in qmFix.iter("tran"):
         if tran.get('target') is None:
             # Look for choice nodes
             choices = list(tran.iter("choice"))
             if len(choices) == 0:
                 tran.set("kind", "internal")
 
-    parseStateTree(qmModel, xmiModel, xmiModel.tree, number_gen)
-
-#-----------------------------------------------------------------------
-# getXmlFileNode
-#
-# Return the etree model
-# -----------------------------------------------------------------------
-def getXmlFileNode(xmlfile):
-    tree = etree.parse(xmlfile)
-    root = tree.getroot()
-    package = root.find('package')
-    className = package.find('class')
-    modelName = className.get('name')
-    statemachine = className.find('statechart')
-    return modelName, statemachine
-
+    parseStateTree(qmFix, xmiModel, xmiModel.tree, number_gen)
+    
+    return xmiModel
         
 # -----------------------------------------------------------------------
 # fixQMThing
@@ -133,8 +128,9 @@ def getXmlFileNode(xmlfile):
 # choice and then adds the children directly under the transition,
 # essentilly moving everything up.
 # -----------------------------------------------------------------------
-def fixQMThing(qmModel):
-    for tran in qmModel.iter("tran"):
+def fixQMThing(qmRoot):
+    qmFix = deepcopy(qmRoot)
+    for tran in qmFix.iter("tran"):
         choices = tran.findall("choice")
         if len(choices) == 1:
 
@@ -156,26 +152,19 @@ def fixQMThing(qmModel):
                 if target is not None:
                     child.set('target', target[3:])
 
-    return qmModel
+    return qmFix
 
 
 # -----------------------------------------------------------------------
 # getXmiModel
 #
-# Process the input QM and return an xmiModel
+# Process the input qmRoot and return an xmiModel
 # -----------------------------------------------------------------------
-def getXmiModel(xmlfile: str) -> XmiModel:
-    print(f'Parsing file: {xmlfile}')
-    number_gen = UniqueNumberGenerator()
-        
-    modelName, qmModel = getXmlFileNode(xmlfile)
+def getXmiModel(qmRoot: ElementTreeType) -> XmiModel:
 
-    qmModel = fixQMThing(qmModel)
+    smRoot, smname = qmlib.get_state_machine(qmRoot)
 
-    xmiModel = xmiModelApi.XmiModel(modelName + "Package", modelName)
-   
-    populateXmiModel(qmModel, xmiModel, number_gen)
-
+    xmiModel = populateXmiModel(smRoot, smname)
 
     return xmiModel
 
