@@ -1,6 +1,7 @@
 MAKEFLAGS += --no-print-directory
 
-all: simple-depend \
+all: Hsm-depend \
+	simple-depend \
 	actions-depend \
 	arg_actions-depend \
 	cameo-depend \
@@ -30,6 +31,10 @@ ut: simple-ut \
 # ---------------
 # All targets
 # ---------------
+
+Hsm-depend:
+	cd ../QHsm && make
+
 simple-depend:
 	cd TestModels/simple && make
 
