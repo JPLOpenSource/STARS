@@ -23,7 +23,7 @@ state machine Simple_Junction {
     }
 
     initial enter Diag
-    on Ev1 enter J_19_0_3_9120299_1628896586656_557397_42413
+    on Ev1 enter J7
   }
 
   state ON {
@@ -39,7 +39,7 @@ state machine Simple_Junction {
   }
 
   initial enter OFF
-  junction J_19_0_3_9120299_1628896586656_557397_42413 {
+  junction J7 {
     if g1 enter OFF \
     else do { a1 } enter ON
   }

@@ -42,23 +42,23 @@ state machine Cameo {
      exit do { s3Exit }
     }
 
-    initial enter J_19_0_3_9120299_1630629321491_798841_42213
-    junction J_19_0_3_9120299_1630629321491_798841_42213 {
+    initial enter J6
+    junction J6 {
       if guard4 enter StateS3 \
       else enter StateS2
     }
     on Ev1 if guard2 do { a1 } enter StateS1
-    on Ev3 enter J_19_0_3_9120299_1630543524955_285094_42225
-    on Ev4 do { a4 } enter J_19_0_3_9120299_1630543524955_285094_42225
+    on Ev3 enter J8
+    on Ev4 do { a4 } enter J8
     on Ev5 enter Running
   }
 
-  initial enter J_19_0_3_9120299_1629507981810_800370_42165
-  junction J_19_0_3_9120299_1629507981810_800370_42165 {
+  initial enter J7
+  junction J7 {
     if guard enter StateS1 \
     else enter Running
   }
-  junction J_19_0_3_9120299_1630543524955_285094_42225 {
+  junction J8 {
     if guard3 enter StateS1 \
     else do { a2 } enter Running
   }

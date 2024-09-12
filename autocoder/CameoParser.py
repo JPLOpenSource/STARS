@@ -184,6 +184,38 @@ def getXmlStateMachine(xmlRoot: ElementTreeType) -> ElementTreeType:
             return e 
 
 # -----------------------------------------------------------------------
+# fixComplexIDs
+#
+# -----------------------------------------------------------------------
+def fixComplexIDs(cameoRoot: ElementTreeType):
+
+    idMap = {}
+    simpleId = 0
+    for element in cameoRoot.iter():
+            if element.tag == "subvertex":
+                umlType = element.get(XMI_TYPE)
+                id = element.get(XMI_ID)
+                if umlType in ["uml:State", "uml:Pseudostate"]:
+                    idMap[id] = simpleId
+                    simpleId += 1
+
+    # Second pass: Update the XML tree with new IDs
+    for element in cameoRoot.iter():
+        if element.tag == "subvertex":
+            umlType = element.get(XMI_TYPE)
+            id = element.get(XMI_ID)
+            if umlType in ["uml:State", "uml:Pseudostate"]:
+                element.set(XMI_ID, str(idMap[id]))
+        if element.tag == "transition":
+            source = element.get('source')
+            target = element.get('target')
+            # Only set source and target if they exist in idMap to avoid KeyErrors
+            if source in idMap:
+                element.set('source', str(idMap[source]))
+            if target in idMap:
+                element.set('target', str(idMap[target]))
+
+# -----------------------------------------------------------------------
 # getXmiModel
 #
 # Process the input CAMEO xmi and return an xmiModel
@@ -196,6 +228,10 @@ def getXmiModel(cameoRoot: ElementTreeType) -> XmiModel:
 
     XMI_ID = "{"+nsmap['xmi']+"}id"
     XMI_TYPE = "{"+nsmap['xmi']+"}type"
+
+    # The Cameo file has some very long ID's
+    # Change the ID's to simple unique integers
+    fixComplexIDs(cameoRoot)
 
     #
     # Instantiate the xmi model
@@ -210,11 +246,5 @@ def getXmiModel(cameoRoot: ElementTreeType) -> XmiModel:
     populateXmiModel(xmlRoot, xmiModel)
 
     return xmiModel
-
-
-
-
-
-            
         
 

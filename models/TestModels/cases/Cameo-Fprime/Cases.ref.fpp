@@ -24,7 +24,7 @@ state machine Cases {
     }
 
     initial enter Diag
-    on EV1 enter J_19_0_3_9120299_1629496586218_255778_42420
+    on EV1 enter J7
   }
 
   state on {
@@ -40,7 +40,7 @@ state machine Cases {
   }
 
   initial enter OFF
-  junction J_19_0_3_9120299_1629496586218_255778_42420 {
+  junction J7 {
     if G1 enter OFF \
     else do { A1 } enter on
   }

@@ -31,8 +31,8 @@ state machine String_Guards {
     }
 
     initial enter Far
-    on Ev1 enter J_19_0_3_9120299_1629493344508_32376_42347
-    on Ev2 if g4 do { a5 } enter J_19_0_3_9120299_1629493671793_144012_42620
+    on Ev1 enter J7
+    on Ev2 if g4 do { a5 } enter J10
   }
 
   state ON {
@@ -46,19 +46,19 @@ state machine String_Guards {
   }
 
   initial do { initialAction } enter OFF
-  junction J_19_0_3_9120299_1629493344508_32376_42347 {
-    if g1 do { b2 } enter J_19_0_3_9120299_1629493399322_672823_42359 \
+  junction J7 {
+    if g1 do { b2 } enter J8 \
     else do { a1 } enter OFF
   }
-  junction J_19_0_3_9120299_1629493399322_672823_42359 {
-    if g2 do { b3 } enter J_19_0_3_9120299_1629493464056_47865_42441 \
+  junction J8 {
+    if g2 do { b3 } enter J9 \
     else do { a2 } enter OFF
   }
-  junction J_19_0_3_9120299_1629493464056_47865_42441 {
+  junction J9 {
     if g3 do { b4 } enter ON \
     else do { a3 } enter OFF
   }
-  junction J_19_0_3_9120299_1629493671793_144012_42620 {
+  junction J10 {
     if g5 do { a4 } enter OFF \
     else do { a6 } enter ON
   }
