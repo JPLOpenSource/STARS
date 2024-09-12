@@ -10,7 +10,7 @@ State machine models may be specified using any of these modeling tools: +
 The Autocoder processes the model into any one of the following: +
 1) C state machine code +
 2) C++ state machine code +
-3) F` component state machine code +
+3) F` component state machine code and F` FPP +
 4) Quantum Framework state machine code +
 
 ## Interface and Design

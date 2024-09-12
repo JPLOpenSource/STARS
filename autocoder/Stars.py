@@ -119,13 +119,18 @@ def getQmRoot(modelFileName: str) -> Tuple[ElementTreeType, XmiModel] :
 
     if suff == 'qm':
         qmRoot = etree.parse(modelFileName)
+        # Translate QM to XMI
         xmiModel = QmParser.getXmiModel(qmRoot)
     elif suff == 'xml':
+        # Translate Cameo to XMI
         cameoRoot: ElementTreeType = etree.parse(modelFileName)
         xmiModel = CameoParser.getXmiModel(cameoRoot)
+        # Translate XMI to QM
         qmRoot = xmiToQm.translateXmiModelToQmFile(xmiModel, args.debug)
     elif suff == 'plantuml':
+        # Translate UML to XMI
         xmiModel = UmlParser.getXmiModel(modelFileName)
+        # Translate XMI to QM
         qmRoot = xmiToQm.translateXmiModelToQmFile(xmiModel, args.debug)
     else:
         print("Unknown suffix {0} on file {1}".format(suff, modelFileName))
@@ -156,7 +161,7 @@ smname: str
 
 qmRoot, xmiModel = getQmRoot(args.model)
 
-# Perform state-machine semantics checking
+# Check Correctness of the QM
 checkFaults.checkStateMachine(qmRoot)
 
 if args.backend == "c++":
