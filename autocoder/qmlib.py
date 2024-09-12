@@ -10,11 +10,11 @@ from lxml import etree
 import sys
 from copy import deepcopy
 from Cheetah.Template import Template  # type: ignore
-import copy
-from typing import Any
-from typing import List, Dict, Tuple, Any, Optional, IO
+from typing import List, Dict, Tuple, Optional
+from lxml.etree import _ElementTree
+ElementTreeType = _ElementTree 
+from typing import Tuple
 
-ElementTreeType = Any
 
 # -----------------------------------------------------------------------
 # get_name
@@ -205,3 +205,13 @@ def print_tree(node: ElementTreeType):
     print(xml_string.decode())
 
 
+# ---------------------------------------------------------------------------
+# state_state_machine
+#
+# ---------------------------------------------------------------------------
+def get_state_machine(qmRoot: ElementTreeType) -> Tuple[ElementTreeType, str]:
+    package = qmRoot.find('package')
+    className = package.find('class')
+    statechart = className.find('statechart')
+    smname = className.get('name')
+    return statechart, smname

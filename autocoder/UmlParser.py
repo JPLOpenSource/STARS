@@ -16,7 +16,7 @@ import xmiModelApi
 import xmiToQm
 import os
 import sys
-from xmiModelApi import xmiModel
+from xmiModelApi import XmiModel
 from qmlib import ElementTreeType
 from pyparsing import ParserElement, ParseException
 from typing import Dict, List
@@ -302,7 +302,12 @@ def createStateDefMap(parseList: ParserElement, thisMap:  Dict[str, Dict[str, st
 # Returns:
 #   None: This function does not return a value but builds the XMI model by modifying the 'model' object.
 # ----------------------------------------------------------------------------------------------------------------
-def createXmi(parseList: ParserElement, model: xmiModel, root: xmiModel, stateIdMap: Dict[str, int], stateFunctions: Dict[str, Dict[str, str]]):
+def createXmi(parseList: ParserElement, 
+              model: XmiModel, 
+              root: XmiModel, 
+              stateIdMap: Dict[str, int], 
+              stateFunctions: Dict[str, Dict[str, str]]):
+    
     global global_stateId
 
     # Add states to the XMI
@@ -374,27 +379,15 @@ def createXmi(parseList: ParserElement, model: xmiModel, root: xmiModel, stateId
                                 root)
 
 # ----------------------------------------------------------------------------------------------------------------
-# Function: processUml
+# Function: getXmiModel
 #
 # Description: 
-#   Parses a UML (Unified Modeling Language) file to create an XMI (XML Metadata Interchange) model,
-#   subsequently translating this XMI model to a QM model. The function sets up parsing rules, processes
-#   the UML file, generates state IDs, defines state functions, and constructs the XMI model. It also
-#   supports optional debugging output.
-#
-# Parameters:
-#   umlFileName (str): The name of the UML file to be parsed.
-#   debug (int, optional): Debug flag to enable or disable debugging output. Defaults to 0 (disabled).
-#
-# Global Variables:
-#   XMI_ID, XMI_TYPE, xmiModel: Used for building and managing the XMI model.
-#
-# Returns:
-#   The result of translating the XMI model to a QM file, typically used for further processing or code generation.
-# -----------------------------------------------------------------------------------------------------------------
-def processUml(umlFileName: str, debug: int = 0) -> ElementTreeType:
-    global XMI_ID, XMI_TYPE
-    print("Hello, welcome to the Plant UML parser")
+#   Parses a UML (Unified Modeling Language) file to create an XMI (XML Metadata Interchange) model.
+#   The function sets up parsing rules, processes the UML file, generates state IDs, defines state functions, 
+#   and constructs the XMI model.
+# ----------------------------------------------------------------------------------------------------------------
+def getXmiModel(umlFileName: str) -> XmiModel:
+
     print(f'Parsing file: {umlFileName}')
     
     comment = pyparse.Literal("'") + pyparse.restOfLine
@@ -404,23 +397,9 @@ def processUml(umlFileName: str, debug: int = 0) -> ElementTreeType:
         
     parseResults = umlSyntax.parseFile(umlFile)
 
-
-    # DEBUG the return Parser
-    # print(myList.dump())
-
-    '''
-    We are trying to generate an XMI model from this plantUml model
-    Then we will translate the XMI model to a QM model.
-    Finally, we will pass it to the autocoder.
-    '''
-
-    ########################
-    # Building the XMI Model 
-    ########################
-    
     modelName = os.path.splitext(umlFileName)[0].split('/')[-1]
     
-    xmiModel = xmiModelApi.xmiModel(modelName + "Package", modelName)
+    xmiModel = xmiModelApi.XmiModel(modelName + "Package", modelName)
     
     stateIdMap = createStateIdMap(parseResults)
 
@@ -434,11 +413,5 @@ def processUml(umlFileName: str, debug: int = 0) -> ElementTreeType:
     except KeyError as error:
         handleError(f"State {error.args[0]} has not been defined")
 
-    return xmiToQm.translateXmiModelToQmFile(xmiModel, debug)
-
-
-
-
-            
-        
-
+    return xmiModel
+    

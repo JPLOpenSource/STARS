@@ -17,11 +17,11 @@ QM-QF-depend:
 	cd QM-QF && make clean && make && make ut
 
 QM-Fprime-depend:
-	cd QM-Fprime && make clean && make && make ut
+	cd QM-Fprime && make clean && make && make ut && make checkfpp
 
 UML-C-depend:
 	cd UML-C && make clean && make && make ut
 
 UML-Fprime-depend:
-	cd UML-Fprime && make clean && make && make ut
+	cd UML-Fprime && make clean && make && make ut && make checkfpp
 

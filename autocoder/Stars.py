@@ -79,6 +79,7 @@
 # -----------------------------------------------------------------------
 import os
 from lxml import etree
+from typing import Tuple
 import sys
 
 if sys.version_info[0] < 3:
@@ -90,12 +91,47 @@ import qf_backend.qfcoder as qfcoder
 import cpp_backend.cppcoder as cppcoder
 import fprime_backend.fprimecoder as fprimecoder
 import test_backend.testcoder as testcoder
+import fprime_backend.fppcoder as fppcoder
 import checkFaults
 import CameoParser
+import QmParser
 import UmlParser
+import xmiToQm
+import qmlib
+from xmiModelApi import XmiModel
 
-from typing import Any
-ElementTreeType = Any
+
+from lxml.etree import _ElementTree
+ElementTreeType = _ElementTree 
+
+# -----------------------------------------------------------------------
+# getQmRoot
+#
+# Parse the input model files and return the QM Root which is used
+# for the code generation.
+# -----------------------------------------------------------------------
+def getQmRoot(modelFileName: str) -> Tuple[ElementTreeType, XmiModel] :
+
+    suff = os.path.basename(modelFileName).split('.')[1]
+
+    qmRoot: ElementTreeType
+    xmiModel: XmiModel
+
+    if suff == 'qm':
+        qmRoot = etree.parse(modelFileName)
+        xmiModel = QmParser.getXmiModel(qmRoot)
+    elif suff == 'xml':
+        cameoRoot: ElementTreeType = etree.parse(modelFileName)
+        xmiModel = CameoParser.getXmiModel(cameoRoot)
+        qmRoot = xmiToQm.translateXmiModelToQmFile(xmiModel, args.debug)
+    elif suff == 'plantuml':
+        xmiModel = UmlParser.getXmiModel(modelFileName)
+        qmRoot = xmiToQm.translateXmiModelToQmFile(xmiModel, args.debug)
+    else:
+        print("Unknown suffix {0} on file {1}".format(suff, modelFileName))
+        sys.exit(0)
+
+    return qmRoot, xmiModel
 
 
 # -----------------------------------------------------------------------
@@ -114,48 +150,35 @@ parser.add_argument("-debug", help="prints out the models", action = "store_true
 
 args = parser.parse_args()
 
-# Do the state machine autocoder
-inputFile = args.model
+qmRoot: ElementTreeType
+xmiModel: XmiModel
+smname: str
 
-suff = os.path.basename(inputFile).split('.')[1]
-
-if suff == 'qm':
-    root: ElementTreeType = etree.parse(inputFile)
-elif suff == 'xml':
-    root = CameoParser.processCameo(inputFile, args.debug)
-elif suff == 'plantuml':
-    root = UmlParser.processUml(inputFile, args.debug)
-else:
-    print("Unknown suffix {0} on file {1}".format(suff, inputFile))
-    sys.exit(0)
-
-package: ElementTreeType = root.find('package')
-className = package.find('class')
-statechart: ElementTreeType = className.find('statechart')
-# Process the states by adding an index attribute
-smname: str = className.get('name')
+qmRoot, xmiModel = getQmRoot(args.model)
 
 # Perform state-machine semantics checking
-checkFaults.checkStateMachine(smname, statechart)
+checkFaults.checkStateMachine(qmRoot)
 
 if args.backend == "c++":
-    cppcoder.generateCode(smname, statechart, args.noImpl)
+    cppcoder.generateCode(qmRoot, args.noImpl)
     
 if args.backend == "c":
-    ccoder.generateCode(smname, statechart, args.noImpl)
+    ccoder.generateCode(qmRoot, args.noImpl)
     
 if args.backend == "qf":
-    qfcoder.generateCode(smname, statechart, args.noImpl, args.noSignals)
+    qfcoder.generateCode(qmRoot, args.noImpl, args.noSignals)
 
 if args.backend == "test":
-    testcoder.generateCode(smname, statechart)
+    testcoder.generateCode(qmRoot)
     
 if args.backend == 'fprime':
     if (args.namespace is None):
         print("*** Error - missing namespace argument for the fprime backend")
         exit(0)
     else:
-            fprimecoder.generateCode(smname, statechart, args.noImpl, args.namespace)
+            fppcoder.generateCode(xmiModel)
+            fprimecoder.generateCode(qmRoot, args.noImpl, args.namespace)
+
             
         
     

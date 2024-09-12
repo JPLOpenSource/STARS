@@ -275,17 +275,16 @@ def printImplCode(smname: str, root: ElementTreeType):
 # everything else is only important for the tool developer.
 
 # ----------------------------------------------------------------------- 
-def generateCode(smname: str, statechart: ElementTreeType, noImpl: bool):
+def generateCode(qmRoot: ElementTreeType, noImpl: bool):
     global codeTemplate
     global unitTestTemplate
     global codeImplTemplate
 
-    #qmlib.print_tree(statechart)
-        
-    print ("Generating flat C code for {0}".format(smname))
-    
+    qmRoot, smname = qmlib.get_state_machine(qmRoot)
 
-    flatchart : ElementTreeType = flatt.flatten_state_machine(statechart)
+    print ("Generating flat C code for {0}".format(smname))
+
+    flatchart : ElementTreeType = flatt.flatten_state_machine(qmRoot)
     
     if noImpl == False:
         # Generate the Impl files

@@ -1,0 +1,48 @@
+**** Running the state-machine autocoder ****
+../../../../autocoder/Stars.py -backend fprime -namespace Ref -model ../String_Guards.qm
+State-machine semantics look good
+Parsing file: ../String_Guards.qm
+*** Found trans with only 1 choice, trig = Ev2
+child = guard
+child = action
+child = choice
+child = choice
+child = choice_glyph
+<statechart properties="0x01">
+    <initial target="../2">
+     <initial_glyph conn="103,29,5,0,3,10">
+      <action box="0,-2,13,5" />
+     </initial_glyph>
+    </initial>
+    <state name="ON">
+     <state_glyph node="93,70,50,40" />
+    </state>
+    <state name="OFF">
+     <tran trig="Ev2">
+      <tran_glyph conn="134,54,1,-1,13">
+       <action box="3,-3,13,3" />
+      </tran_glyph>
+     <guard brief="g4()" />
+       <action brief="a5()" />
+       <choice target="../../../../1">
+        <action brief="a6()" />
+        <choice_glyph conn="166,54,4,1,20,-23">
+         <action box="0,6,11,5" />
+        </choice_glyph>
+       </choice>
+       <choice target="../../..">
+        <guard brief="g5()" />
+        <action brief="a4()" />
+        <choice_glyph conn="166,54,4,1,-6,-32">
+         <action box="-12,-9,19,5" />
+        </choice_glyph>
+       </choice>
+       <choice_glyph conn="147,54,5,-1,19">
+        <action box="6,-3,12,3" />
+       </choice_glyph>
+      </tran>
+     <state_glyph node="97,39,37,23" />
+    </state>
+    <state_diagram size="257,134" />
+   </statechart>
+  
