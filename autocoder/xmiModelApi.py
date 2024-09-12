@@ -22,7 +22,7 @@ class XmiModel:
     idMap = {}
     transTargets = set()
 
-    def __init__(self, packageName, stateMachineName):
+    def __init__(self, packageName: str, stateMachineName:str):
         self.tree.package = packageName
         self.tree.stateMachine = stateMachineName
 

@@ -6,13 +6,11 @@
 # -----------------------------------------------------------------------
 # mypy: ignore-errors
 
-from lxml import etree
-from anytree import Node, RenderTree
-import anytree
-import sys
+from anytree import Node
 from copy import deepcopy
 import xmiModelApi
-import xmiToQm
+from typing import Tuple, Dict
+
 
 from lxml.etree import _ElementTree
 ElementTreeType = _ElementTree 
@@ -26,7 +24,8 @@ from xmiModelApi import XmiModel
 # Create a mapping of event id's to signal names and return the map
 #
 # --------------------------------------------------------------------------
-def createEventSignalMap(xmlFileNodeModel, xmlFileNodeStateMachine):
+def createEventSignalMap(xmlFileNodeModel: ElementTreeType, 
+                         xmlFileNodeStateMachine: ElementTreeType):
     global XMI_ID
 
     eventToSignalMap = {}
@@ -57,7 +56,9 @@ def createEventSignalMap(xmlFileNodeModel, xmlFileNodeStateMachine):
 #
 # Recursively parse the xmi file root and populate the xmiModel
 # --------------------------------------------------------------------------
-def parseStateTree(xmlFileNode, xmiModelNode):
+def parseStateTree(xmlFileNode: ElementTreeType, 
+                   xmiModelNode: Node):
+    
     global XMI_TYPE
     global XMI_ID
     global eventToNameMap
@@ -136,16 +137,17 @@ def parseStateTree(xmlFileNode, xmiModelNode):
 #
 # Recursively parse the input xml File nodes root and populate the xmiModel
 # --------------------------------------------------------------------------
-def populateXmiModel(xmlFileNode, xmiModel):
+def populateXmiModel(xmlRoot: ElementTreeType, xmiModel: XmiModel):
+
     global XMI_TYPE
     global XMI_ID
     global eventToNameMap
 
-    stateMachine = getXmlStateMachine(xmlFileNode)
+    smRoot: ElementTreeType = getXmlStateMachine(xmlRoot)
 
-    eventToNameMap = createEventSignalMap(xmlFileNode, stateMachine)
+    eventToNameMap = createEventSignalMap(xmlRoot, smRoot)
 
-    parseStateTree(stateMachine, xmiModel.getRoot())
+    parseStateTree(smRoot, xmiModel.getRoot())
 
 
 #-----------------------------------------------------------------------
@@ -153,28 +155,30 @@ def populateXmiModel(xmlFileNode, xmiModel):
 #
 # Return the namespace and model element from the input xml file
 # -----------------------------------------------------------------------
-def getXmlFileNode(tree: ElementTreeType):
-    root = tree.getroot()
+def getXmlFileNode(cameoRoot: ElementTreeType) -> Tuple[Dict[str, str], ElementTreeType]:
+
+    root = cameoRoot.getroot()
     nsmap = root.nsmap
     doc = root.find('xmi:Documentation', nsmap)
     version = doc.find('xmi:exporterVersion', nsmap)
     print("MagicDraw version = {0}".format(version.text))
 
     # Get the Model
-    model = root.find('uml:Model', nsmap)
+    xmlRoot = root.find('uml:Model', nsmap)
 
     XMI_TYPE = "{"+nsmap['xmi']+"}type"
 
-    return(nsmap, model)
+    return(nsmap, xmlRoot)
 
 # -----------------------------------------------------------------------------
 # getXmlStateMachine
 #
 # Given the xml File element, find and return the uml:StateMachine xml element
 # ------------------------------------------------------------------------------
-def getXmlStateMachine(xmlFileNode):
+def getXmlStateMachine(xmlRoot: ElementTreeType) -> ElementTreeType:
+
     # Get the StateMachine node from the xml File.
-    pe = xmlFileNode.findall("packagedElement")
+    pe = xmlRoot.findall("packagedElement")
     for e in pe:
         if e.get(XMI_TYPE) == "uml:StateMachine":
             return e 
@@ -184,10 +188,11 @@ def getXmlStateMachine(xmlFileNode):
 #
 # Process the input CAMEO xmi and return an xmiModel
 # -----------------------------------------------------------------------
-def getXmiModel(root: ElementTreeType) -> XmiModel:
+def getXmiModel(cameoRoot: ElementTreeType) -> XmiModel:
+    
     global XMI_ID, XMI_TYPE, xmiModel
 
-    (nsmap, xmlFileNode) = getXmlFileNode(root)
+    (nsmap, xmlRoot) = getXmlFileNode(cameoRoot)
 
     XMI_ID = "{"+nsmap['xmi']+"}id"
     XMI_TYPE = "{"+nsmap['xmi']+"}type"
@@ -195,14 +200,14 @@ def getXmiModel(root: ElementTreeType) -> XmiModel:
     #
     # Instantiate the xmi model
     #
-    packageName = xmlFileNode.get('name')
-    stateMachine = getXmlStateMachine(xmlFileNode)
-    xmiModel = xmiModelApi.XmiModel(packageName, stateMachine.get('name'))
+    packageName = xmlRoot.get('name')
+    smRoot = getXmlStateMachine(xmlRoot)
+    xmiModel = xmiModelApi.XmiModel(packageName, smRoot.get('name'))
 
     # 
     # Populate the xmi model
     # 
-    populateXmiModel(xmlFileNode, xmiModel)
+    populateXmiModel(xmlRoot, xmiModel)
 
     return xmiModel
 

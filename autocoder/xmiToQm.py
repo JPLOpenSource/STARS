@@ -7,29 +7,28 @@
 # mypy: ignore-errors
 
 from lxml import etree
-from anytree import Node, RenderTree
-import anytree
-import sys
+from anytree import Node
 from copy import deepcopy
-import argparse
-import xmiModelApi
 import qmModelApi
 from qmlib import ElementTreeType
+from xmiModelApi import XmiModel
+from qmModelApi import QmModel
+from typing import List, Any, Dict
+
 
 #-----------------------------------------------------------------------
 # translateXmiModelToQmFile
 #
 # -----------------------------------------------------------------------
-def translateXmiModelToQmFile(xmiModel, debug) -> ElementTreeType:
+def translateXmiModelToQmFile(xmiModel: XmiModel, debug: bool) -> ElementTreeType:
+
     global qmModel
 
     #
     # Instantiate the qm model
     #
     (package, stateMachine) = xmiModel.getPackageAndStatMachineNames()
-    qmModel = qmModelApi.qmModel(package, stateMachine)
-
-    newNode = qmModel.getRoot()
+    qmModel = qmModelApi.QmModel(package, stateMachine)
 
     convertXmiToQmModel(xmiModel, qmModel)
             
@@ -45,7 +44,8 @@ def translateXmiModelToQmFile(xmiModel, debug) -> ElementTreeType:
 #
 # Convert the xmi model to the qm model
 # -----------------------------------------------------------------------
-def convertXmiToQmModel(xmiModel, qmModel):
+def convertXmiToQmModel(xmiModel: XmiModel, qmModel: QmModel):
+
     global psList, stateList, transTargetList, psMapTran
 
     psList = xmiModel.getPsuedoStateList()
@@ -66,16 +66,14 @@ def convertXmiToQmModel(xmiModel, qmModel):
     qmModel.assignAbsolutePositions()
     qmModel.makeRelativeTargets()
 
-    return
-
-
 
 #-----------------------------------------------------------------------
 # mapPsuedoTransitions
 #
 # Return a map that maps psuedo state ID's with outgoing transitions
 # -----------------------------------------------------------------------
-def mapPsuedoTransitions(psList, transList):
+def mapPsuedoTransitions(psList: List[int], 
+                         transList: List[Any]) -> Dict[int, List[Any]]:
 
     thisMap = {}
     class Choice:
@@ -104,7 +102,8 @@ def mapPsuedoTransitions(psList, transList):
 #
 # Copy information from the xmi model to the qm model
 # -----------------------------------------------------------------------
-def copyXmiQmNodes(xmiModelNode, qmModelNode):
+def copyXmiQmNodes(xmiModelNode: Node, qmModelNode: Node):
+
     global psList, stateList, transTargetList, psMapTran
 
     # First do states, then transitions
@@ -173,7 +172,8 @@ def copyXmiQmNodes(xmiModelNode, qmModelNode):
 #
 # Create a Choice node in the qmModel from a target
 # -----------------------------------------------------------------------
-def copyChoice(xmiModelTarget, qmModelNode):
+def copyChoice(xmiModelTarget: int, qmModelNode: Node):
+    
     global psList, stateList, transTargetList, psMapTran
 
     if xmiModelTarget in psList:
@@ -189,7 +189,7 @@ def copyChoice(xmiModelTarget, qmModelNode):
 #
 # Write out the qm xml file
 # -----------------------------------------------------------------------
-def writeToXml(qmModel, debug) -> ElementTreeType:
+def writeToXml(qmModel: QmModel, debug: bool) -> ElementTreeType:
 
     root = etree.Element('model')
     package = etree.SubElement(root, 'package', name=qmModel.getPackageName())
@@ -207,7 +207,7 @@ def writeToXml(qmModel, debug) -> ElementTreeType:
 # writeTreeToXml
 #
 # -----------------------------------------------------------------------
-def writeTreeToXml(qmModelNode, xmlTag):
+def writeTreeToXml(qmModelNode: Node, xmlTag: Node):
 
     for node in qmModelNode.children:
         if node.name == "STATE":

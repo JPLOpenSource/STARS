@@ -302,7 +302,12 @@ def createStateDefMap(parseList: ParserElement, thisMap:  Dict[str, Dict[str, st
 # Returns:
 #   None: This function does not return a value but builds the XMI model by modifying the 'model' object.
 # ----------------------------------------------------------------------------------------------------------------
-def createXmi(parseList: ParserElement, model: XmiModel, root: XmiModel, stateIdMap: Dict[str, int], stateFunctions: Dict[str, Dict[str, str]]):
+def createXmi(parseList: ParserElement, 
+              model: XmiModel, 
+              root: XmiModel, 
+              stateIdMap: Dict[str, int], 
+              stateFunctions: Dict[str, Dict[str, str]]):
+    
     global global_stateId
 
     # Add states to the XMI
@@ -382,7 +387,7 @@ def createXmi(parseList: ParserElement, model: XmiModel, root: XmiModel, stateId
 #   and constructs the XMI model.
 # ----------------------------------------------------------------------------------------------------------------
 def getXmiModel(umlFileName: str) -> XmiModel:
-    global XMI_ID, XMI_TYPE
+
     print(f'Parsing file: {umlFileName}')
     
     comment = pyparse.Literal("'") + pyparse.restOfLine

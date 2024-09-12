@@ -14,7 +14,7 @@ from copy import deepcopy
 import argparse
 
 
-class qmModel:
+class QmModel:
     package = ''
     stateMachine = ''
     tree = Node('new')

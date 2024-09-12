@@ -259,7 +259,7 @@ def stateNames(qmRoot: ElementTreeType):
 #
 # Check for well specified transitions and guards
 # --------------------------------------------------------------------------------------                   
-def checkTransition(state, tran):
+def checkTransition(state: ElementTreeType, tran: ElementTreeType):
     
     # Target
     targetState = flatt.get_tran_target(tran)
@@ -310,6 +310,7 @@ def checkTransition(state, tran):
 #
 # -----------------------------------------------------------------------
 def junctionGuards(qmRoot: ElementTreeType):
+
     states = qmRoot.iter("state")
     for state in states:
         trans = state.findall('tran')
@@ -323,7 +324,7 @@ def junctionGuards(qmRoot: ElementTreeType):
 # and raise expceptions
 #
 # -----------------------------------------------------------------------
-def checkEntryExitAction(action, state):  
+def checkEntryExitAction(action: str, state: ElementTreeType):  
         if action is not None: 
             functions = action.split(';') 
             for function in functions:
@@ -347,7 +348,7 @@ def checkEntryExitAction(action, state):
 # and raise expceptions
 #
 # -----------------------------------------------------------------------
-def checkAction(action, tran):  
+def checkAction(action: str, tran: str):  
         if action is not None: 
             functions = action.strip(';').split(';')
             for function in functions:

@@ -14,11 +14,9 @@ import flattenstatemachine as flatt
 from fprime_backend.fprimetemplates import FprimeTemplate
 from fprime_backend.fprimeUnitTestTemplates import FprimeUnitTestTemplate
 from fprime_backend.fprimeImplTemplates import FprimeImplTemplate
-from typing import List, Dict, Tuple, Any, Optional, IO
+from typing import List, Dict, Tuple, Any, TextIO
 from qmlib import ElementTreeType
 from pydantic import BaseModel
-import json
-import os
 
 # Pydantic classes that specify the configSm.json
 class State(BaseModel):
@@ -44,7 +42,9 @@ codeImplTemplate = FprimeImplTemplate()
 #
 # Print the state-machine header file
 # -----------------------------------------------------------------------  
-def printSmHeader(smname: str, qmRoot: ElementTreeType, namespace: str):
+def printSmHeader(smname: str, 
+                  qmRoot: ElementTreeType, 
+                  namespace: str):
         
     hFile = open(smname+".hpp", "w")
     eventList = []
@@ -81,7 +81,8 @@ def formatTarget(targ: str) -> str:
 # (conditional branches) within transitions. It aims to convert the transition 
 # logic into a series of 'if then else' statements in a flat, textual format. 
 # ---------------------------------------------------------------------------
-def printFlatTransition(smname: str, tran: ElementTreeType) -> List[str]:
+def printFlatTransition(smname: str, 
+                        tran: ElementTreeType) -> List[str]:
     rstr = []
     
     # Action
@@ -139,7 +140,10 @@ def printFlatTransition(smname: str, tran: ElementTreeType) -> List[str]:
 # transitions.  Each transition consists of a guard and target tuple.
 #
 # -------------------------------------------------------------------------
-def dfs_find_target_state(node: ElementTreeType, targetStates: List[Tuple[ElementTreeType, Any, Any]], guardList: List[str], actionList: List[str]):
+def dfs_find_target_state(node: ElementTreeType, 
+                          targetStates: List[Tuple[ElementTreeType, Any, Any]], 
+                          guardList: List[str], 
+                          actionList: List[str]):
 
     guard = node.find('guard')
     if guard is not None:
@@ -171,7 +175,11 @@ def dfs_find_target_state(node: ElementTreeType, targetStates: List[Tuple[Elemen
 #
 # Print a transition from a state
 # ---------------------------------------------------------------------------                   
-def printStateTransition(state: ElementTreeType, smname: str, tran: ElementTreeType, cFile: IO, transFile: IO):
+def printStateTransition(state: ElementTreeType, 
+                         smname: str, 
+                         tran: ElementTreeType, 
+                         cFile: TextIO, 
+                         transFile: TextIO):
         
     targetStates: List[Tuple[ElementTreeType, Any, Any]] = []
     guardList: List[str] = []
@@ -202,7 +210,9 @@ def printStateTransition(state: ElementTreeType, smname: str, tran: ElementTreeT
 #
 # Print the state-machine C file
 # -----------------------------------------------------------------------  
-def printSmCode(smname: str, qmRoot: ElementTreeType, namespace: str):
+def printSmCode(smname: str, 
+                qmRoot: ElementTreeType, 
+                namespace: str):
 
     cFile= open(smname+".cpp", "w")
     transFile = open(smname+".trans", "w")
@@ -228,7 +238,12 @@ def printSmCode(smname: str, qmRoot: ElementTreeType, namespace: str):
 #
 # Print unit test files
 # -----------------------------------------------------------------------  
-def printUnitCode(smname: str, implHdr: str, component: str, namespace: str, qmRoot: ElementTreeType):
+def printUnitCode(smname: str, 
+                  implHdr: str, 
+                  component: str, 
+                  namespace: str, 
+                  qmRoot: ElementTreeType):
+
     # Open the generated files
     mainFile= open("main.cpp", "w")
     sendEventHFile = open("sendEvent.h", "w")
@@ -283,16 +298,18 @@ class ImplFunc:
         self.signature = signature
         self.name = name
 
-def get_function_defs(root: ElementTreeType, smname: str, namespace: str, component: str) -> Tuple[List[ImplFunc], List[ImplFunc]]:
+def get_function_defs(qmRoot: ElementTreeType, 
+                      smname: str, 
+                      namespace: str, 
+                      component: str) -> Tuple[List[ImplFunc], List[ImplFunc]]:
 
-
-    guardFunctions = qmlib.get_guard_functions(root)
-    stateFunctions = qmlib.get_state_functions(root)
-    transFunctions = qmlib.get_trans_functions(root)    
+    guardFunctions = qmlib.get_guard_functions(qmRoot)
+    stateFunctions = qmlib.get_state_functions(qmRoot)
+    transFunctions = qmlib.get_trans_functions(qmRoot)    
     
     actionFunctions = stateFunctions + transFunctions
 
-    funcList = get_function_signatures(root, smname)
+    funcList = get_function_signatures(qmRoot, smname)
 
     guardList: List[ImplFunc]= []
     sigList: List[str] = []
@@ -319,11 +336,12 @@ def get_function_defs(root: ElementTreeType, smname: str, namespace: str, compon
 #
 # Return a list of all the function signatures in the model
 # -----------------------------------------------------------------------  
-def get_function_signatures(root: ElementTreeType, smname: str) -> List[str]:
+def get_function_signatures(qmRoot: ElementTreeType, 
+                            smname: str) -> List[str]:
 
-    guardFunctions = qmlib.get_guard_functions(root)
-    stateFunctions = qmlib.get_state_functions(root)
-    transFunctions = qmlib.get_trans_functions(root)    
+    guardFunctions = qmlib.get_guard_functions(qmRoot)
+    stateFunctions = qmlib.get_state_functions(qmRoot)
+    transFunctions = qmlib.get_trans_functions(qmRoot)    
 
     actionFunctions = stateFunctions + transFunctions
 
@@ -349,7 +367,10 @@ def get_function_signatures(root: ElementTreeType, smname: str) -> List[str]:
 #
 # Print Component stub files
 # -----------------------------------------------------------------------  
-def printComponentCode(qmRoot: ElementTreeType, smname: str, namespace: str, component: str):
+def printComponentCode(qmRoot: ElementTreeType, 
+                       smname: str, 
+                       namespace: str, 
+                       component: str):
 
     # Open the generated files
     compImplFile = open(component+".cpp", "w")
@@ -374,7 +395,9 @@ def printComponentCode(qmRoot: ElementTreeType, smname: str, namespace: str, com
 #
 # Print state enumeration fpp
 # -----------------------------------------------------------------------  
-def printEnumFpp(smname: str, qmRoot: ElementTreeType, namespace: str):
+def printEnumFpp(smname: str, 
+                 qmRoot: ElementTreeType, 
+                 namespace: str):
         
     # Open the generated files
 
@@ -409,7 +432,10 @@ def printEnumFpp(smname: str, qmRoot: ElementTreeType, namespace: str):
 # For a user the only important product is the State-machine code, 
 # everything else is only important for the tool developer.
 # ----------------------------------------------------------------------- 
-def generateCode(qmRoot: ElementTreeType, noImpl: bool, namespace: str):
+def generateCode(qmRoot: ElementTreeType, 
+                 noImpl: bool, 
+                 namespace: str):
+    
     global codeTemplate
     global unitTestTemplate
     global codeImplTemplate
