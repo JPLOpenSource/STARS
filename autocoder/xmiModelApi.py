@@ -21,6 +21,7 @@ class XmiModel:
     psuedoStateList = []
     idMap = {}
     transTargets = set()
+    fstm = {}
 
     def __init__(self, packageName: str, stateMachineName:str):
         self.tree.package = packageName

@@ -1,6 +1,15 @@
 state machine Complex_Composite {
 
+  action a1
+  action a2
+  action a3
+  action a4
+  action boo
+  action doo
+  action foo
   action init1
+  action loo
+  action moo
   action s1111Entry
   action s1111Exit
   action s111Entry
@@ -23,6 +32,8 @@ state machine Complex_Composite {
   signal Ev2
   signal Ev3
   signal Ev4
+  signal Ev7
+  signal TRIG1
 
   state S1 {
    entry do { s1Entry }
@@ -36,15 +47,16 @@ state machine Complex_Composite {
         state s1111 {
          entry do { s1111Entry }
          exit do { s1111Exit }
-          on Ev2 enter S21
-          on Ev3 enter S121
+          on Ev2 do { a2 } enter S21
+          on Ev3 do { a3 } enter S121
+          on Ev7 do { foo }
         }
 
-        initial enter s1111
-        on Ev1 enter S12
+        initial do { loo } enter s1111
+        on Ev1 do { a1 } enter S12
       }
 
-      initial enter S111
+      initial do { moo } enter S111
     }
 
     state S12 {
@@ -53,15 +65,16 @@ state machine Complex_Composite {
       state S121 {
        entry do { s121Entry }
        exit do { s121Exit }
-        on Ev4 enter S111
+        on Ev4 do { a4 } enter S111
       }
 
       initial enter S121
-      on Ev2 enter S11
+      on Ev2 do { a2 } enter S11
     }
 
-    initial enter S11
-    on Ev1 enter S2
+    initial do { doo } enter S11
+    on Ev1 do { a1 } enter S2
+    on TRIG1 enter S1
   }
 
   state S2 {
@@ -72,8 +85,8 @@ state machine Complex_Composite {
      exit do { s21Exit }
     }
 
-    initial enter S21
-    on Ev1 enter S1
+    initial do { boo } enter S21
+    on Ev1 do { a1 } enter S1
   }
 
   initial do { init1 } enter S1

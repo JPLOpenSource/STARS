@@ -99,6 +99,7 @@ import UmlParser
 import xmiToQm
 import qmlib
 from xmiModelApi import XmiModel
+import newflat
 
 
 from lxml.etree import _ElementTree
@@ -182,6 +183,10 @@ if args.backend == 'fprime':
         exit(0)
     else:
             fppcoder.generateCode(xmiModel)
+
+            newflat.flatten_state_machine(xmiModel)
+            sys.exit()
+
             fprimecoder.generateCode(qmRoot, args.noImpl, args.namespace)
 
             
