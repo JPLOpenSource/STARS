@@ -35,13 +35,94 @@ def is_leaf(state: Node) -> bool:
         return False
 
 # -----------------------------------------------------------------------------
+# get_state_ancestors
+#
+# -----------------------------------------------------------------------------   
+def get_state_ancestors(node):
+    # Get the list of ancestors (including the node itself)
+    ancestors_including_self = list(node.ancestors) + [node]
+    # Filter to include only those with the name "STATE"
+    state_ancestors = [n for n in ancestors_including_self if n.name == "STATE"]
+    return state_ancestors
+
+# -----------------------------------------------------------------------------
+# get_state_ancestors
+#
+# -----------------------------------------------------------------------------   
+def print_state_list(msg: str, stateList: List[Node]):
+    print(f"{msg} = ", end = " ")
+    for state in stateList:
+        print(f"{state.stateName}", end = " ")
+    print()
+
+
+# -----------------------------------------------------------------------------
+# common_prefix
+#
+# -----------------------------------------------------------------------------   
+def common_prefix(list1: List[Node], list2: List[Node]) -> List[Node]:
+    prefix = []
+    for elem1, elem2 in zip(list1, list2):
+        if elem1 == elem2:
+            prefix.append(elem1)
+        else:
+            break
+    return prefix
+
+# -----------------------------------------------------------------------------
+# get_exit_actions
+#
+# -----------------------------------------------------------------------------   
+def get_exit_actions(stateList: List[Node]) -> List[str]:
+    thisList = []
+    for state in stateList[::-1]:
+        thisList.append(state.exit)
+    return thisList
+
+# -----------------------------------------------------------------------------
+# get_entry_actions
+#
+# -----------------------------------------------------------------------------   
+def get_entry_actions(stateList: List[Node]) -> List[str]:
+    thisList = []
+    for state in stateList:
+        thisList.append(state.entry)
+    return thisList
+
+
+# -----------------------------------------------------------------------------
 # construct_fst
 #
-# 
 # -----------------------------------------------------------------------------   
-def construct_fst(t: Node) -> Node:
-    if t.kind == "internal":
-        return t
+def construct_fst(xmiModel: XmiModel, state: Node, t: Node) -> Node:
+
+    t_p = copy.deepcopy(t)
+
+    if t_p.kind != "internal":
+        L1 = get_state_ancestors(state)
+        targetId = t.target
+        targetState = xmiModel.idMap[targetId]
+        print(f"{state.stateName} --> {targetState.stateName} {t.event}")
+        L2 = get_state_ancestors(targetState)
+        P = common_prefix(L1, L2)
+
+        if (len(P) != 0) and ((P == L1) or (P == L2)):
+            # This is a self transition, remove the last element of the list 
+            # so that we exit and enter the self transition state
+            P.pop()
+
+        prefix_length = len(P)
+        L1 = L1[prefix_length:]
+        L2 = L2[prefix_length:]        
+
+        exitActions = get_exit_actions(L1)
+        entryActions = get_entry_actions(L2)
+
+        allActions = exitActions + t_p.action.split(';') + entryActions
+        actionString = ';'.join([action for action in allActions if action is not None])
+        t_p.action = actionString
+
+    return t_p
 
 # -----------------------------------------------------------------------------
 # visit_state
@@ -53,28 +134,22 @@ def visit_state(xmiModel: XmiModel, state: Node, stm: Dict[str, Node]):
 
         for sts in get_child_trans(sd):
             s = sts.event
-            if sts.kind == "internal":
-                t = sts
-                print(f"Internal transition {s} with action {t.action}")
-            else:
-                t = sts
-                print(f"Regular transition {s} with action {t.action} and target {t.target}")
+            # Update stm so that it maps s to (g,t). 
             stm[s] = sts
 
-
-        print(f'stm for state {sd.stateName} = {stm.keys()}')
-
         if is_leaf(sd):
-            #t_p = construct_fst(t)
+
+            # For each signal s in stm
+            for s in stm.keys():
+                t_p = construct_fst(xmiModel, sd, stm[s])
+                stm[s] = t_p
+
             xmiModel.fstm[sd] = stm
-            print(f'State {sd.stateName} is Leaf')
         else:
-            print(f'State {sd.stateName} is not Leaf')
             visit_state(xmiModel, sd, stm)
 
         stm = copy.deepcopy(stm_p)
 
-        #visit_state(xmiModel, sd, stm)
 
 # -----------------------------------------------------------------------------
 # flatten_state_machine
@@ -84,5 +159,12 @@ def flatten_state_machine(xmiModel: XmiModel) -> ElementTreeType:
     print("Flattening state machine")
     stm = {}
     visit_state(xmiModel, xmiModel.tree, stm)
+
+    for leafState in xmiModel.fstm.keys():
+        print(f'Leaf State = {leafState.stateName}')
+        for signal in xmiModel.fstm[leafState].keys():
+            print(f'  Signal = {signal}')
+            print(f'  Transition action = {xmiModel.fstm[leafState][signal].action}')
+        
 
     xmiModel.print()
