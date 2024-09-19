@@ -96,6 +96,16 @@ class FprimeTemplate:
 
 
 # -------------------------------------------------------------------------------
+# call_state
+# -------------------------------------------------------------------------------   
+        def call_state(self, smname: str) -> str:
+            template = Template("""enter_$(smname)();""")         
+     
+            template.smname = smname
+            return str(template)
+
+
+# -------------------------------------------------------------------------------
 # actionSignature
 # -------------------------------------------------------------------------------   
         def actionSignature(self, smname: str, action: str, args: str) -> str:
@@ -142,14 +152,14 @@ class FprimeTemplate:
 # -------------------------------------------------------------------------------
 # stateTransition
 # -------------------------------------------------------------------------------   
-        def stateTransition(self, signal: str, transition: str, smname) -> str:
+        def stateTransition(self, signal: str, transitionCode: str, smname) -> str:
             template = Template("""
-                case $(smname)_Interface::$(smname)_Signals::$(signal):
-$(transition)
+                case $(smname)_Interface::$(smname)_Signals::$(signal)_SIG:
+$(transitionCode)
                     break;
     """)
             template.signal = signal
-            template.transition = transition
+            template.transitionCode = transitionCode
             template.smname = smname
             return str(template)
         
@@ -157,7 +167,13 @@ $(transition)
 # -------------------------------------------------------------------------------
 # fileHeader
 # -------------------------------------------------------------------------------   
-        def fileHeader(self, smname: str, stateList: List[str], eventList: List[str], namespace: str, implFunctions: List[str]) -> str:
+        def fileHeader(self, 
+                       smname: str, 
+                       stateList: List[str], 
+                       eventList: List[str], 
+                       namespace: str, 
+                       implFunctions: List[str]) -> str:
+            
             template  = Template("""
 // ======================================================================
 // \\title  $(smname).h
@@ -203,7 +219,12 @@ class $(smname) {
 #for $state in $stateList
       $state,
 #end for
+                                 
     };
+                                 
+#for $state in $stateList
+    void enter_$(state)();
+#end for
     
     enum $(smname)_States state;
 

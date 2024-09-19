@@ -14,6 +14,8 @@ from typing import List, Dict, Tuple, Optional
 from lxml.etree import _ElementTree
 ElementTreeType = _ElementTree 
 from typing import Tuple
+from xmiModelApi import XmiModel
+from anytree import PreOrderIter
 
 
 # -----------------------------------------------------------------------
@@ -96,31 +98,24 @@ def pick_action(tag: ElementTreeType) -> Optional[str]:
         return None
 
 # -----------------------------------------------------------------------
-# get_trans_functions(root)
+# get_trans_functions
 #
-# Traverse the xml tree and return with a list of all the transition
+# Traverse the xmiModel and return with a list of all the transition
 # action functions.
 # -----------------------------------------------------------------------  
-def get_trans_functions(root: ElementTreeType) -> List[str]:
-    list: List[str] = []
-    if root is None:
-        return list;
-    
-    for child in root:
-        if child.tag == 'choice' or child.tag == 'tran' or child.tag == 'initial':
-            action = child.find('action')
-            if action is not None:
-                list.append(action.get('brief'))
-            
-        list = list + get_trans_functions(child)
-        
-    # Handle more than 1 function in an action
-    newList: List[str] = []
-    for i in list:
-        newList = newList + [x.strip() for x in i.strip(';').split(';')]
-        
-    # Remove duplicates from the list
-    return [i for n, i in enumerate(newList) if i not in newList[:n]]
+
+def get_trans_functions(xmiModel: XmiModel) -> List[str]:
+    actions = set()
+    for node in PreOrderIter(xmiModel.tree):
+        if node.name in {"TRANSITION", "INITIAL", "JUNCTION"}:
+            # Loop through the possible action attributes
+            for attr in ["action", "ifAction", "elseAction"]:
+                if hasattr(node, attr) and getattr(node, attr):
+                    # Split the action string by ';' and strip each part
+                    action_list = [x.strip() for x in getattr(node, attr).split(';')]
+                    actions.update(action_list)
+
+    return list(actions)
 
 # -----------------------------------------------------------------------
 # get_state_functions(root)
@@ -128,47 +123,30 @@ def get_trans_functions(root: ElementTreeType) -> List[str]:
 # Traverse the xml tree and return with a list of all the state entry
 # and exit functions.
 # -----------------------------------------------------------------------  
-def get_state_functions(root: ElementTreeType) -> List[str]:
-    list: List[str] = []
-    if root is None:
-        return list;
-    
-    for child in root:
-        if child.tag == 'state':
-            entry = child.find('entry')
-            if entry is not None:
-                list.append(entry.get('brief'))
-            exit = child.find('exit')
-            if exit is not None:
-                list.append(exit.get('brief'))
-        list = list + get_state_functions(child)
-        
-    # Handle more than 1 function in an action
-    newList: List[str] = []
-    for i in list:
-        newList = newList + [x.strip() for x in i.strip(';').split(';')]
-        
 
-    # Remove duplicates from the list
-    return [i for n, i in enumerate(newList) if i not in newList[:n]]
+def get_state_functions(xmiModel: XmiModel) -> List[str]:
+    actions = set()
+    for node in PreOrderIter(xmiModel.tree):
+        if node.name == "STATE":
+            if node.entry:
+                actions.add(node.entry)
+            if node.exit:
+                actions.add(node.exit)
+
+    return list(actions)
 
 # -----------------------------------------------------------------------
 # get_guard_functions
 #
-# Traverse the xml tree and return with a list of all the guard functions
+# Traverse the xmiModel and return with a list of all the guard functions
 # -----------------------------------------------------------------------  
-def get_guard_functions(root: ElementTreeType) -> List[str]:
-    list: List[str] = []
-    if root is None:
-        return list;
-    
-    for child in root:                
-        if child.tag == 'guard':
-            list.append(child.get('brief'))
-        list = list + get_guard_functions(child)
+def get_guard_functions(xmiModel: XmiModel) -> List[str]:
+    guards = set()
+    for node in PreOrderIter(xmiModel.tree):
+        if hasattr(node, 'guard') and node.guard is not None:
+            guards.add(node.guard)
 
-    # Remove duplicates from the list
-    return [i for n, i in enumerate(list) if i not in list[:n]]
+    return list(guards)
 
 
 # ---------------------------------------------------------------------------

@@ -80,9 +80,9 @@ class XmiModel:
         return thisNode
         
 
-    def addJunction(self, transList, psuedoState):
+    def addJunction(self, transList, psuedoState, parent):
         psId = psuedoState.id
-        parent = psuedoState.parent
+        #parent = psuedoState.parent
 
         # Assign ifNode and elseNode based on the presence of a guard
         ifNode, elseNode = (transList[0], transList[1]) if transList[0].guard else (transList[1], transList[0])

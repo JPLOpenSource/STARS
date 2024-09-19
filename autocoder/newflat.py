@@ -6,6 +6,7 @@ ElementTreeType = _ElementTree
 from anytree import Node
 from typing import Dict, List
 import copy
+import sys
 
 # -----------------------------------------------------------------------------
 # get_child_trans
@@ -24,6 +25,14 @@ def get_child_states(state: Node) -> List[Node]:
     return [child for child in state.children if child.name == "STATE"]
 
 # -----------------------------------------------------------------------------
+# get_child_junctions
+#
+# Get a list of child states under this state
+# -----------------------------------------------------------------------------   
+def get_child_junctions(state: Node) -> List[Node]:
+    return [child for child in state.children if child.name == "JUNCTION"]
+
+# -----------------------------------------------------------------------------
 # is_leaf
 #
 # Is this state a leaf state
@@ -38,15 +47,19 @@ def is_leaf(state: Node) -> bool:
 # get_state_ancestors
 #
 # -----------------------------------------------------------------------------   
-def get_state_ancestors(node):
+def get_state_ancestors(soj: Node) -> List[Node]:
     # Get the list of ancestors (including the node itself)
-    ancestors_including_self = list(node.ancestors) + [node]
-    # Filter to include only those with the name "STATE"
-    state_ancestors = [n for n in ancestors_including_self if n.name == "STATE"]
+    if soj.name == "STATE":
+        ancestors_including_self = list(soj.ancestors) + [soj]
+        # Filter to include only those with the name "STATE"
+        state_ancestors = [n for n in ancestors_including_self if n.name == "STATE"]
+    else:
+        state_ancestors = []
+
     return state_ancestors
 
 # -----------------------------------------------------------------------------
-# get_state_ancestors
+# print_state_list
 #
 # -----------------------------------------------------------------------------   
 def print_state_list(msg: str, stateList: List[Node]):
@@ -76,7 +89,8 @@ def common_prefix(list1: List[Node], list2: List[Node]) -> List[Node]:
 def get_exit_actions(stateList: List[Node]) -> List[str]:
     thisList = []
     for state in stateList[::-1]:
-        thisList.append(state.exit)
+        if state.exit is not None:
+            thisList.append(state.exit)
     return thisList
 
 # -----------------------------------------------------------------------------
@@ -86,7 +100,8 @@ def get_exit_actions(stateList: List[Node]) -> List[str]:
 def get_entry_actions(stateList: List[Node]) -> List[str]:
     thisList = []
     for state in stateList:
-        thisList.append(state.entry)
+        if state.entry is not None:
+            thisList.append(state.entry)
     return thisList
 
 
@@ -94,15 +109,14 @@ def get_entry_actions(stateList: List[Node]) -> List[str]:
 # construct_fst
 #
 # -----------------------------------------------------------------------------   
-def construct_fst(xmiModel: XmiModel, state: Node, t: Node) -> Node:
+def construct_fst(xmiModel: XmiModel, soj: Node, t: Node) -> Node:
 
     t_p = copy.deepcopy(t)
 
     if t_p.kind != "internal":
-        L1 = get_state_ancestors(state)
+        L1 = get_state_ancestors(soj)
         targetId = t.target
         targetState = xmiModel.idMap[targetId]
-        print(f"{state.stateName} --> {targetState.stateName} {t.event}")
         L2 = get_state_ancestors(targetState)
         P = common_prefix(L1, L2)
 
@@ -113,12 +127,15 @@ def construct_fst(xmiModel: XmiModel, state: Node, t: Node) -> Node:
 
         prefix_length = len(P)
         L1 = L1[prefix_length:]
-        L2 = L2[prefix_length:]        
+        # Pop the last element off the entry list
+        L2 = L2[prefix_length:][:-1]        
 
         exitActions = get_exit_actions(L1)
         entryActions = get_entry_actions(L2)
 
-        allActions = exitActions + t_p.action.split(';') + entryActions
+        transActions = t_p.action.split(';') if t_p.action else []
+
+        allActions = exitActions + transActions + entryActions
         actionString = ';'.join([action for action in allActions if action is not None])
         t_p.action = actionString
 
@@ -150,6 +167,13 @@ def visit_state(xmiModel: XmiModel, state: Node, stm: Dict[str, Node]):
 
         stm = copy.deepcopy(stm_p)
 
+# -----------------------------------------------------------------------------
+# visit_junction
+#
+# -----------------------------------------------------------------------------   
+def visit_junction(xmiModel: XmiModel, state: Node):
+    for jd in get_child_junctions(state):
+        print(f'jd = {jd}')
 
 # -----------------------------------------------------------------------------
 # flatten_state_machine
@@ -160,11 +184,12 @@ def flatten_state_machine(xmiModel: XmiModel) -> ElementTreeType:
     stm = {}
     visit_state(xmiModel, xmiModel.tree, stm)
 
+    #visit_junction(xmiModel, xmiModel.tree)
+
     for leafState in xmiModel.fstm.keys():
         print(f'Leaf State = {leafState.stateName}')
         for signal in xmiModel.fstm[leafState].keys():
             print(f'  Signal = {signal}')
             print(f'  Transition action = {xmiModel.fstm[leafState][signal].action}')
+            print(f'  Target = {xmiModel.fstm[leafState][signal].target}')
         
-
-    xmiModel.print()

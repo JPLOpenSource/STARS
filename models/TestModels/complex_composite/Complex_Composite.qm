@@ -6,7 +6,7 @@
    <statechart properties="0x01">
     <initial target="../1">
      <action brief="init1()"/>
-     <initial_glyph conn="13,7,5,0,17,1">
+     <initial_glyph conn="13,7,5,0,15,3">
       <action box="0,-2,10,2"/>
      </initial_glyph>
     </initial>
@@ -14,101 +14,60 @@
      <entry brief="s1Entry()"/>
      <exit brief="s1Exit()"/>
      <initial target="../2">
-      <action brief="doo()"/>
-      <initial_glyph conn="36,24,5,0,2,7">
-       <action box="0,-2,12,4"/>
+      <initial_glyph conn="34,26,5,0,2,7">
+       <action box="0,-2,10,2"/>
       </initial_glyph>
      </initial>
      <tran trig="Ev1" target="../../2">
-      <action brief="a1()"/>
-      <tran_glyph conn="170,14,1,3,25,1,2">
+      <tran_glyph conn="168,16,1,3,29">
        <action box="9,-2,13,5"/>
       </tran_glyph>
      </tran>
      <state name="S11">
       <entry brief="s11Entry()"/>
       <exit brief="s11Exit()"/>
-      <initial target="../2">
-       <action brief="moo()"/>
-       <initial_glyph conn="47,38,5,0,4,6">
-        <action box="3,-1,13,4"/>
+      <initial target="../1">
+       <initial_glyph conn="45,40,5,0,4,6">
+        <action box="0,-2,10,2"/>
        </initial_glyph>
       </initial>
-      <tran trig="SELFY" target="..">
-       <action brief="foo1(); foo2()"/>
-       <tran_glyph conn="78,31,0,0,-6,13,6">
-        <action box="1,-9,29,6"/>
-       </tran_glyph>
-      </tran>
       <state name="S111">
        <entry brief="s111Entry()"/>
        <exit brief="s111Exit()"/>
        <initial target="../2">
-        <action brief="loo()"/>
-        <initial_glyph conn="54,55,5,0,4,6">
-         <action box="4,-1,12,3"/>
+        <initial_glyph conn="52,57,5,0,4,6">
+         <action box="0,-2,10,2"/>
         </initial_glyph>
        </initial>
        <tran trig="Ev1" target="../../../3">
-        <action brief="a1()"/>
-        <tran_glyph conn="84,51,1,0,6,-16,31">
-         <action box="3,-2,12,4"/>
+        <tran_glyph conn="82,53,1,3,6,-16,31">
+         <action box="3,-2,10,2"/>
         </tran_glyph>
        </tran>
        <state name="s1111">
         <entry brief="s1111Entry()"/>
         <exit brief="s1111Exit()"/>
-        <tran trig="Ev2">
-         <action brief="a2()"/>
-         <choice target="../../../../../../2/2">
-          <guard brief="g1()"/>
-          <action brief="b1()"/>
-          <choice_glyph conn="141,103,5,2,84,-26">
-           <action box="1,0,13,5"/>
-          </choice_glyph>
-         </choice>
-         <choice target="../../../../../3">
-          <action brief="b2()"/>
-          <choice_glyph conn="141,103,4,2,-18">
-           <action box="0,-11,13,5"/>
-          </choice_glyph>
-         </choice>
-         <tran_glyph conn="69,87,2,-1,16,72">
+        <tran trig="Ev2" target="../../../../../2/2">
+         <tran_glyph conn="67,89,2,2,15,158,-26">
           <action box="56,13,18,4"/>
          </tran_glyph>
         </tran>
         <tran trig="Ev3" target="../../../../3/2">
-         <action brief="a3()"/>
-         <tran_glyph conn="76,73,1,3,54,-2,2">
-          <action box="30,-3,12,3"/>
+         <tran_glyph conn="74,75,1,3,56">
+          <action box="30,-2,10,2"/>
          </tran_glyph>
         </tran>
-        <tran trig="Ev7">
-         <action brief="foo()"/>
-         <tran_glyph conn="55,83,3,-1,20">
-          <action box="1,-3,19,4"/>
-         </tran_glyph>
-        </tran>
-        <tran trig="TRIG1" target="../../3">
-         <action brief="zoo()"/>
-         <tran_glyph conn="76,68,1,1,4,-15,-2">
-          <action box="1,-10,19,3"/>
-         </tran_glyph>
-        </tran>
-        <state_glyph node="55,61,21,26">
+        <state_glyph node="53,63,21,26">
          <entry box="1,2,20,7"/>
          <exit box="1,9,19,11"/>
         </state_glyph>
        </state>
-       <state name="S1112">
-        <state_glyph node="71,50,7,6"/>
-       </state>
-       <state_glyph node="44,44,40,65">
+       <state_glyph node="42,46,40,65">
         <entry box="1,2,17,4"/>
         <exit box="1,6,22,3"/>
        </state_glyph>
       </state>
-      <state_glyph node="32,31,68,85">
+      <state_glyph node="30,33,68,85">
        <entry box="1,2,27,3"/>
        <exit box="1,5,18,4"/>
       </state_glyph>
@@ -117,36 +76,34 @@
       <entry brief="s12Entry()"/>
       <exit brief="s12Exit()"/>
       <initial target="../2">
-       <initial_glyph conn="134,38,5,0,5,4">
+       <initial_glyph conn="132,40,5,0,5,6">
         <action box="0,-2,10,2"/>
        </initial_glyph>
       </initial>
       <tran trig="Ev2" target="../../2">
-       <action brief="a2()"/>
-       <tran_glyph conn="121,42,3,1,-21">
-        <action box="-15,-3,12,4"/>
+       <tran_glyph conn="119,44,3,1,-21">
+        <action box="-10,-2,10,2"/>
        </tran_glyph>
       </tran>
       <state name="S121">
        <entry brief="s121Entry()"/>
        <exit brief="s121Exit()"/>
-       <tran trig="Ev4" target="../../../2/2">
-        <action brief="a4()"/>
-        <tran_glyph conn="132,66,3,1,-46,2,-2">
-         <action box="-25,-3,11,3"/>
+       <tran trig="Ev4" target="../../../2/1">
+        <tran_glyph conn="130,70,3,1,-48">
+         <action box="-19,-2,10,2"/>
         </tran_glyph>
        </tran>
-       <state_glyph node="132,42,22,33">
+       <state_glyph node="130,46,22,33">
         <entry box="1,2,17,3"/>
         <exit box="1,5,17,3"/>
        </state_glyph>
       </state>
-      <state_glyph node="121,32,40,53">
+      <state_glyph node="119,34,40,53">
        <entry box="1,2,32,3"/>
        <exit box="1,5,29,7"/>
       </state_glyph>
      </state>
-     <state_glyph node="23,8,147,118">
+     <state_glyph node="21,10,147,118">
       <entry box="1,2,19,3"/>
       <exit box="1,5,14,3"/>
      </state_glyph>
@@ -155,26 +112,24 @@
      <entry brief="s2Entry()"/>
      <exit brief="s2Exit()"/>
      <initial target="../2">
-      <action brief="boo()"/>
-      <initial_glyph conn="209,28,5,0,8,11">
+      <initial_glyph conn="209,29,5,0,8,11">
        <action box="0,-2,10,2"/>
       </initial_glyph>
      </initial>
      <tran trig="Ev1" target="../../1">
-      <action brief="a1()"/>
-      <tran_glyph conn="197,32,3,1,-25,-1,-2">
-       <action box="-19,-3,18,4"/>
+      <tran_glyph conn="197,33,3,1,-29">
+       <action box="-12,-2,18,4"/>
       </tran_glyph>
      </tran>
      <state name="S21">
       <entry brief="s21Entry()"/>
       <exit brief="s21Exit()"/>
-      <state_glyph node="212,39,25,38">
+      <state_glyph node="212,40,25,38">
        <entry box="1,2,22,7"/>
        <exit box="1,9,23,8"/>
       </state_glyph>
      </state>
-     <state_glyph node="197,11,52,111">
+     <state_glyph node="197,12,52,111">
       <entry box="1,2,16,2"/>
       <exit box="1,4,13,3"/>
      </state_glyph>

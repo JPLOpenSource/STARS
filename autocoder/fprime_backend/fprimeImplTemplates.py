@@ -38,7 +38,11 @@ class FprimeImplTemplate:
 # -------------------------------------------------------------------------------
 # componentHdrFile
 # -------------------------------------------------------------------------------          
-        def componentHdrFile(self, smname: str, namespace: str, component: str, funcList: List[str]) -> str:
+        def componentHdrFile(self, 
+                             smname: str, 
+                             namespace: str, 
+                             component: str, 
+                             funcList: List[str]) -> str:
             template = Template("""
             
             

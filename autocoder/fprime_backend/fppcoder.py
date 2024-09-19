@@ -89,18 +89,21 @@ def getInitTransitions(xmiModel: XmiModel):
 # Update the xmi model to add Junctions
 # -----------------------------------------------------------------------  
 def getJunctions(xmiModel: XmiModel):
-
     for ps in PreOrderIter(xmiModel.tree):
         if ps.name == "PSUEDOSTATE":
             psId = ps.id
             transList = []
+
             for child in PreOrderIter(xmiModel.tree):
-                # Get the transitions that exit this psuedo state
                 if child.name == "TRANSITION":
+                    # Get the transitions that exit this psuedo state
                     if psId == child.source:
                         transList.append(child)
+                    # Get the transition that enters this psuedo state
+                    if psId == child.target:
+                        parent = xmiModel.idMap[child.source]
             if len(transList) == 2:
-                xmiModel.addJunction(transList, ps)
+                xmiModel.addJunction(transList, ps, parent)
 
 # -----------------------------------------------------------------------
 # moveTransitions
