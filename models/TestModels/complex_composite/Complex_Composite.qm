@@ -14,8 +14,9 @@
      <entry brief="s1Entry()"/>
      <exit brief="s1Exit()"/>
      <initial target="../2">
+      <action brief="a1(); a2()"/>
       <initial_glyph conn="34,26,5,0,2,7">
-       <action box="0,-2,10,2"/>
+       <action box="2,0,13,5"/>
       </initial_glyph>
      </initial>
      <tran trig="Ev1" target="../../2">
@@ -24,7 +25,7 @@
       </tran_glyph>
      </tran>
      <state name="S11">
-      <entry brief="s11Entry()"/>
+      <entry brief="s11Entrya(); s11Entryb() "/>
       <exit brief="s11Exit()"/>
       <initial target="../1">
        <initial_glyph conn="45,40,5,0,4,6">

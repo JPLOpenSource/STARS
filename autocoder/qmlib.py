@@ -129,9 +129,9 @@ def get_state_functions(xmiModel: XmiModel) -> List[str]:
     for node in PreOrderIter(xmiModel.tree):
         if node.name == "STATE":
             if node.entry:
-                actions.add(node.entry)
+                actions.update(name.strip() for name in node.entry.split(';') if name.strip())
             if node.exit:
-                actions.add(node.exit)
+                actions.update(name.strip() for name in node.exit.split(';') if name.strip())
 
     return list(actions)
 

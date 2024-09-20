@@ -10,6 +10,7 @@
 # -----------------------------------------------------------------------
 
 import qmlib
+import newflat
 from fprime_backend.fprimetemplates import FprimeTemplate
 from fprime_backend.fprimeUnitTestTemplates import FprimeUnitTestTemplate
 from fprime_backend.fprimeImplTemplates import FprimeImplTemplate
@@ -60,23 +61,28 @@ def formatTarget(targ: str) -> str:
 # ---------------------------------------------------------------------------
 def printTransition(xmiModel: XmiModel,
                         smname: str, 
-                        tran: Node) -> List[str]:
+                        tran: Node,
+                        stateName: str) -> List[str]:
     rstr = []
-  
-    # Action
-    action = tran.action
-    if action:
-        functionList = qmlib.n_parse_function_args(action)
-        for func in functionList:
-            actionName, actionArgs = qmlib.parse_action(func)
-            sig = codeTemplate.action(smname, actionName, actionArgs)
-            rstr.append(sig)
 
-    # Target
-    if tran.target is not None:
-        targetState = xmiModel.idMap[tran.target]
-        stateCall = codeTemplate.call_state(targetState.stateName)
-        rstr.append(stateCall)
+    if tran is None:
+        rstr.append(f"this->state = {stateName}")
+  
+    else:
+        # Action
+        action = tran.action
+        if action:
+            functionList = qmlib.n_parse_function_args(action)
+            for func in functionList:
+                actionName, actionArgs = qmlib.parse_action(func)
+                sig = codeTemplate.action(smname, actionName, actionArgs)
+                rstr.append(sig)
+
+        # Target
+        if tran.target is not None:
+            targetState = xmiModel.idMap[tran.target]
+            stateCall = codeTemplate.call_state(targetState.stateName)
+            rstr.append(stateCall)
 
     return rstr
       
@@ -93,23 +99,29 @@ def printSmCode(smname: str,
     cFile= open(smname+".cpp", "w")
     transFile = open(smname+".trans", "w")
 
-    for child in xmiModel.tree.children:
-        if child.name == "INITIAL":
-            initialTran = child
-            break
+    initialTran = get_initial_node(xmiModel.tree)
+    assert initialTran is not None, "initial transition expected but not found"
 
-           
-    initialCode = qmlib.format_C(printTransition(xmiModel, smname, initialTran), 4)
+    initialCode = qmlib.format_C(printTransition(xmiModel, smname, initialTran, None), 4)
     cFile.write(codeTemplate.stateMachineInit(smname, initialCode, namespace))
 
     for leafState in xmiModel.fstm.keys():
         cFile.write(codeTemplate.stateMachineState(leafState.stateName))
         for signal in xmiModel.fstm[leafState].keys():
             trans =  xmiModel.fstm[leafState][signal]
-            transCode = qmlib.format_C(printTransition(xmiModel, smname, trans), 20)
+            transCode = qmlib.format_C(printTransition(xmiModel, smname, trans, leafState.stateName), 20)
 
             cFile.write(codeTemplate.stateTransition(signal, transCode, smname))
 
+    # State enter functions
+    for node in PreOrderIter(xmiModel.tree):
+        if node.name == "STATE":
+            entryActions =  [name.strip() for name in node.entry.split(';')]
+            initialTran = get_initial_node(node)
+            initialCode = qmlib.format_C(printTransition(xmiModel, smname, initialTran, node.stateName), 4)
+            cFile.write(codeTemplate.stateEntryFunction(node.stateName, entryActions, initialCode))
+
+    xmiModel.print()
 
 
 # -----------------------------------------------------------------------
@@ -220,7 +232,6 @@ def get_function_signatures(xmiModel: XmiModel,
     guardFunctions = qmlib.get_guard_functions(xmiModel)
     stateFunctions = qmlib.get_state_functions(xmiModel)
     transFunctions = qmlib.get_trans_functions(xmiModel)
-
     actionFunctions = stateFunctions + transFunctions
 
     funcList = []
@@ -263,6 +274,21 @@ def get_signals(xmiModel: XmiModel) -> List[str]:
 
 
 # -----------------------------------------------------------------------
+# get_initial_node
+#
+# Get the immediate initial node under this node
+# -----------------------------------------------------------------------
+def get_initial_node(node: Node) -> Node:
+    initialNode = None  
+
+    for child in node.children:
+        if child.name == "INITIAL":
+            initialNode = child
+            break
+
+    return initialNode
+
+# -----------------------------------------------------------------------
 # printComponentCode
 #
 # Print Component stub files
@@ -278,7 +304,6 @@ def printComponentCode(xmiModel: XmiModel,
     compHdrFile = open(component+".hpp", "w")
     
     funcList = get_function_signatures(xmiModel, smname)
-
 
     compHdrFile.write(codeImplTemplate.componentHdrFile(smname, namespace, component, funcList))
 

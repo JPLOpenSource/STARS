@@ -284,6 +284,29 @@ void $(namespace)::$(smname)::update(
             template.namespace = namespace
             return str(template)
         
+# -------------------------------------------------------------------------------
+# stateEntryFunction
+# -------------------------------------------------------------------------------           
+        def stateEntryFunction(self, stateName: str, entryActions: List[str], initialCode: str) -> str:
+            template = Template("""
+
+void $(stateName)()
+{
+// State entry actions
+#for $action in $entryActions
+      $action;
+#end for
+                                
+// Initial transition actions and transition
+$initialCode
+                
+}
+    """)
+            template.stateName = stateName
+            template.entryActions = entryActions
+            template.initialCode = initialCode
+            return str(template)
+        
 
 # -------------------------------------------------------------------------------
 # stateMachineState
