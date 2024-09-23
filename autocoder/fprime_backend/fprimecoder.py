@@ -128,8 +128,6 @@ def printSmCode(smname: str,
             initialCode = qmlib.format_C(printTransition(xmiModel, smname, initialTran, node.stateName), 4)
             cFile.write(codeTemplate.stateEntryFunction(namespace, smname, node.stateName, entryActions, initialCode))
 
-    xmiModel.print()
-
 
 # -----------------------------------------------------------------------
 # printUnitCode
@@ -150,11 +148,7 @@ def printUnitCode(smname: str,
     mainFile.write(unitTestTemplate.mainFile(implHdr, component, namespace))
     sendEventHFile.write(unitTestTemplate.sendEventHeaderFile(smname, namespace))
     
-    triggerList = set()
-    for node in PreOrderIter(xmiModel.tree):
-        if node.name == "TRANSITION":
-            triggerList.add(node.event.upper() + "_SIG")
-    triggerList = list(triggerList)
+    triggerList = get_signals(xmiModel)
             
     sendEventCFile.write(unitTestTemplate.sendEventFile(smname, component, namespace, implHdr, triggerList))
     
@@ -276,7 +270,7 @@ def get_signals(xmiModel: XmiModel) -> List[str]:
     signals = set()
     for node in PreOrderIter(xmiModel.tree):
         if node.name == "TRANSITION":
-            signals.add(node.event.upper() + "_SIG")
+            signals.add(node.event)
     return list(signals)
 
 

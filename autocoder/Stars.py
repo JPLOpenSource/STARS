@@ -186,7 +186,6 @@ if args.backend == 'fprime':
 
             newflat.flatten_state_machine(xmiModel)
 
-            #fprimecoder.generateCode(qmRoot, args.noImpl, args.namespace)
             fprimecoder.generateCode(xmiModel, args.noImpl, args.namespace)
 
             

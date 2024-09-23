@@ -154,7 +154,7 @@ class FprimeTemplate:
 # -------------------------------------------------------------------------------   
         def stateTransition(self, signal: str, transitionCode: str, smname) -> str:
             template = Template("""
-                case $(smname)_Interface::$(smname)_Signals::$(signal)_SIG:
+                case $(smname)_Interface::$(smname)_Signals::$(signal.upper())_SIG:
 $(transitionCode)
                     break;
     """)
@@ -194,7 +194,7 @@ class $(smname)_Interface {
   public:
     enum $(smname)_Signals {
 #for $event in $eventList
-      $event,
+      $(event.upper())_SIG,
 #end for
     };
 

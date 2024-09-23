@@ -53,8 +53,8 @@ void sendEvent_send($(namespace)::$(smname)_Interface::$(smname)_Signals signal)
 
     #for $sig in $triggerList
 
-    case $(namespace)::$(smname)_Interface::$(smname)_Signals::$(sig):
-        strcpy(signalName, "$(sig)");
+    case $(namespace)::$(smname)_Interface::$(smname)_Signals::$(sig.upper())_SIG:
+        strcpy(signalName, "$(sig.upper())_SIG");
         break;    
     #end for
 

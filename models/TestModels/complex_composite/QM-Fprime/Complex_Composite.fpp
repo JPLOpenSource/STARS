@@ -1,14 +1,11 @@
 state machine Complex_Composite {
 
-  action a1
-  action a2
   action init1
   action s1111Entry
   action s1111Exit
   action s111Entry
   action s111Exit
-  action s11Entrya
-  action s11Entryb
+  action s11Entry
   action s11Exit
   action s121Entry
   action s121Exit
@@ -31,7 +28,7 @@ state machine Complex_Composite {
    entry do { s1Entry }
    exit do { s1Exit }
     state S11 {
-     entry do { s11Entrya, s11Entryb }
+     entry do { s11Entry }
      exit do { s11Exit }
       state S111 {
        entry do { s111Entry }
@@ -63,7 +60,7 @@ state machine Complex_Composite {
       on Ev2 enter S11
     }
 
-    initial do { a1, a2 } enter S11
+    initial enter S11
     on Ev1 enter S2
   }
 
