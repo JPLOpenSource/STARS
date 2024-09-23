@@ -99,7 +99,7 @@ class FprimeTemplate:
 # call_state
 # -------------------------------------------------------------------------------   
         def call_state(self, smname: str) -> str:
-            template = Template("""enter_$(smname)();""")         
+            template = Template("""enter_$(smname)(stateMachineId);""")         
      
             template.smname = smname
             return str(template)
@@ -223,7 +223,7 @@ class $(smname) {
     };
                                  
 #for $state in $stateList
-    void enter_$(state)();
+    void enter_$(state)(const FwEnumStoreType stateMachineId);
 #end for
     
     enum $(smname)_States state;
@@ -287,14 +287,20 @@ void $(namespace)::$(smname)::update(
 # -------------------------------------------------------------------------------
 # stateEntryFunction
 # -------------------------------------------------------------------------------           
-        def stateEntryFunction(self, stateName: str, entryActions: List[str], initialCode: str) -> str:
+        def stateEntryFunction(self, 
+                               namespace: str, 
+                               smname: str, 
+                               stateName: str, 
+                               entryActions: List[str], 
+                               initialCode: str) -> str:
+            
             template = Template("""
 
-void $(stateName)()
+void $namespace::$smname::enter_$(stateName)(const FwEnumStoreType stateMachineId)
 {
 // State entry actions
 #for $action in $entryActions
-      $action;
+      parent->$(smname)_$(action)(stateMachineId);
 #end for
                                 
 // Initial transition actions and transition
@@ -302,6 +308,8 @@ $initialCode
                 
 }
     """)
+            template.namespace = namespace
+            template.smname = smname
             template.stateName = stateName
             template.entryActions = entryActions
             template.initialCode = initialCode
@@ -342,9 +350,9 @@ $initialCode
 # -------------------------------------------------------------------------------   
         def stateMachineFinalBreak(self) -> str:
             template = Template("""
-        default:
-        FW_ASSERT(0);
-    }
-}
+                default:
+                FW_ASSERT(0);
+            }
+        }
 """)
             return str(template)

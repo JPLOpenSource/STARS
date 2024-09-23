@@ -66,7 +66,7 @@ def printTransition(xmiModel: XmiModel,
     rstr = []
 
     if tran is None:
-        rstr.append(f"this->state = {stateName}")
+        rstr.append(f"this->state = {stateName};")
   
     else:
         # Action
@@ -112,14 +112,21 @@ def printSmCode(smname: str,
             transCode = qmlib.format_C(printTransition(xmiModel, smname, trans, leafState.stateName), 20)
 
             cFile.write(codeTemplate.stateTransition(signal, transCode, smname))
+        cFile.write(codeTemplate.stateMachineBreak())
+    cFile.write(codeTemplate.stateMachineFinalBreak())
+
 
     # State enter functions
     for node in PreOrderIter(xmiModel.tree):
         if node.name == "STATE":
-            entryActions =  [name.strip() for name in node.entry.split(';')]
+            if node.entry:
+                function_list = [func.strip() for func in node.entry.split(';') if func]
+                entryActions = [func.split('(')[0] for func in function_list]
+            else:
+                entryActions = []
             initialTran = get_initial_node(node)
             initialCode = qmlib.format_C(printTransition(xmiModel, smname, initialTran, node.stateName), 4)
-            cFile.write(codeTemplate.stateEntryFunction(node.stateName, entryActions, initialCode))
+            cFile.write(codeTemplate.stateEntryFunction(namespace, smname, node.stateName, entryActions, initialCode))
 
     xmiModel.print()
 
@@ -248,7 +255,7 @@ def get_function_signatures(xmiModel: XmiModel,
         if sig not in funcList:
             funcList.append(sig)
 
-    return funcList
+    return sorted(funcList)
 
 # -----------------------------------------------------------------------
 # get_states
@@ -259,7 +266,7 @@ def get_states(xmiModel: XmiModel) -> List[str]:
     for node in PreOrderIter(xmiModel.tree):
         if node.name == "STATE":
             stateNames.add(node.stateName)
-    return list(stateNames)
+    return sorted(list(stateNames))
 
 # -----------------------------------------------------------------------
 # get_signals
