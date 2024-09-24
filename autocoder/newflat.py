@@ -168,14 +168,6 @@ def visit_state(xmiModel: XmiModel, state: Node, stm: Dict[str, Node]):
         stm = copy.deepcopy(stm_p)
 
 # -----------------------------------------------------------------------------
-# visit_junction
-#
-# -----------------------------------------------------------------------------   
-def visit_junction(xmiModel: XmiModel, state: Node):
-    for jd in get_child_junctions(state):
-        print(f'jd = {jd}')
-
-# -----------------------------------------------------------------------------
 # flatten_state_machine
 #
 # -----------------------------------------------------------------------------   
@@ -183,13 +175,3 @@ def flatten_state_machine(xmiModel: XmiModel) -> ElementTreeType:
     print("Flattening state machine")
     stm = {}
     visit_state(xmiModel, xmiModel.tree, stm)
-
-    #visit_junction(xmiModel, xmiModel.tree)
-
-    for leafState in xmiModel.fstm.keys():
-        print(f'Leaf State = {leafState.stateName}')
-        for signal in xmiModel.fstm[leafState].keys():
-            print(f'  Signal = {signal}')
-            print(f'  Transition action = {xmiModel.fstm[leafState][signal].action}')
-            print(f'  Target = {xmiModel.fstm[leafState][signal].target}')
-        

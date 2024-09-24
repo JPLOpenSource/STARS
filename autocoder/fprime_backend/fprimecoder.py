@@ -142,7 +142,6 @@ def printSmCode(smname: str,
                 xmiModel: XmiModel, 
                 namespace: str):
 
-    xmiModel.print()
     cFile= open(smname+".cpp", "w")
 
     initialTran = get_initial_node(xmiModel.tree)
