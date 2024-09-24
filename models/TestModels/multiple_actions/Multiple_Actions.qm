@@ -24,8 +24,8 @@
       </tran_glyph>
      </tran>
      <state_glyph node="48,45,21,14">
-      <entry box="1,2,19,3"/>
-      <exit box="1,5,14,3"/>
+      <entry box="1,2,19,6"/>
+      <exit box="1,8,14,6"/>
      </state_glyph>
     </state>
     <state name="S2">
@@ -34,12 +34,12 @@
      <tran trig="EV1" target="../../1">
       <action brief="a1(); a2()"/>
       <tran_glyph conn="107,55,3,1,-38">
-       <action box="-20,-3,19,5"/>
+       <action box="-20,-3,19,6"/>
       </tran_glyph>
      </tran>
      <state_glyph node="107,46,21,15">
-      <entry box="1,2,19,3"/>
-      <exit box="1,5,17,7"/>
+      <entry box="1,2,19,6"/>
+      <exit box="1,8,17,7"/>
      </state_glyph>
     </state>
     <state_diagram size="258,137"/>
