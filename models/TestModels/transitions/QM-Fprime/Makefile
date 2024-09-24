@@ -1,5 +1,5 @@
 MODEL = Transitions.qm
-GOLDY = goldyQm.txt
+GOLDY = goldy.txt
 include ../../Common_Fprime_Makefile
 
 checkfpp:

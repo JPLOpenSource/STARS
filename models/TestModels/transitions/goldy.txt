@@ -20,9 +20,9 @@ TransitionsImpl_g1() is 1
 TransitionsImpl_a2()
 
 --> EV4_SIG
-TransitionsImpl_a3()
 TransitionsImpl_s11Exit()
 TransitionsImpl_s1Exit()
+TransitionsImpl_a3()
 TransitionsImpl_s1Entry()
 TransitionsImpl_s11Entry()
 
@@ -41,9 +41,9 @@ TransitionsImpl_g3() is 0
 
 --> EV6_SIG
 TransitionsImpl_g3() is 1
-TransitionsImpl_a4()
 TransitionsImpl_s11Exit()
 TransitionsImpl_s1Exit()
+TransitionsImpl_a4()
 TransitionsImpl_s1Entry()
 TransitionsImpl_s11Entry()
 
