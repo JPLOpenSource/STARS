@@ -314,6 +314,48 @@ $initialCode
             template.entryActions = entryActions
             template.initialCode = initialCode
             return str(template)
+
+# -------------------------------------------------------------------------------
+# junctionEntryFunction
+# -------------------------------------------------------------------------------   
+        def junctionEntryFunction(self,
+                                  namespace: str, 
+                                  smname: str,
+                                  stateName: str, 
+                                  guard: str, 
+                                  ifTarget: str, 
+                                  elseTarget: str, 
+                                  ifActions: List[str], 
+                                  elseActions: List[str]) -> str:
+            
+            template = Template("""
+
+void $namespace::$smname::enter_$(stateName)(const FwEnumStoreType stateMachineId)
+{
+    if (parent->$(smname)_$(guard)(stateMachineId)) {
+#for action in $ifActions
+        parent->$(smname)_$(action)(stateMachineId);
+#end for
+        $ifTarget
+    }                      
+    else {
+#for action in $elseActions
+        parent->$(smname)_$(action)(stateMachineId);
+#end for
+        $elseTarget                   
+    }
+}
+                                
+    """)
+            template.namespace = namespace
+            template.smname = smname
+            template.stateName = stateName
+            template.guard = guard
+            template.ifTarget = ifTarget
+            template.elseTarget = elseTarget
+            template.ifActions = ifActions
+            template.elseActions = elseActions
+            return str(template)
         
 
 # -------------------------------------------------------------------------------

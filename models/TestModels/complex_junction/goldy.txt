@@ -2,20 +2,20 @@ Complex_JunctionImpl_OffEntry()
 Complex_JunctionImpl_DiagEntry()
 
 --> EV1_SIG
-Complex_JunctionImpl_g1() is 1
-Complex_JunctionImpl_a1()
 Complex_JunctionImpl_DiagExit()
 Complex_JunctionImpl_OffExit()
+Complex_JunctionImpl_g1() is 1
+Complex_JunctionImpl_a1()
 Complex_JunctionImpl_OffEntry()
 Complex_JunctionImpl_DiagEntry()
 
 --> EV1_SIG
+Complex_JunctionImpl_DiagExit()
+Complex_JunctionImpl_OffExit()
 Complex_JunctionImpl_g1() is 0
 Complex_JunctionImpl_a2()
 Complex_JunctionImpl_g2() is 1
 Complex_JunctionImpl_a5()
-Complex_JunctionImpl_DiagExit()
-Complex_JunctionImpl_OffExit()
 Complex_JunctionImpl_OnEntry()
 Complex_JunctionImpl_InitEntry()
 
@@ -26,14 +26,14 @@ Complex_JunctionImpl_OffEntry()
 Complex_JunctionImpl_DiagEntry()
 
 --> EV1_SIG
+Complex_JunctionImpl_DiagExit()
+Complex_JunctionImpl_OffExit()
 Complex_JunctionImpl_g1() is 0
 Complex_JunctionImpl_a2()
 Complex_JunctionImpl_g2() is 0
 Complex_JunctionImpl_a3()
 Complex_JunctionImpl_g3() is 1
 Complex_JunctionImpl_a6()
-Complex_JunctionImpl_DiagExit()
-Complex_JunctionImpl_OffExit()
 Complex_JunctionImpl_OnEntry()
 Complex_JunctionImpl_InitEntry()
 
@@ -44,13 +44,13 @@ Complex_JunctionImpl_OffEntry()
 Complex_JunctionImpl_DiagEntry()
 
 --> EV1_SIG
+Complex_JunctionImpl_DiagExit()
+Complex_JunctionImpl_OffExit()
 Complex_JunctionImpl_g1() is 0
 Complex_JunctionImpl_a2()
 Complex_JunctionImpl_g2() is 0
 Complex_JunctionImpl_a3()
 Complex_JunctionImpl_g3() is 0
 Complex_JunctionImpl_a4()
-Complex_JunctionImpl_DiagExit()
-Complex_JunctionImpl_OffExit()
 Complex_JunctionImpl_OffEntry()
 Complex_JunctionImpl_DiagEntry()

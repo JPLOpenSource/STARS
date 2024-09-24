@@ -39,10 +39,15 @@ def printSmHeader(smname: str,
     signalList = get_signals(xmiModel)
 
     stateList = get_states(xmiModel)
+    junctionList = get_junctions(xmiModel)
 
     funcList = get_function_signatures(xmiModel, smname)
 
-    hFile.write(codeTemplate.fileHeader(smname, stateList, signalList, namespace, funcList))
+    hFile.write(codeTemplate.fileHeader(smname, 
+                                        stateList + junctionList, 
+                                        signalList, 
+                                        namespace, 
+                                        funcList))
         
         
 # ---------------------------------------------------------------------------
@@ -96,8 +101,8 @@ def printSmCode(smname: str,
                 xmiModel: XmiModel, 
                 namespace: str):
 
+    xmiModel.print()
     cFile= open(smname+".cpp", "w")
-    transFile = open(smname+".trans", "w")
 
     initialTran = get_initial_node(xmiModel.tree)
     assert initialTran is not None, "initial transition expected but not found"
@@ -118,7 +123,9 @@ def printSmCode(smname: str,
 
     # State enter functions
     for node in PreOrderIter(xmiModel.tree):
+
         if node.name == "STATE":
+
             if node.entry:
                 function_list = [func.strip() for func in node.entry.split(';') if func]
                 entryActions = [func.split('(')[0] for func in function_list]
@@ -127,6 +134,35 @@ def printSmCode(smname: str,
             initialTran = get_initial_node(node)
             initialCode = qmlib.format_C(printTransition(xmiModel, smname, initialTran, node.stateName), 4)
             cFile.write(codeTemplate.stateEntryFunction(namespace, smname, node.stateName, entryActions, initialCode))
+
+        if node.name == "JUNCTION":
+
+            if node.ifAction:
+                function_list = [func.strip() for func in node.ifAction.split(';') if func]
+                ifActions = [func.split('(')[0] for func in function_list]
+            else:
+                ifActions = []
+            
+            targetState = xmiModel.idMap[node.ifTarget]
+            ifTarget = codeTemplate.call_state(targetState.stateName)
+            guard = node.guard.split('(')[0]
+
+            if node.elseAction:
+                function_list = [func.strip() for func in node.elseAction.split(';') if func]
+                elseActions = [func.split('(')[0] for func in function_list]
+            else:
+                elseActions = []
+            targetState = xmiModel.idMap[node.elseTarget]
+            elseTarget = codeTemplate.call_state(targetState.stateName)
+
+            cFile.write(codeTemplate.junctionEntryFunction(namespace,
+                                                           smname, 
+                                                           node.stateName, 
+                                                           guard, 
+                                                           ifTarget, 
+                                                           elseTarget, 
+                                                           ifActions, 
+                                                           elseActions))
 
 
 # -----------------------------------------------------------------------
@@ -259,6 +295,17 @@ def get_states(xmiModel: XmiModel) -> List[str]:
     stateNames = set()
     for node in PreOrderIter(xmiModel.tree):
         if node.name == "STATE":
+            stateNames.add(node.stateName)
+    return sorted(list(stateNames))
+
+# -----------------------------------------------------------------------
+# get_junctions
+#
+# -----------------------------------------------------------------------  
+def get_junctions(xmiModel: XmiModel) -> List[str]:
+    stateNames = set()
+    for node in PreOrderIter(xmiModel.tree):
+        if node.name == "JUNCTION":
             stateNames.add(node.stateName)
     return sorted(list(stateNames))
 
