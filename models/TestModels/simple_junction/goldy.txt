@@ -2,10 +2,10 @@ Simple_JunctionImpl_OffEntry()
 Simple_JunctionImpl_DiagEntry()
 
 --> EV1_SIG
-Simple_JunctionImpl_g1() is 0
-Simple_JunctionImpl_a1()
 Simple_JunctionImpl_DiagExit()
 Simple_JunctionImpl_OffExit()
+Simple_JunctionImpl_g1() is 0
+Simple_JunctionImpl_a1()
 Simple_JunctionImpl_OnEntry()
 Simple_JunctionImpl_InitEntry()
 
@@ -16,8 +16,8 @@ Simple_JunctionImpl_OffEntry()
 Simple_JunctionImpl_DiagEntry()
 
 --> EV1_SIG
-Simple_JunctionImpl_g1() is 1
 Simple_JunctionImpl_DiagExit()
 Simple_JunctionImpl_OffExit()
+Simple_JunctionImpl_g1() is 1
 Simple_JunctionImpl_OffEntry()
 Simple_JunctionImpl_DiagEntry()

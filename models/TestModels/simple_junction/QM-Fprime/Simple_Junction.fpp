@@ -35,12 +35,12 @@ state machine Simple_Junction {
     }
 
     initial enter Diag
+    junction J7 {
+      if g1 enter OFF \
+      else do { a1 } enter ON
+    }
     on Ev1 enter J7
   }
 
   initial enter OFF
-  junction J7 {
-    if g1 enter OFF \
-    else do { a1 } enter ON
-  }
 }

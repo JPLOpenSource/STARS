@@ -25,14 +25,14 @@ class FprimeTemplate:
 # -------------------------------------------------------------------------------
 # ifGuard
 # ------------------------------------------------------------------------------- 
-        def ifGuard(self, smname: str, action: str, args: str) -> str:  
+        def ifGuard(self, smname: str, guard: str, args: str) -> str:  
             if args == "":
-                template = Template("""if ( parent->$(smname)_$(action)(stateMachineId) ) {""")
+                template = Template("""if ( parent->$(smname)_$(guard)(stateMachineId) ) {""")
             else:
-                template = Template("""if (parent->$(smname)_$(action)(stateMachineId, signal, data) ) {""")       
+                template = Template("""if (parent->$(smname)_$(guard)(stateMachineId, signal, data) ) {""")       
 
             template.smname = smname
-            template.action = action
+            template.guard = guard
             template.args = args
             return str(template)  
 

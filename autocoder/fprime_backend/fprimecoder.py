@@ -60,11 +60,11 @@ def formatTarget(targ: str) -> str:
 
     
 # ---------------------------------------------------------------------------
-# printTransition
+# printInitial
 #
-# Convert a transition into code
+# Convert an initial transition into code
 # ---------------------------------------------------------------------------
-def printTransition(xmiModel: XmiModel,
+def printInitial(xmiModel: XmiModel,
                         smname: str, 
                         tran: Node,
                         stateName: str) -> List[str]:
@@ -90,6 +90,47 @@ def printTransition(xmiModel: XmiModel,
             rstr.append(stateCall)
 
     return rstr
+
+# ---------------------------------------------------------------------------
+# printTransition
+#
+# Convert a transition into code
+# ---------------------------------------------------------------------------
+def printTransition(xmiModel: XmiModel,
+                        smname: str, 
+                        tran: Node,
+                        stateName: str) -> List[str]:
+    rstr = []
+
+    if tran is None:
+        rstr.append(f"this->state = {stateName};")
+  
+    else:
+        actionCode = []
+        if tran.action:
+            functionList = qmlib.n_parse_function_args(tran.action)
+            for func in functionList:
+                actionName, actionArgs = qmlib.parse_action(func)
+                actionCode.append(codeTemplate.action(smname, actionName, actionArgs))
+
+        if tran.target is not None:
+            targetState = xmiModel.idMap[tran.target]
+            targetCode = codeTemplate.call_state(targetState.stateName)
+        else:
+            targetCode = ""
+
+        if tran.guard:
+            guardName, guardArgs = qmlib.parse_action(tran.guard)
+            guardCode = codeTemplate.ifGuard(smname, guardName, guardArgs)
+            rstr.append(guardCode)
+            rstr.extend(actionCode)
+            rstr.append(targetCode)
+            rstr.append("}")
+        else:
+            rstr.extend(actionCode)
+            rstr.append(targetCode)
+
+    return rstr
       
 # -----------------------------------------------------------------------
 # printSmCode
@@ -107,7 +148,7 @@ def printSmCode(smname: str,
     initialTran = get_initial_node(xmiModel.tree)
     assert initialTran is not None, "initial transition expected but not found"
 
-    initialCode = qmlib.format_C(printTransition(xmiModel, smname, initialTran, None), 4)
+    initialCode = qmlib.format_C(printInitial(xmiModel, smname, initialTran, None), 4)
     cFile.write(codeTemplate.stateMachineInit(smname, initialCode, namespace))
 
     for leafState in xmiModel.fstm.keys():
@@ -132,7 +173,7 @@ def printSmCode(smname: str,
             else:
                 entryActions = []
             initialTran = get_initial_node(node)
-            initialCode = qmlib.format_C(printTransition(xmiModel, smname, initialTran, node.stateName), 4)
+            initialCode = qmlib.format_C(printInitial(xmiModel, smname, initialTran, node.stateName), 4)
             cFile.write(codeTemplate.stateEntryFunction(namespace, smname, node.stateName, entryActions, initialCode))
 
         if node.name == "JUNCTION":
