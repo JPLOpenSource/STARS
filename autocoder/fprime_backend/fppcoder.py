@@ -67,58 +67,6 @@ def processNode(node: Node,
             processNode(child, xmiModel, fppFile, level+1)
             fppFile.write(f"{indent}}}\n\n")
        
-# -----------------------------------------------------------------------
-# getInitTranstions
-#
-# Update the xmi model to add Initial Transitions from Transitions
-# -----------------------------------------------------------------------  
-def getInitTransitions(xmiModel: XmiModel):
-
-    psuedoStateList = xmiModel.psuedoStateList
-    transTargetSet = xmiModel.transTargets
-
-    for trans in PreOrderIter(xmiModel.tree):
-        if trans.name == "TRANSITION":
-            # If the transition source is a psuedostate and no other transition goes into that psuedostate
-            if (trans.source in psuedoStateList) and (trans.source not in transTargetSet):
-                xmiModel.addInitial(trans)
-
-# -----------------------------------------------------------------------
-# getJunctions
-#
-# Update the xmi model to add Junctions
-# -----------------------------------------------------------------------  
-def getJunctions(xmiModel: XmiModel):
-    for ps in PreOrderIter(xmiModel.tree):
-        if ps.name == "PSUEDOSTATE":
-            psId = ps.id
-            transList = []
-
-            for child in PreOrderIter(xmiModel.tree):
-                if child.name == "TRANSITION":
-                    # Get the transitions that exit this psuedo state
-                    if psId == child.source:
-                        transList.append(child)
-                    # Get the transition that enters this psuedo state
-                    if psId == child.target:
-                        parent = xmiModel.idMap[child.source]
-            if len(transList) == 2:
-                xmiModel.addJunction(transList, ps, parent)
-
-# -----------------------------------------------------------------------
-# moveTransitions
-#
-# Transitions that start from a state are to be moved under that state
-# -----------------------------------------------------------------------  
-def moveTransitions(xmiModel: XmiModel):
-
-    for trans in PreOrderIter(xmiModel.tree):
-        if trans.name == "TRANSITION":
-            # Look up where this transition is supposed to go
-            state = xmiModel.idMap[trans.source]
-            # Move the transition under the source state
-            xmiModel.moveTransition(trans, state)
-
 
 def getStateMachineMethods(xmiModel: XmiModel):
 
@@ -165,12 +113,6 @@ def generateCode(xmiModel: XmiModel):
     fppFile = open(stateMachine +".fpp", "w")
 
     currentNode = xmiModel.tree
-
-    getInitTransitions(xmiModel)
-
-    getJunctions(xmiModel)
-
-    moveTransitions(xmiModel)
 
     (actions, guards, signals) = getStateMachineMethods(xmiModel)
 

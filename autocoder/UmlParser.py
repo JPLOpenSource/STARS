@@ -192,7 +192,7 @@ def createStateIdMap(parseList: ParserElement) -> Dict[str, int]:
     stateIdMap = {}
     createStateList(parseList, stateList)
     stateList = nodups(stateList)
-    stateId = 1
+    stateId = 0
     for state in stateList:
         stateIdMap[state] = stateId
         stateId = stateId + 1
@@ -325,8 +325,9 @@ def createXmi(parseList: ParserElement,
         if len(init.ACTION) != 0:
             action = ";".join(init.ACTION)
         model.addPsuedostate(global_stateId, root)
+        target = stateIdMap[init.STATE_NAME]
         model.addTransition(global_stateId,  # source 
-                            stateIdMap[init.STATE_NAME], # target
+                            target,
                             None, # event
                             None, # guard
                             action, # action
@@ -343,8 +344,10 @@ def createXmi(parseList: ParserElement,
         else:
             guard = internal.GUARD
         action = ";".join(internal.ACTION)
+        target = stateIdMap[internal.STATE_NAME]
+        target = None
         model.addTransition(stateIdMap[internal.STATE_NAME], 
-                                stateIdMap[internal.STATE_NAME],
+                                target,
                                 internal.EVENT,
                                 guard,
                                 action,
@@ -370,8 +373,9 @@ def createXmi(parseList: ParserElement,
         else:
             action = ";".join(trans.BODY.ACTION)
 
+        target = stateIdMap[trans.TARGET]
         model.addTransition(stateIdMap[trans.SOURCE], 
-                                stateIdMap[trans.TARGET],
+                                target,
                                 event, # event 
                                 guard, # guard
                                 action, # action
@@ -412,6 +416,12 @@ def getXmiModel(umlFileName: str) -> XmiModel:
 
     except KeyError as error:
         handleError(f"State {error.args[0]} has not been defined")
+
+    xmiModel.getInitTransitions()
+
+    xmiModel.getJunctions()
+
+    xmiModel.moveTransitions()
 
     return xmiModel
     

@@ -5,17 +5,13 @@
 
 state S1 {
     S1:Entry: s1Entry()
-    state S11 {
-
-    }
-    [*] --> S11
 }
 
 state S2 {
 
 }
 
-S1 --> S1 : Ev1
-S11 --> S1 : Ev2
+S1 --> S2 : Ev1
+S2 --> S1 : Ev1
 
 @enduml

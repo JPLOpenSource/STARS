@@ -30,7 +30,19 @@ state machine Complex_Junction {
     }
 
     initial enter Diag
-    on Ev1 enter J5
+    junction J4 {
+      if g1 do { a1 } enter OFF \
+      else do { a2 } enter J5
+    }
+    junction J5 {
+      if g2 do { a5 } enter ON \
+      else do { a3 } enter J6
+    }
+    junction J6 {
+      if g3 do { a6 } enter ON \
+      else do { a4 } enter OFF
+    }
+    on Ev1 enter J4
   }
 
   state ON {
@@ -46,16 +58,4 @@ state machine Complex_Junction {
   }
 
   initial enter OFF
-  junction J5 {
-    if g1 do { a1 } enter OFF \
-    else do { a2 } enter J6
-  }
-  junction J6 {
-    if g2 do { a5 } enter ON \
-    else do { a3 } enter J7
-  }
-  junction J7 {
-    if g3 do { a6 } enter ON \
-    else do { a4 } enter OFF
-  }
 }

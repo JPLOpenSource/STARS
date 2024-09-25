@@ -24,7 +24,7 @@ state ON {
 }
 
 state c1 <<choice>>
-ON --> OFF: Ev1
+ON --> OFF: EV1
 OFF --> c1: EV1
 c1 --> OFF: [g1()]
 c1 --> ON: /a1()

@@ -13,7 +13,6 @@ state machine Simple_Junction {
   guard g1
 
   signal EV1
-  signal Ev1
 
   state OFF {
    entry do { OffEntry }
@@ -24,7 +23,11 @@ state machine Simple_Junction {
     }
 
     initial enter Diag
-    on EV1 enter J5
+    junction J4 {
+      if g1 enter OFF \
+      else do { a1 } enter ON
+    }
+    on EV1 enter J4
   }
 
   state ON {
@@ -36,12 +39,8 @@ state machine Simple_Junction {
     }
 
     initial enter Init
-    on Ev1 enter OFF
+    on EV1 enter OFF
   }
 
   initial enter OFF
-  junction J5 {
-    if g1 enter OFF \
-    else do { a1 } enter ON
-  }
 }

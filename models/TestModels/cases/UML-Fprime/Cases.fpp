@@ -24,7 +24,11 @@ state machine Cases {
     }
 
     initial enter Diag
-    on EV1 enter J5
+    junction J4 {
+      if G1 enter OFF \
+      else do { A1 } enter on
+    }
+    on EV1 enter J4
   }
 
   state on {
@@ -40,8 +44,4 @@ state machine Cases {
   }
 
   initial enter OFF
-  junction J5 {
-    if G1 enter OFF \
-    else do { A1 } enter on
-  }
 }

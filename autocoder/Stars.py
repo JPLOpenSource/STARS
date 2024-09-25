@@ -106,16 +106,14 @@ from lxml.etree import _ElementTree
 ElementTreeType = _ElementTree 
 
 # -----------------------------------------------------------------------
-# getQmRoot
+# getXmiModel
 #
-# Parse the input model files and return the QM Root which is used
-# for the code generation.
+# Parse the input model files and return the XMI Model
 # -----------------------------------------------------------------------
-def getQmRoot(modelFileName: str) -> Tuple[ElementTreeType, XmiModel] :
+def getXmiModel(modelFileName: str) -> XmiModel:
 
     suff = os.path.basename(modelFileName).split('.')[1]
 
-    qmRoot: ElementTreeType
     xmiModel: XmiModel
 
     if suff == 'qm':
@@ -127,17 +125,17 @@ def getQmRoot(modelFileName: str) -> Tuple[ElementTreeType, XmiModel] :
         cameoRoot: ElementTreeType = etree.parse(modelFileName)
         xmiModel = CameoParser.getXmiModel(cameoRoot)
         # Translate XMI to QM
-        qmRoot = xmiToQm.translateXmiModelToQmFile(xmiModel, args.debug)
+        #qmRoot = xmiToQm.translateXmiModelToQmFile(xmiModel, args.debug)
     elif suff == 'plantuml':
         # Translate UML to XMI
         xmiModel = UmlParser.getXmiModel(modelFileName)
         # Translate XMI to QM
-        qmRoot = xmiToQm.translateXmiModelToQmFile(xmiModel, args.debug)
+        #qmRoot = xmiToQm.translateXmiModelToQmFile(xmiModel, args.debug)
     else:
         print("Unknown suffix {0} on file {1}".format(suff, modelFileName))
         sys.exit(0)
 
-    return qmRoot, xmiModel
+    return xmiModel
 
 
 # -----------------------------------------------------------------------
@@ -160,22 +158,22 @@ qmRoot: ElementTreeType
 xmiModel: XmiModel
 smname: str
 
-qmRoot, xmiModel = getQmRoot(args.model)
+xmiModel = getXmiModel(args.model)
 
 # Check Correctness of the QM
-checkFaults.checkStateMachine(qmRoot)
+#checkFaults.checkStateMachine(qmRoot)
 
-if args.backend == "c++":
-    cppcoder.generateCode(qmRoot, args.noImpl)
+# if args.backend == "c++":
+#     cppcoder.generateCode(qmRoot, args.noImpl)
     
-if args.backend == "c":
-    ccoder.generateCode(qmRoot, args.noImpl)
+# if args.backend == "c":
+#     ccoder.generateCode(qmRoot, args.noImpl)
     
-if args.backend == "qf":
-    qfcoder.generateCode(qmRoot, args.noImpl, args.noSignals)
+# if args.backend == "qf":
+#     qfcoder.generateCode(qmRoot, args.noImpl, args.noSignals)
 
-if args.backend == "test":
-    testcoder.generateCode(qmRoot)
+# if args.backend == "test":
+#     testcoder.generateCode(qmRoot)
     
 if args.backend == 'fprime':
     if (args.namespace is None):

@@ -3,15 +3,15 @@ state machine Simple {
   action s1Entry
 
 
-  signal EV1
+  signal Ev1
 
   state S1 {
    entry do { s1Entry }
-    on EV1 enter S2
+    on Ev1 enter S2
   }
 
   state S2 {
-    on EV1 enter S1
+    on Ev1 enter S1
   }
 
   initial enter S1

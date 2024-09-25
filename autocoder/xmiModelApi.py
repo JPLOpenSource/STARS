@@ -7,7 +7,7 @@
 # mypy: ignore-errors
 
 from lxml import etree
-from anytree import Node, RenderTree
+from anytree import Node, RenderTree, PreOrderIter
 import anytree
 import sys
 from copy import deepcopy
@@ -182,6 +182,58 @@ class XmiModel:
             thisList = thisList + self.getStatesList(node)
 
         return thisList
+    
+    # -----------------------------------------------------------------------
+    # moveTransitions
+    #
+    # Transitions that start from a state are to be moved under that state
+    # -----------------------------------------------------------------------  
+    def moveTransitions(self):
+
+        for trans in PreOrderIter(self.tree):
+            if trans.name == "TRANSITION":
+                # Look up where this transition is supposed to go
+                state = self.idMap[trans.source]
+                # Move the transition under the source state
+                self.moveTransition(trans, state)
+
+    # -----------------------------------------------------------------------
+    # getInitTranstions
+    #
+    # Update the xmi model to add Initial Transitions from Transitions
+    # -----------------------------------------------------------------------  
+    def getInitTransitions(self):
+
+        psuedoStateList = self.psuedoStateList
+        transTargetSet = self.transTargets
+
+        for trans in PreOrderIter(self.tree):
+            if trans.name == "TRANSITION":
+                # If the transition source is a psuedostate and no other transition goes into that psuedostate
+                if (trans.source in psuedoStateList) and (trans.source not in transTargetSet):
+                    self.addInitial(trans)
+
+    # -----------------------------------------------------------------------
+    # getJunctions
+    #
+    # Update the xmi model to add Junctions
+    # -----------------------------------------------------------------------  
+    def getJunctions(self):
+        for ps in PreOrderIter(self.tree):
+            if ps.name == "PSUEDOSTATE":
+                psId = ps.id
+                transList = []
+
+                for child in PreOrderIter(self.tree):
+                    if child.name == "TRANSITION":
+                        # Get the transitions that exit this psuedo state
+                        if psId == child.source:
+                            transList.append(child)
+                        # Get the transition that enters this psuedo state
+                        if psId == child.target:
+                            parent = self.idMap[child.source]
+                if len(transList) == 2:
+                    self.addJunction(transList, ps, parent)
 
    # --------------------------------------------------------
     # print
@@ -191,6 +243,13 @@ class XmiModel:
     def print(self):
         print("---------------- xmi Model ------------")
         print(RenderTree(self.tree))
+        
+        for leafState in self.fstm.keys():
+            for signal in self.fstm[leafState].keys():
+                trans =  self.fstm[leafState][signal]
+                print(f'state = {leafState.stateName}, signal = {signal}, trans = {trans.target}')
+        print(f'idMap = {self.idMap}')
+
         print("------------------end------------------")
 
 

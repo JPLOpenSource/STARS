@@ -10,7 +10,7 @@ from copy import deepcopy
 import xmiModelApi
 import flattenstatemachine as flatt
 import qmlib
-from anytree import Node
+from anytree import Node, PreOrderIter
 from xmiModelApi import XmiModel
 
 from lxml.etree import _ElementTree
@@ -161,7 +161,6 @@ def fixQMThing(qmRoot: ElementTreeType) -> ElementTreeType:
 
     return qmFix
 
-
 # -----------------------------------------------------------------------
 # getXmiModel
 #
@@ -172,6 +171,13 @@ def getXmiModel(qmRoot: ElementTreeType) -> XmiModel:
     smRoot, smname = qmlib.get_state_machine(qmRoot)
 
     xmiModel = populateXmiModel(smRoot, smname)
+
+    xmiModel.getInitTransitions()
+
+    xmiModel.getJunctions()
+
+    xmiModel.moveTransitions()
+
 
     return xmiModel
 

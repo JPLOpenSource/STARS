@@ -31,8 +31,24 @@ state machine String_Guards {
     }
 
     initial enter Far
-    on Ev1 enter J5
-    on Ev2 if g4 do { a5 } enter J8
+    junction J4 {
+      if g1 do { b2 } enter J5 \
+      else do { a1 } enter OFF
+    }
+    junction J5 {
+      if g2 do { b3 } enter J6 \
+      else do { a2 } enter OFF
+    }
+    junction J6 {
+      if g3 do { b4 } enter ON \
+      else do { a3 } enter OFF
+    }
+    junction J7 {
+      if g5 do { a4 } enter OFF \
+      else do { a6 } enter ON
+    }
+    on Ev1 enter J4
+    on Ev2 if g4 do { a5 } enter J7
   }
 
   state ON {
@@ -46,20 +62,4 @@ state machine String_Guards {
   }
 
   initial do { initialAction } enter OFF
-  junction J5 {
-    if g1 do { b2 } enter J6 \
-    else do { a1 } enter OFF
-  }
-  junction J6 {
-    if g2 do { b3 } enter J7 \
-    else do { a2 } enter OFF
-  }
-  junction J7 {
-    if g3 do { b4 } enter ON \
-    else do { a3 } enter OFF
-  }
-  junction J8 {
-    if g5 do { a4 } enter OFF \
-    else do { a6 } enter ON
-  }
 }

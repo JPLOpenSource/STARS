@@ -9,7 +9,6 @@ state machine Actions {
   guard g1
 
   signal EV1
-  signal Ev1
 
   state S1 {
    entry do { s1Entry }
@@ -20,7 +19,7 @@ state machine Actions {
   state S2 {
    entry do { s2Entry }
    exit do { s2Exit }
-    on Ev1 do { a2 } enter S1
+    on EV1 do { a2 } enter S1
   }
 
   initial enter S1
