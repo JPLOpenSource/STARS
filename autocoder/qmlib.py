@@ -195,3 +195,36 @@ def get_state_machine(qmRoot: ElementTreeType) -> Tuple[ElementTreeType, str]:
     statechart = className.find('statechart')
     smname = className.get('name')
     return statechart, smname
+
+# -----------------------------------------------------------------------
+# get_signals
+#
+# -----------------------------------------------------------------------  
+def get_signals(xmiModel: XmiModel) -> List[str]:
+    signals = set()
+    for node in PreOrderIter(xmiModel.tree):
+        if node.name == "TRANSITION":
+            signals.add(node.event)
+    return list(signals)
+
+# -----------------------------------------------------------------------
+# get_junctions
+#
+# -----------------------------------------------------------------------  
+def get_junctions(xmiModel: XmiModel) -> List[str]:
+    stateNames = set()
+    for node in PreOrderIter(xmiModel.tree):
+        if node.name == "JUNCTION":
+            stateNames.add(node.stateName)
+    return sorted(list(stateNames))
+
+# -----------------------------------------------------------------------
+# get_states
+#
+# -----------------------------------------------------------------------  
+def get_states(xmiModel: XmiModel) -> List[str]:
+    stateNames = set()
+    for node in PreOrderIter(xmiModel.tree):
+        if node.name == "STATE":
+            stateNames.add(node.stateName)
+    return sorted(list(stateNames))

@@ -36,10 +36,10 @@ def printSmHeader(smname: str,
         
     hFile = open(smname+".hpp", "w")
 
-    signalList = get_signals(xmiModel)
+    signalList = qmlib.get_signals(xmiModel)
 
-    stateList = get_states(xmiModel)
-    junctionList = get_junctions(xmiModel)
+    stateList = qmlib.get_states(xmiModel)
+    junctionList = qmlib.get_junctions(xmiModel)
 
     funcList = get_function_signatures(xmiModel, smname)
 
@@ -224,7 +224,7 @@ def printUnitCode(smname: str,
     mainFile.write(unitTestTemplate.mainFile(implHdr, component, namespace))
     sendEventHFile.write(unitTestTemplate.sendEventHeaderFile(smname, namespace))
     
-    triggerList = get_signals(xmiModel)
+    triggerList = qmlib.get_signals(xmiModel)
             
     sendEventCFile.write(unitTestTemplate.sendEventFile(smname, component, namespace, implHdr, triggerList))
     
@@ -264,36 +264,34 @@ class ImplFunc:
         self.signature = signature
         self.name = name
 
-def get_function_defs(qmRoot: ElementTreeType, 
+def get_function_defs(xmiModel: XmiModel, 
                       smname: str, 
                       namespace: str, 
                       component: str) -> Tuple[List[ImplFunc], List[ImplFunc]]:
 
-    guardFunctions = qmlib.get_guard_functions(qmRoot)
-    stateFunctions = qmlib.get_state_functions(qmRoot)
-    transFunctions = qmlib.get_trans_functions(qmRoot)    
+    guardFunctions = qmlib.get_guard_functions(xmiModel)
+    stateFunctions = qmlib.get_state_functions(xmiModel)
+    transFunctions = qmlib.get_trans_functions(xmiModel)    
     
     actionFunctions = stateFunctions + transFunctions
-
-    funcList = get_function_signatures(qmRoot, smname)
 
     guardList: List[ImplFunc]= []
     sigList: List[str] = []
     for guard in guardFunctions:
         actionName, actionArgs = qmlib.parse_action(guard)
-        sig = codeTemplate.guardDef(smname, actionName, component, actionArgs, namespace)
-        if sig not in sigList:
-            sigList.append(sig)
-            guardList.append(ImplFunc(sig, qmlib.get_name(guard)))
+        signature = codeTemplate.guardDef(smname, actionName, component, actionArgs, namespace)
+        if signature not in sigList:
+            sigList.append(signature)
+            guardList.append(ImplFunc(signature, qmlib.get_name(guard)))
         
     stateList: List[ImplFunc] = []
     sigList = []
     for state in actionFunctions:
         actionName, actionArgs = qmlib.parse_action(state)
-        sig = codeTemplate.actionDef(smname, actionName, component, actionArgs, namespace)
-        if sig not in sigList:
-            sigList.append(sig)
-            stateList.append(ImplFunc(sig, qmlib.get_name(state)))
+        signature = codeTemplate.actionDef(smname, actionName, component, actionArgs, namespace)
+        if signature not in sigList:
+            sigList.append(signature)
+            stateList.append(ImplFunc(signature, qmlib.get_name(state)))
 
     return (guardList, stateList)
 
@@ -326,40 +324,6 @@ def get_function_signatures(xmiModel: XmiModel,
             funcList.append(sig)
 
     return sorted(funcList)
-
-# -----------------------------------------------------------------------
-# get_states
-#
-# -----------------------------------------------------------------------  
-def get_states(xmiModel: XmiModel) -> List[str]:
-    stateNames = set()
-    for node in PreOrderIter(xmiModel.tree):
-        if node.name == "STATE":
-            stateNames.add(node.stateName)
-    return sorted(list(stateNames))
-
-# -----------------------------------------------------------------------
-# get_junctions
-#
-# -----------------------------------------------------------------------  
-def get_junctions(xmiModel: XmiModel) -> List[str]:
-    stateNames = set()
-    for node in PreOrderIter(xmiModel.tree):
-        if node.name == "JUNCTION":
-            stateNames.add(node.stateName)
-    return sorted(list(stateNames))
-
-# -----------------------------------------------------------------------
-# get_signals
-#
-# -----------------------------------------------------------------------  
-def get_signals(xmiModel: XmiModel) -> List[str]:
-    signals = set()
-    for node in PreOrderIter(xmiModel.tree):
-        if node.name == "TRANSITION":
-            signals.add(node.event)
-    return list(signals)
-
 
 # -----------------------------------------------------------------------
 # get_initial_node
