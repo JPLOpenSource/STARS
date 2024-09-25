@@ -124,11 +124,10 @@ def parseStateTree(xmlFileNode: ElementTreeType,
         if effect is not None:
             actionName = effect.get('name')
 
-        kindName = None
-        if kind is not None:
-            kindName = kind
-            
-        thisNode = xmiModel.addTransition(sourceId, targetId, eventName, guardName, actionName, kindName, xmiModelNode)
+        if kind == "internal":
+            targetId = None
+
+        thisNode = xmiModel.addTransition(sourceId, targetId, eventName, guardName, actionName, kind, xmiModelNode)
 
     return   
 
@@ -244,6 +243,13 @@ def getXmiModel(cameoRoot: ElementTreeType) -> XmiModel:
     # Populate the xmi model
     # 
     populateXmiModel(xmlRoot, xmiModel)
+
+    xmiModel.getInitTransitions()
+
+    xmiModel.getJunctions()
+
+    xmiModel.moveTransitions()
+
 
     return xmiModel
         
