@@ -6,11 +6,14 @@
 # fprime back-end 
 #
 # -----------------------------------------------------------------------
-
+import qmlib
 from Cheetah.Template import Template # type: ignore
 from typing import List, Dict, Tuple, Any, Optional, IO
 
 class FprimeTemplate:
+        
+        SM_ID = "const FwEnumStoreType stateMachineId"
+        full_function_signature = "$(namespace)::$(component)::$(smname)_$(action)"
     
 # -------------------------------------------------------------------------------
 # target
@@ -25,26 +28,27 @@ class FprimeTemplate:
 # -------------------------------------------------------------------------------
 # ifGuard
 # ------------------------------------------------------------------------------- 
-        def ifGuard(self, smname: str, guard: str, args: str) -> str:  
+        def ifGuard(self, smname: str, guard: str) -> str:  
+            guardName, args = qmlib.parse_action(guard)
             if args == "":
                 template = Template("""if ( parent->$(smname)_$(guard)(stateMachineId) ) {""")
             else:
                 template = Template("""if (parent->$(smname)_$(guard)(stateMachineId, signal, data) ) {""")       
 
             template.smname = smname
-            template.guard = guard
-            template.args = args
+            template.guard = guardName
             return str(template)  
 
 # -------------------------------------------------------------------------------
 # guardSignature
 # -------------------------------------------------------------------------------   
-        def guardSignature(self, smname: str, action: str, args: str) -> str:
+        def guardSignature(self, smname: str, action: str) -> str:
+            actionName, args = qmlib.parse_action(action)
             if args == "":
-                template = Template("""bool $(smname)_$(action)(const FwEnumStoreType stateMachineId)""")
+                template = Template(f"""bool $(smname)_$(action)({self.SM_ID})""")
             elif args == "e":
-                template = Template("""bool $(smname)_$(action)(
-        const FwEnumStoreType stateMachineId, 
+                template = Template(f"""bool $(smname)_$(action)(
+        {self.SM_ID}, 
         const $(smname)_Interface::$(smname)_Signals signal, 
         const Fw::SmSignalBuffer &data)""")
             elif args.isdigit():
@@ -54,44 +58,45 @@ class FprimeTemplate:
 
 
             template.smname = smname
-            template.action = action
+            template.action = actionName
             return str(template)
 
 # -------------------------------------------------------------------------------
 # guardDef
 # -------------------------------------------------------------------------------   
-        def guardDef(self, smname: str, action: str, component: str, args: str, namespace) -> str:
+        def guardDef(self, smname: str, action: str, component: str, namespace) -> str:
+            actionName, args = qmlib.parse_action(action)
             if args == "":
-                template = Template("""bool $(namespace)::$(component)::$(smname)_$(action)(const FwEnumStoreType stateMachineId)""")
+                template = Template(f"""bool {self.full_function_signature}({self.SM_ID})""")
             elif args == "e":
-                template = Template("""bool $(namespace)::$(component)::$(smname)_$(action)(
-        const FwEnumStoreType stateMachineId, 
+                template = Template(f"""bool {self.full_function_signature}(
+        {self.SM_ID}, 
         const $(smname)_Interface::$(smname)_Signals signal, 
         const Fw::SmSignalBuffer &data)""")         
 
             elif args.isdigit():
-                template = Template("""bool $(namespace)::$(component)::$(smname)_$(action)(int arg)""")
+                template = Template(f"""bool {self.full_function_signature}(int arg)""")
             else:
                 assert True, "Unknown args"
 
             template.smname = smname
             template.namespace = namespace
-            template.action = action
+            template.action = actionName
             template.component = component
             return str(template)
 
 # -------------------------------------------------------------------------------
 # action
 # -------------------------------------------------------------------------------   
-        def action(self, smname: str, action: str, args: str) -> str:
+        def action(self, smname: str, action: str) -> str:
+            actionName, args = qmlib.parse_action(action)
             if args == "":
-                template = Template("""parent->$(smname)_$(action)(stateMachineId);""")   
+                template = Template(f"""parent->$(smname)_$(action)(stateMachineId);""")   
             else:
-                template = Template("""parent->$(smname)_$(action)(stateMachineId, signal, data);""")         
+                template = Template(f"""parent->$(smname)_$(action)(stateMachineId, signal, data);""")         
      
             template.smname = smname
-            template.action = action
-            template.args = args
+            template.action = actionName
             return str(template)
 
 
@@ -99,7 +104,7 @@ class FprimeTemplate:
 # call_state
 # -------------------------------------------------------------------------------   
         def call_state(self, smname: str) -> str:
-            template = Template("""enter_$(smname)(stateMachineId);""")         
+            template = Template(f"""enter_$(smname)(stateMachineId);""")         
      
             template.smname = smname
             return str(template)
@@ -108,44 +113,47 @@ class FprimeTemplate:
 # -------------------------------------------------------------------------------
 # actionSignature
 # -------------------------------------------------------------------------------   
-        def actionSignature(self, smname: str, action: str, args: str) -> str:
+        def actionSignature(self, smname: str, action: str) -> str:
+            actionName, args = qmlib.parse_action(action)
             if args == "":
-                template = Template("""void $(smname)_$(action)(const FwEnumStoreType stateMachineId)""")
+                template = Template(f"""void $(smname)_$(action)({self.SM_ID})""")
             elif args == "e":
-                template = Template(""" void $(smname)_$(action)(
-        const FwEnumStoreType stateMachineId, 
+                template = Template(f""" void $(smname)_$(action)(
+        {self.SM_ID}, 
         const $(smname)_Interface::$(smname)_Signals signal, 
         const Fw::SmSignalBuffer &data)""")
             elif args.isdigit():
-                template = Template("""void $(smname)_$(action)(int arg)""")
+                template = Template(f"""void $(smname)_$(action)(int arg)""")
             else:
                 assert True, "Unknown args"
 
 
             template.smname = smname
-            template.action = action
+            template.action = actionName
             return str(template)
 
 
 # -------------------------------------------------------------------------------
 # actionDef
 # -------------------------------------------------------------------------------   
-        def actionDef(self, smname: str, action: str, component: str, args: str, namespace: str) -> str:
+        def actionDef(self, smname: str, action: str, component: str, namespace: str) -> str:
+            actionName, args = qmlib.parse_action(action)
+
             if args == "":
-                template = Template("""void $(namespace)::$(component)::$(smname)_$(action)(const FwEnumStoreType stateMachineId)""")   
+                template = Template(f"""void {self.full_function_signature}({self.SM_ID})""")   
             elif args == "e":
-                template = Template("""void $(namespace)::$(component)::$(smname)_$(action)(
-        const FwEnumStoreType stateMachineId, 
+                template = Template(f"""void {self.full_function_signature}(
+        {self.SM_ID}, 
         const $(smname)_Interface::$(smname)_Signals signal, 
         const Fw::SmSignalBuffer &data)""")         
             elif args.isdigit():
-                template = Template("""void $(namespace)::$(component)::$(smname)_$(action)(int arg)""")         
+                template = Template(f"""void {self.full_function_signature}(int arg)""")         
             else:
                 assert True, "Unknown args"
                 
             template.namespace = namespace
             template.smname = smname
-            template.action = action
+            template.action = actionName
             template.component = component
             return str(template)
 
@@ -153,7 +161,7 @@ class FprimeTemplate:
 # stateTransition
 # -------------------------------------------------------------------------------   
         def stateTransition(self, signal: str, transitionCode: str, smname) -> str:
-            template = Template("""
+            template = Template(f"""
                 case $(smname)_Interface::$(smname)_Signals::$(signal.upper())_SIG:
 $(transitionCode)
                     break;
@@ -223,14 +231,14 @@ class $(smname) {
     };
                                  
 #for $state in $stateList
-    void enter_$(state)(const FwEnumStoreType stateMachineId);
+    void enter_$(state)($(smId));
 #end for
     
     enum $(smname)_States state;
 
-    void init(const FwEnumStoreType stateMachineId);
+    void init($(smId));
     void update(
-        const FwEnumStoreType stateMachineId, 
+        $(smId), 
         const $(smname)_Interface::$(smname)_Signals signal, 
         const Fw::SmSignalBuffer &data
     );
@@ -245,6 +253,7 @@ class $(smname) {
             template.smname = smname
             template.namespace = namespace
             template.implFunctions = implFunctions
+            template.smId = self.SM_ID
             return str(template)
         
         
@@ -265,14 +274,14 @@ class $(smname) {
 \#include "$(smname).hpp"
 
 
-void $(namespace)::$(smname)::init(const FwEnumStoreType stateMachineId)
+void $(namespace)::$(smname)::init($(smId))
 {
 $transition
 }
 
 
 void $(namespace)::$(smname)::update(
-    const FwEnumStoreType stateMachineId, 
+    $(smId), 
     const $(smname)_Interface::$(smname)_Signals signal, 
     const Fw::SmSignalBuffer &data
 )
@@ -282,6 +291,7 @@ void $(namespace)::$(smname)::update(
             template.smname = smname
             template.transition = transition
             template.namespace = namespace
+            template.smId = self.SM_ID
             return str(template)
         
 # -------------------------------------------------------------------------------
@@ -296,7 +306,7 @@ void $(namespace)::$(smname)::update(
             
             template = Template("""
 
-void $namespace::$smname::enter_$(stateName)(const FwEnumStoreType stateMachineId)
+void $namespace::$smname::enter_$(stateName)($(smId))
 {
 // State entry actions
 #for $action in $entryActions
@@ -313,6 +323,7 @@ $initialCode
             template.stateName = stateName
             template.entryActions = entryActions
             template.initialCode = initialCode
+            template.smId = self.SM_ID
             return str(template)
 
 # -------------------------------------------------------------------------------
@@ -330,7 +341,7 @@ $initialCode
             
             template = Template("""
 
-void $namespace::$smname::enter_$(stateName)(const FwEnumStoreType stateMachineId)
+void $namespace::$smname::enter_$(stateName)($(smId))
 {
     if (parent->$(smname)_$(guard)(stateMachineId)) {
 #for action in $ifActions
@@ -355,6 +366,7 @@ void $namespace::$smname::enter_$(stateName)(const FwEnumStoreType stateMachineI
             template.elseTarget = elseTarget
             template.ifActions = ifActions
             template.elseActions = elseActions
+            template.smId = self.SM_ID
             return str(template)
         
 

@@ -79,8 +79,7 @@ def printInitial(xmiModel: XmiModel,
         if action:
             functionList = qmlib.n_parse_function_args(action)
             for func in functionList:
-                actionName, actionArgs = qmlib.parse_action(func)
-                sig = codeTemplate.action(smname, actionName, actionArgs)
+                sig = codeTemplate.action(smname, func)
                 rstr.append(sig)
 
         # Target
@@ -110,8 +109,7 @@ def printTransition(xmiModel: XmiModel,
         if tran.action:
             functionList = qmlib.n_parse_function_args(tran.action)
             for func in functionList:
-                actionName, actionArgs = qmlib.parse_action(func)
-                actionCode.append(codeTemplate.action(smname, actionName, actionArgs))
+                actionCode.append(codeTemplate.action(smname, func))
 
         if tran.target is not None:
             targetState = xmiModel.idMap[tran.target]
@@ -120,8 +118,7 @@ def printTransition(xmiModel: XmiModel,
             targetCode = ""
 
         if tran.guard:
-            guardName, guardArgs = qmlib.parse_action(tran.guard)
-            guardCode = codeTemplate.ifGuard(smname, guardName, guardArgs)
+            guardCode = codeTemplate.ifGuard(smname, tran.guard)
             rstr.append(guardCode)
             rstr.extend(actionCode)
             rstr.append(targetCode)
@@ -278,8 +275,7 @@ def get_function_defs(xmiModel: XmiModel,
     guardList: List[ImplFunc]= []
     sigList: List[str] = []
     for guard in guardFunctions:
-        actionName, actionArgs = qmlib.parse_action(guard)
-        signature = codeTemplate.guardDef(smname, actionName, component, actionArgs, namespace)
+        signature = codeTemplate.guardDef(smname, guard, component, namespace)
         if signature not in sigList:
             sigList.append(signature)
             guardList.append(ImplFunc(signature, qmlib.get_name(guard)))
@@ -287,8 +283,7 @@ def get_function_defs(xmiModel: XmiModel,
     stateList: List[ImplFunc] = []
     sigList = []
     for state in actionFunctions:
-        actionName, actionArgs = qmlib.parse_action(state)
-        signature = codeTemplate.actionDef(smname, actionName, component, actionArgs, namespace)
+        signature = codeTemplate.actionDef(smname, state, component, namespace)
         if signature not in sigList:
             sigList.append(signature)
             stateList.append(ImplFunc(signature, qmlib.get_name(state)))
@@ -312,14 +307,12 @@ def get_function_signatures(xmiModel: XmiModel,
     funcList = []
 
     for func in guardFunctions:
-        actionName, actionArgs = qmlib.parse_action(func)
-        sig = codeTemplate.guardSignature(smname, actionName, actionArgs)
+        sig = codeTemplate.guardSignature(smname, func)
         if sig not in funcList:
             funcList.append(sig)
 
     for func in actionFunctions:
-        actionName, actionArgs = qmlib.parse_action(func)
-        sig = codeTemplate.actionSignature(smname, actionName, actionArgs)
+        sig = codeTemplate.actionSignature(smname, func)
         if sig not in funcList:
             funcList.append(sig)
 
