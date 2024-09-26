@@ -14,6 +14,7 @@ class FprimeTemplate:
         
         SM_ID = "const FwEnumStoreType stateMachineId"
         full_function_signature = "$(namespace)::$(component)::$(smname)_$(action)"
+        signals_type = "const $(smname)_Interface::$(smname)_Signals"
     
 # -------------------------------------------------------------------------------
 # target
@@ -49,7 +50,7 @@ class FprimeTemplate:
             elif args == "e":
                 template = Template(f"""bool $(smname)_$(action)(
         {self.SM_ID}, 
-        const $(smname)_Interface::$(smname)_Signals signal, 
+        {self.signals_type} signal, 
         const Fw::SmSignalBuffer &data)""")
             elif args.isdigit():
                 template = Template("""bool $(smname)_$(action)(int arg)""")
@@ -71,7 +72,7 @@ class FprimeTemplate:
             elif args == "e":
                 template = Template(f"""bool {self.full_function_signature}(
         {self.SM_ID}, 
-        const $(smname)_Interface::$(smname)_Signals signal, 
+        {self.signals_type} signal, 
         const Fw::SmSignalBuffer &data)""")         
 
             elif args.isdigit():
@@ -120,7 +121,7 @@ class FprimeTemplate:
             elif args == "e":
                 template = Template(f""" void $(smname)_$(action)(
         {self.SM_ID}, 
-        const $(smname)_Interface::$(smname)_Signals signal, 
+        {self.signals_type} signal, 
         const Fw::SmSignalBuffer &data)""")
             elif args.isdigit():
                 template = Template(f"""void $(smname)_$(action)(int arg)""")
@@ -144,7 +145,7 @@ class FprimeTemplate:
             elif args == "e":
                 template = Template(f"""void {self.full_function_signature}(
         {self.SM_ID}, 
-        const $(smname)_Interface::$(smname)_Signals signal, 
+        {self.signals_type} signal, 
         const Fw::SmSignalBuffer &data)""")         
             elif args.isdigit():
                 template = Template(f"""void {self.full_function_signature}(int arg)""")         
