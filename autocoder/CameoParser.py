@@ -181,7 +181,12 @@ def getXmlStateMachine(xmlRoot: ElementTreeType) -> ElementTreeType:
     pe = xmlRoot.findall("packagedElement")
     for e in pe:
         if e.get(XMI_TYPE) == "uml:StateMachine":
-            return e 
+            return e
+    ob = xmlRoot.findall(".//ownedBehavior")
+    for e in ob:
+        if e.get(XMI_TYPE) == "uml:StateMachine":
+            return e
+    raise Exception("could not find the UML StateMachine")
 
 # -----------------------------------------------------------------------
 # fixComplexIDs

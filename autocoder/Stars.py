@@ -81,6 +81,7 @@ import os
 from lxml import etree
 from typing import Tuple
 import sys
+sys.path.append(os.path.realpath(os.path.dirname(__file__)))
 
 if sys.version_info[0] < 3:
     raise Exception("Must be using Python 3")
@@ -99,6 +100,7 @@ import UmlParser
 import xmiToQm
 import qmlib
 from xmiModelApi import XmiModel
+from zipfile import ZipFile
 
 
 from lxml.etree import _ElementTree
@@ -127,6 +129,13 @@ def getQmRoot(modelFileName: str) -> Tuple[ElementTreeType, XmiModel] :
         xmiModel = CameoParser.getXmiModel(cameoRoot)
         # Translate XMI to QM
         qmRoot = xmiToQm.translateXmiModelToQmFile(xmiModel, args.debug)
+    elif suff == 'mdzip':
+        # Cameo mdzip file
+        za = ZipFile(modelFileName)
+        buf = za.read('com.nomagic.magicdraw.uml_model.model')
+        cameoRoot: ElementTreeType = etree.ElementTree(etree.fromstring(buf))
+        xmiModel = CameoParser.getXmiModel(cameoRoot)
+        qmRoot = xmiToQm.translateXmiModelToQmFile(xmiModel, args.debug)
     elif suff == 'plantuml':
         # Translate UML to XMI
         xmiModel = UmlParser.getXmiModel(modelFileName)
@@ -144,9 +153,19 @@ def getQmRoot(modelFileName: str) -> Tuple[ElementTreeType, XmiModel] :
 #
 # -----------------------------------------------------------------------
 
-parser = argparse.ArgumentParser(description='State-machine Autocoder.')
+the_description="""
+Autocoder for state machines.
+
+Input model based on file extenion:
+  .qf       QF model file
+  .xml      Cameo model file
+  .mdzip    Cameo project file
+  .platuml  PlantUML model file
+"""
+parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter,
+                                 description=the_description)
 parser.add_argument("-backend", type=str, choices=['c', 'qf', 'c++', 'fprime', 'test'], help="back-end code to generate")
-parser.add_argument("-model", help="QM state-machine model file: <model>.qm")
+parser.add_argument("-model", help="state-machine model file")
 parser.add_argument("-noImpl", help="Don't generate the Impl files", action="store_true")
 parser.add_argument("-noSignals", help="Don't generate the Signals header file", action="store_true")
 parser.add_argument("-namespace", help="Fprime namespace")
