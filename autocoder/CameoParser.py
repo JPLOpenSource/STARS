@@ -182,7 +182,7 @@ def getXmlStateMachine(xmlRoot: ElementTreeType) -> ElementTreeType:
     for e in pe:
         if e.get(XMI_TYPE) == "uml:StateMachine":
             return e
-    ob = xmlRoot.findall(".//ownedBehavior")
+    ob = xmlRoot.findall("packagedElement/ownedBehavior")
     for e in ob:
         if e.get(XMI_TYPE) == "uml:StateMachine":
             return e
