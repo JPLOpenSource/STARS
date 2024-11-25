@@ -160,7 +160,7 @@ Input model based on file extenion:
   .qf       QF model file
   .xml      Cameo model file
   .mdzip    Cameo project file
-  .platuml  PlantUML model file
+  .plantuml  PlantUML model file
 """
 parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter,
                                  description=the_description)
