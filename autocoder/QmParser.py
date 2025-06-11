@@ -41,7 +41,11 @@ def parseTrans(qmTrans: ElementTreeType,
                number_gen: UniqueNumberGenerator):
     
     source = xmiNode.id
-    target = int(qmTrans.get('target')) if qmTrans.get('target') else None
+    target = None
+
+    if (qmTrans.get("target") != "None"):
+        target = int(qmTrans.get('target')) if qmTrans.get('target') else None
+
     kind = qmTrans.get('kind')  
     guard = qmlib.pick_guard(qmTrans)
     action = flatt.pick_action(qmTrans)
@@ -106,6 +110,7 @@ def populateXmiModel(qmRoot: ElementTreeType,
     # Replace the relative target attributes with ID's
     for node in qmFix.iter():
         target = node.get("target")
+
         if target is not None:
             targetId = flatt.state_from_target(node).get("id")
             node.set("target", str(targetId))
