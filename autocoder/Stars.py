@@ -170,6 +170,7 @@ parser.add_argument("-noImpl", help="Don't generate the Impl files", action="sto
 parser.add_argument("-noSignals", help="Don't generate the Signals header file", action="store_true")
 parser.add_argument("-namespace", help="Fprime namespace")
 parser.add_argument("-debug", help="prints out the models", action = "store_true")
+parser.add_argument("-stateEnum", help="name of the enumerator to use (fprime only)")
 
 
 args = parser.parse_args()
@@ -200,8 +201,11 @@ if args.backend == 'fprime':
         print("*** Error - missing namespace argument for the fprime backend")
         exit(0)
     else:
-            fppcoder.generateCode(xmiModel)
-            fprimecoder.generateCode(qmRoot, args.noImpl, args.namespace)
+        if (args.stateEnum is None):
+            print("WARNING: No enumeration specified. Autogenerating internal enumeration")
+
+        fppcoder.generateCode(xmiModel)
+        fprimecoder.generateCode(qmRoot, args.noImpl, args.namespace, args.stateEnum)
 
             
         
