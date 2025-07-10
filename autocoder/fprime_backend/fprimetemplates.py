@@ -267,7 +267,7 @@ class $(smname) {
                                  
     $(smname)($(smname)_Interface* parent) : parent(parent) {}
     
-    enum $(enumName) state;
+    enum $(enumName)::T state;
 
     void init(const FwEnumStoreType stateMachineId);
     void update(
