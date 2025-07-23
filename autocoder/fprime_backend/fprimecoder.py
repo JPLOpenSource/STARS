@@ -42,11 +42,11 @@ codeImplTemplate = FprimeImplTemplate()
 #
 # Print the state-machine header file
 # -----------------------------------------------------------------------  
-def printSmHeader(smname: str, 
-                  qmRoot: ElementTreeType, 
-                  namespace: str,
-                  enumName: str
-                  ):
+def printSmHeader(
+        smname: str,
+        qmRoot: ElementTreeType,
+        namespace: str,
+    ):
         
     hFile = open(smname+".hpp", "w")
     eventList = []
@@ -63,7 +63,7 @@ def printSmHeader(smname: str,
 
     funcList = get_function_signatures(qmRoot, smname)
 
-    hFile.write(codeTemplate.fileHeader(smname, stateList, eventList, namespace, funcList, enumName))
+    hFile.write(codeTemplate.fileHeader(smname, stateList, eventList, namespace, funcList))
         
         
 # ---------------------------------------------------------------------------
