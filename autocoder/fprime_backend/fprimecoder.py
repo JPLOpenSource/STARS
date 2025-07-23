@@ -437,7 +437,6 @@ def printEnumFpp(smname: str,
 def generateCode(qmRoot: ElementTreeType, 
                  noImpl: bool, 
                  namespace: str,
-                 enumName: str
                  ):
     
     global codeTemplate
@@ -467,7 +466,7 @@ def generateCode(qmRoot: ElementTreeType,
     # Generate the state-machine header file
     print ("Generating " + smname + ".cpp")
     print ("Generating " + smname + ".trans")
-    printSmHeader(smname, flatchart, namespace, enumName)
+    printSmHeader(smname, flatchart, namespace)
     
     # Generate the state-machine implementation file
     print ("Generating " + smname + ".hpp")
