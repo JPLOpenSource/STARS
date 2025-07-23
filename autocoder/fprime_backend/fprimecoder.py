@@ -403,7 +403,7 @@ def printEnumFpp(smname: str,
         
     # Open the generated files
 
-    fileName = smname + ".fppi"
+    fileName = smname + "_State.fpp"
     file = open(fileName, "w")
     print(f'Generating {fileName}')
     
