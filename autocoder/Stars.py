@@ -200,8 +200,8 @@ if args.backend == 'fprime':
         print("*** Error - missing namespace argument for the fprime backend")
         exit(0)
     else:
-            fppcoder.generateCode(xmiModel)
-            fprimecoder.generateCode(qmRoot, args.noImpl, args.namespace)
+        fppcoder.generateCode(xmiModel)
+        fprimecoder.generateCode(qmRoot, args.noImpl, args.namespace)
 
             
         

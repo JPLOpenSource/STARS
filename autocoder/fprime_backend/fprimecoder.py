@@ -42,9 +42,11 @@ codeImplTemplate = FprimeImplTemplate()
 #
 # Print the state-machine header file
 # -----------------------------------------------------------------------  
-def printSmHeader(smname: str, 
-                  qmRoot: ElementTreeType, 
-                  namespace: str):
+def printSmHeader(
+        smname: str,
+        qmRoot: ElementTreeType,
+        namespace: str,
+    ):
         
     hFile = open(smname+".hpp", "w")
     eventList = []
@@ -61,7 +63,7 @@ def printSmHeader(smname: str,
 
     funcList = get_function_signatures(qmRoot, smname)
 
-    hFile.write(codeTemplate.fileHeader(smname, stateList, eventList, namespace, funcList ))
+    hFile.write(codeTemplate.fileHeader(smname, stateList, eventList, namespace, funcList))
         
         
 # ---------------------------------------------------------------------------
@@ -401,7 +403,7 @@ def printEnumFpp(smname: str,
         
     # Open the generated files
 
-    fileName = smname + ".fppi"
+    fileName = smname + "_State.fpp"
     file = open(fileName, "w")
     print(f'Generating {fileName}')
     
@@ -434,7 +436,8 @@ def printEnumFpp(smname: str,
 # ----------------------------------------------------------------------- 
 def generateCode(qmRoot: ElementTreeType, 
                  noImpl: bool, 
-                 namespace: str):
+                 namespace: str,
+                 ):
     
     global codeTemplate
     global unitTestTemplate

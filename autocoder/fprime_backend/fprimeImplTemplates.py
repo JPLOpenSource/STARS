@@ -17,29 +17,29 @@ class FprimeImplTemplate:
 # -------------------------------------------------------------------------------
 # stateEnumFpp
 # -------------------------------------------------------------------------------          
-        def stateEnumFpp(self, smname: str, namespace: str, stateList: List[str]):
-            template = Template("""
-
-    enum $(smname)States {
-    #set $counter = 0
-    #for $state in $stateList
-        $(state) = $counter
-    #set $counter = $counter + 1
-    #end for
+    def stateEnumFpp(self, smname: str, namespace: str, stateList: List[str]):
+        template = Template("""
+    module $(namespace){
+        enum $(smname)_State{
+        #set $counter = 0
+        #for $state in $stateList
+            $(state) = $counter
+        #set $counter = $counter + 1
+        #end for
+        }
     }
-
 """)
-            template.smname = smname
-            template.namespace = namespace
-            template.stateList = stateList
+        template.smname = smname
+        template.namespace = namespace
+        template.stateList = stateList
            
-            return str(template)
+        return str(template)
         
 # -------------------------------------------------------------------------------
 # componentHdrFile
 # -------------------------------------------------------------------------------          
-        def componentHdrFile(self, smname: str, namespace: str, component: str, funcList: List[str]) -> str:
-            template = Template("""
+    def componentHdrFile(self, smname: str, namespace: str, component: str, funcList: List[str]) -> str:
+        template = Template("""
             
             
 #ifndef _SIGNAL_GEN_HPP_
@@ -69,18 +69,18 @@ class $(component) : public $(smname)_Interface {
 
 """)
 
-            template.funcList = funcList
-            template.smname = smname
-            template.namespace = namespace
-            template.component = component
+        template.funcList = funcList
+        template.smname = smname
+        template.namespace = namespace
+        template.component = component
            
-            return str(template)
+        return str(template)
            
 # -------------------------------------------------------------------------------
 # componentFile
 # -------------------------------------------------------------------------------          
-        def componentFile(self, smname: str, namespace: str, component: str, guardFunctions: List[ImplFunc], actionFunctions: List[ImplFunc]) -> str:
-            template = Template("""
+    def componentFile(self, smname: str, namespace: str, component: str, guardFunctions: List[ImplFunc], actionFunctions: List[ImplFunc]) -> str:
+        template = Template("""
             
 \#include "$(component).hpp"
 \#include "$(smname).hpp"
@@ -110,11 +110,11 @@ $(function.signature) {
 
 """)
 
-            template.guardFunctions = guardFunctions
-            template.actionFunctions = actionFunctions            
-            template.smname = smname
-            template.namespace = namespace
-            template.component = component
+        template.guardFunctions = guardFunctions
+        template.actionFunctions = actionFunctions            
+        template.smname = smname
+        template.namespace = namespace
+        template.component = component
            
-            return str(template)
+        return str(template)
            

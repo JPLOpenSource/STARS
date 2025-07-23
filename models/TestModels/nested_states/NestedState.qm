@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model version="7.0.1" links="0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.state-machine.com/qm/qm7.xsd">
+ <framework name="qpc"/>
+ <package name="package1" stereotype="0x00">
+  <class name="NestedState" superclass="qpc::QHsm">
+   <statechart properties="0x01">
+    <initial target="../1">
+     <initial_glyph conn="13,5,5,0,5,7">
+      <action box="0,-2,10,2"/>
+     </initial_glyph>
+    </initial>
+    <state name="State_1-0">
+     <tran trig="TRIG_0" target="../../2">
+      <tran_glyph conn="32,17,1,3,24">
+       <action box="2,-3,18,3"/>
+      </tran_glyph>
+     </tran>
+     <state_glyph node="11,12,21,14"/>
+    </state>
+    <state name="State_2-0">
+     <tran trig="TRIG_5" target="../../3">
+      <tran_glyph conn="89,91,2,0,9">
+       <action box="1,2,13,3"/>
+      </tran_glyph>
+     </tran>
+     <state name="State_2-1">
+      <entry brief="Start()"/>
+      <tran trig="TRIG_1" target="../../2">
+       <tran_glyph conn="83,25,1,3,17,22,2">
+        <action box="0,-2,10,2"/>
+       </tran_glyph>
+      </tran>
+      <state_glyph node="59,18,24,13">
+       <entry box="0,3,17,4"/>
+      </state_glyph>
+     </state>
+     <state name="State_2-2">
+      <tran trig="TRIG_3" target="../../3">
+       <tran_glyph conn="105,52,2,3,13,5">
+        <action box="2,2,10,2"/>
+       </tran_glyph>
+      </tran>
+      <tran trig="TRIG_2" target="../../1">
+       <tran_glyph conn="105,43,0,2,-9,-30,-3">
+        <action box="1,-4,10,2"/>
+       </tran_glyph>
+      </tran>
+      <state_glyph node="102,43,14,9"/>
+     </state>
+     <state name="State_2-3">
+      <tran trig="TRIG_4" target="../../4">
+       <tran_glyph conn="123,65,1,3,13,-5,5">
+        <action box="0,-2,10,2"/>
+       </tran_glyph>
+      </tran>
+      <state_glyph node="110,61,13,7"/>
+     </state>
+     <state name="State_2-4">
+      <state_glyph node="141,55,12,7"/>
+     </state>
+     <state_glyph node="56,13,101,78"/>
+    </state>
+    <state name="State_3-0">
+     <state_glyph node="85,100,24,11"/>
+    </state>
+    <state_diagram size="258,137"/>
+   </statechart>
+  </class>
+ </package>
+</model>

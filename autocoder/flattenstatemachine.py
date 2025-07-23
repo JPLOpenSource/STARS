@@ -169,12 +169,18 @@ def get_this_state(tran: ElementTreeType) -> Optional[str]:
         
 def get_state_from_index(root: ElementTreeType, index: int) -> ElementTreeType:
     count = 0
+
     for child in root:
         if child.tag == 'state' or child.tag == 'tran':
             count = count + 1
+            
             if index == count:
-                assert child.tag == 'state'
-                return child
+                if (child.tag == "state"):
+                    return child;
+                else:
+                    assert child.tag == "tran"
+    
+                    return child
     assert 0
 
 
@@ -202,10 +208,12 @@ def mark_self_transition(tran: ElementTreeType):
 # -----------------------------------------------------------------------
 def state_from_target(tran: ElementTreeType) -> ElementTreeType:
     target = tran.get('target')
+
     if target is None:
         return tran.getparent()
     else:
         root = tran
+
         for i in target.split('/'):
             if i == "..":
                 root = root.getparent()
