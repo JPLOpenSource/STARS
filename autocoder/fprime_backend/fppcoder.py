@@ -13,10 +13,12 @@ from typing import TextIO
 def getActionNames(input_string: str):
     if input_string is None:
         return None
+
     # Use regex to find all procedural names before the '(' and ignore everything after
     procedural_names = re.findall(r'\b\w+(?=\()', input_string)
     # Join the names with commas
     output_string = ', '.join(procedural_names)
+
     return output_string
 
 
@@ -44,9 +46,8 @@ def processNode(node: Node,
             elseTarget = xmiModel.idMap[child.elseTarget].stateName
             doIfExpr = f" do {{ {getActionNames(child.ifAction)} }}" if child.ifAction else ""
             doElseExpr = f" do {{ {getActionNames(child.elseAction)} }}" if child.elseAction else ""
-            fppFile.write(f"{indent}junction {child.stateName} {{\n")
-            fppFile.write(f"{indent}  if {getActionNames(child.guard)}{doIfExpr} enter {ifTarget} \\\n")
-            fppFile.write(f"{indent}  else{doElseExpr} enter {elseTarget}\n")
+            fppFile.write(f"{indent}choice {child.stateName} {{\n")
+            fppFile.write(f"{indent}  if {child.guard}{doIfExpr} enter {ifTarget} else{doElseExpr} enter {elseTarget}\n")
             fppFile.write(f"{indent}}}\n")
 
         if child.name == "TRANSITION":
@@ -124,17 +125,21 @@ def getStateMachineMethods(xmiModel: XmiModel):
     signalSet = set()
 
     for child in PreOrderIter(xmiModel.tree):
+        print(child.name)
         if child.name == "STATE":
             actionSet.add(getActionNames(child.entry))
             actionSet.add(getActionNames(child.exit))
         if child.name == "TRANSITION":
             actionSet.add(getActionNames(child.action))
             guardSet.add(getActionNames(child.guard))
+            #print(dir(child))
+            print(str(child.action) + " " + str(child.event) + " " + str(child.guard))
             signalSet.add(child.event)
         if child.name == "JUNCTION":
+            print(child.guard)
             actionSet.add(getActionNames(child.ifAction))
             actionSet.add(getActionNames(child.elseAction))
-            guardSet.add(getActionNames(child.guard))
+            guardSet.add(child.guard)
         if child.name == "INITIAL":
             actionSet.add(getActionNames(child.action))
 
@@ -142,6 +147,9 @@ def getStateMachineMethods(xmiModel: XmiModel):
     actionSet = {item for item in actionSet if item}
     guardSet = {item for item in guardSet if item}
     signalSet = {item for item in signalSet if item}
+
+    for item in guardSet:
+        print("item: " + str(item))
 
     flatActions = {a.strip() for action in actionSet for a in action.split(',')}
 
@@ -154,6 +162,8 @@ def getStateMachineMethods(xmiModel: XmiModel):
 # Print the FPP for state machine
 # -----------------------------------------------------------------------  
 def generateCode(xmiModel: XmiModel):
+
+    xmiModel.print()
 
     stateMachine = xmiModel.tree.stateMachine
 

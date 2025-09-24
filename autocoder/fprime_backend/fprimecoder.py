@@ -401,7 +401,7 @@ def printEnumFpp(smname: str,
         
     # Open the generated files
 
-    fileName = smname + ".fppi"
+    fileName = smname + ".fpp"
     file = open(fileName, "w")
     print(f'Generating {fileName}')
     
@@ -461,13 +461,13 @@ def generateCode(qmRoot: ElementTreeType,
         printUnitCode(smname, implHdr, component, namespace, flatchart)
     
     # Generate the state-machine header file
-    print ("Generating " + smname + ".cpp")
-    print ("Generating " + smname + ".trans")
-    printSmHeader(smname, flatchart, namespace)
+    #print ("Generating " + smname + ".cpp")
+    #print ("Generating " + smname + ".trans")
+    #printSmHeader(smname, flatchart, namespace)
     
     # Generate the state-machine implementation file
-    print ("Generating " + smname + ".hpp")
-    printSmCode(smname, flatchart, namespace)
+    #print ("Generating " + smname + ".hpp")
+    #printSmCode(smname, flatchart, namespace)
 
     # Generate the states enumeration fpp
     printEnumFpp(smname, flatchart, namespace)
