@@ -167,9 +167,9 @@ def generateCode(xmiModel: XmiModel):
 
     stateMachine = xmiModel.tree.stateMachine
 
-    print ("Generating " + stateMachine + ".fpp")
+    print ("Generating " + stateMachine + "_State_Machine.fpp")
 
-    fppFile = open(stateMachine +".fpp", "w")
+    fppFile = open(stateMachine +"_State_Machine.fpp", "w")
 
     currentNode = xmiModel.tree
 
