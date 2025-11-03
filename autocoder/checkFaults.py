@@ -360,7 +360,8 @@ def checkAction(action: str, tran: str):
     
                 args = function[slice(s,e)]
                 strippedArgs = args.strip(' ')
-                if (strippedArgs == ''):
+
+                if (args == '' and (s != e)):
                     raise ActionArg(tran, function)
             
 # -----------------------------------------------------------------------

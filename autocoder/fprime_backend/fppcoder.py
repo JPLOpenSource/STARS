@@ -19,6 +19,14 @@ def getActionNames(input_string: str):
     # Join the names with commas
     output_string = ', '.join(procedural_names)
 
+    # Get this index of the opening and closing parenthesis for function parameter list
+    start = input_string.index('(') + 1
+    end = input_string.index(')')
+
+    # If there is any character between the parenthesis, treat it as a FPP datatype
+    if (start != end):
+        output_string = output_string + ": " + input_string[slice(start,end)]
+
     return output_string
 
 
