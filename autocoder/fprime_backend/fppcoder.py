@@ -10,7 +10,7 @@ from xmiModelApi import XmiModel
 from typing import TextIO
 
 
-def getActionNames(input_string: str):
+def getActionNames(input_string: str, fullSpecifier: bool):
     if input_string is None:
         return None
 
@@ -19,16 +19,28 @@ def getActionNames(input_string: str):
     # Join the names with commas
     output_string = ', '.join(procedural_names)
 
-    # Get this index of the opening and closing parenthesis for function parameter list
-    start = input_string.index('(') + 1
-    end = input_string.index(')')
-
-    # If there is any character between the parenthesis, treat it as a FPP datatype
-    if (start != end):
-        output_string = output_string + ": " + input_string[slice(start,end)]
+    if fullSpecifier:
+        output_string = output_string + getActionDataType(input_string)
 
     return output_string
 
+def getActionDataType(inputString: str):
+    if inputString is None:
+        return ""
+
+    outputString = None
+
+    # Get this index of the opening and closing parenthesis for function parameter list
+    start = inputString.index('(') + 1
+    end = inputString.index(')')
+
+    # If there is any character between the parenthesis, treat it as a FPP datatype
+    if (start != end):
+        outputString = (": " + inputString[slice(start,end)])
+    else:
+        outputString = ""
+    
+    return outputString
 
 # -----------------------------------------------------------------------
 # processNode
@@ -46,28 +58,28 @@ def processNode(node: Node,
 
         if child.name == "INITIAL":
             target = xmiModel.idMap[child.target].stateName
-            doExpr = f" do {{ {getActionNames(child.action)} }}" if child.action else ""
+            doExpr = f" do {{ {getActionNames(child.action, False)} }}" if child.action else ""
             fppFile.write(f"{indent}initial{doExpr} enter {target}\n")
 
         if child.name == "JUNCTION":
             ifTarget = xmiModel.idMap[child.ifTarget].stateName
             elseTarget = xmiModel.idMap[child.elseTarget].stateName
-            doIfExpr = f" do {{ {getActionNames(child.ifAction)} }}" if child.ifAction else ""
-            doElseExpr = f" do {{ {getActionNames(child.elseAction)} }}" if child.elseAction else ""
+            doIfExpr = f" do {{ {getActionNames(child.ifAction, False)} }}" if child.ifAction else ""
+            doElseExpr = f" do {{ {getActionNames(child.elseAction, False)} }}" if child.elseAction else ""
             fppFile.write(f"{indent}choice {child.stateName} {{\n")
             fppFile.write(f"{indent}  if {child.guard}{doIfExpr} enter {ifTarget} else{doElseExpr} enter {elseTarget}\n")
             fppFile.write(f"{indent}}}\n")
 
         if child.name == "TRANSITION":
-            guardExpr = f" if {getActionNames(child.guard)}" if child.guard else ""
+            guardExpr = f" if {getActionNames(child.guard, False)}" if child.guard else ""
             enterExpr = f" enter {xmiModel.idMap[child.target].stateName}" if child.kind is None else ""
-            doExpr = f" do {{ {getActionNames(child.action)} }}" if child.action else ""
+            doExpr = f" do {{ {getActionNames(child.action, False)} }}" if child.action else ""
             fppFile.write(f"{indent}on {child.event}{guardExpr}{doExpr}{enterExpr}\n")
 
         if child.name == "STATE":
             stateName = child.stateName
-            enterExpr = f" entry do {{ {getActionNames(child.entry)} }}" if child.entry else ""
-            exitExpr = f" exit do {{ {getActionNames(child.exit)} }}" if child.exit else ""
+            enterExpr = f" entry do {{ {getActionNames(child.entry, False)} }}" if child.entry else ""
+            exitExpr = f" exit do {{ {getActionNames(child.exit, False)} }}" if child.exit else ""
             fppFile.write(f"{indent}state {stateName} {{\n")
             if enterExpr:
                 fppFile.write(f"{indent}{enterExpr}\n")
@@ -118,22 +130,18 @@ def getJunctions(xmiModel: XmiModel):
 # -----------------------------------------------------------------------  
 def moveTransitions(xmiModel: XmiModel):
     for child in PreOrderIter(xmiModel.tree):
-        print(f"{child}, {child.name}")
-
         if child.name == "TRANSITION": 
-            print(f"Action: {child.action}, Source: {child.source}, Destination: {child.target}")
             # Look up where this transition is supposed to go
             state = xmiModel.idMap[child.source]
-            print(f"Parent State: {state}")
             # Move the transition under the source state
             xmiModel.moveTransition(child, state)
+
         if child.name == "JUNCTION":
             for sourceTransition in PreOrderIter(xmiModel.tree):
                 if (sourceTransition.name == "TRANSITION") and (sourceTransition.target == child.id):
                     #state = xmiModel.idMap[parentState.source]
                     child.parent = sourceTransition.parent.parent
                     # Move the transition under the source state
-                    #xmiModel.moveTransition(child, state)
 
 
 def getStateMachineMethods(xmiModel: XmiModel):
@@ -145,21 +153,18 @@ def getStateMachineMethods(xmiModel: XmiModel):
     for child in PreOrderIter(xmiModel.tree):
         #print(child.name)
         if child.name == "STATE":
-            actionSet.add(getActionNames(child.entry))
-            actionSet.add(getActionNames(child.exit))
+            actionSet.add(getActionNames(child.entry, True))
+            actionSet.add(getActionNames(child.exit, True))
         if child.name == "TRANSITION":
-            actionSet.add(getActionNames(child.action))
-            guardSet.add(getActionNames(child.guard))
-            #print(dir(child))
-            #print(str(child.action) + " " + str(child.event) + " " + str(child.guard))
-            signalSet.add(child.event)
+            actionSet.add(getActionNames(child.action, True))
+            guardSet.add(getActionNames(child.guard, False))
+            signalSet.add((child.event + getActionDataType(child.action)))
         if child.name == "JUNCTION":
-            print(child.guard)
-            actionSet.add(getActionNames(child.ifAction))
-            actionSet.add(getActionNames(child.elseAction))
+            actionSet.add(getActionNames(child.ifAction, True))
+            actionSet.add(getActionNames(child.elseAction, True))
             guardSet.add(child.guard)
         if child.name == "INITIAL":
-            actionSet.add(getActionNames(child.action))
+            actionSet.add(getActionNames(child.action, True))
 
     # Remove empty strings
     actionSet = {item for item in actionSet if item}
