@@ -117,13 +117,23 @@ def getJunctions(xmiModel: XmiModel):
 # Transitions that start from a state are to be moved under that state
 # -----------------------------------------------------------------------  
 def moveTransitions(xmiModel: XmiModel):
+    for child in PreOrderIter(xmiModel.tree):
+        print(f"{child}, {child.name}")
 
-    for trans in PreOrderIter(xmiModel.tree):
-        if trans.name == "TRANSITION":
+        if child.name == "TRANSITION": 
+            print(f"Action: {child.action}, Source: {child.source}, Destination: {child.target}")
             # Look up where this transition is supposed to go
-            state = xmiModel.idMap[trans.source]
+            state = xmiModel.idMap[child.source]
+            print(f"Parent State: {state}")
             # Move the transition under the source state
-            xmiModel.moveTransition(trans, state)
+            xmiModel.moveTransition(child, state)
+        if child.name == "JUNCTION":
+            for sourceTransition in PreOrderIter(xmiModel.tree):
+                if (sourceTransition.name == "TRANSITION") and (sourceTransition.target == child.id):
+                    #state = xmiModel.idMap[parentState.source]
+                    child.parent = sourceTransition.parent.parent
+                    # Move the transition under the source state
+                    #xmiModel.moveTransition(child, state)
 
 
 def getStateMachineMethods(xmiModel: XmiModel):
@@ -133,7 +143,7 @@ def getStateMachineMethods(xmiModel: XmiModel):
     signalSet = set()
 
     for child in PreOrderIter(xmiModel.tree):
-        print(child.name)
+        #print(child.name)
         if child.name == "STATE":
             actionSet.add(getActionNames(child.entry))
             actionSet.add(getActionNames(child.exit))
@@ -141,7 +151,7 @@ def getStateMachineMethods(xmiModel: XmiModel):
             actionSet.add(getActionNames(child.action))
             guardSet.add(getActionNames(child.guard))
             #print(dir(child))
-            print(str(child.action) + " " + str(child.event) + " " + str(child.guard))
+            #print(str(child.action) + " " + str(child.event) + " " + str(child.guard))
             signalSet.add(child.event)
         if child.name == "JUNCTION":
             print(child.guard)
@@ -156,8 +166,8 @@ def getStateMachineMethods(xmiModel: XmiModel):
     guardSet = {item for item in guardSet if item}
     signalSet = {item for item in signalSet if item}
 
-    for item in guardSet:
-        print("item: " + str(item))
+    #for item in guardSet:
+        #print("item: " + str(item))
 
     flatActions = {a.strip() for action in actionSet for a in action.split(',')}
 
@@ -185,9 +195,11 @@ def generateCode(xmiModel: XmiModel):
 
     getJunctions(xmiModel)
 
+    (actions, guards, signals) = getStateMachineMethods(xmiModel)
+
     moveTransitions(xmiModel)
 
-    (actions, guards, signals) = getStateMachineMethods(xmiModel)
+    xmiModel.print()
 
     fppFile.write(f"state machine {xmiModel.tree.stateMachine} {{\n\n")
 
