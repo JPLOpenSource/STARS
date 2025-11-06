@@ -18,17 +18,15 @@ class FprimeImplTemplate:
 # stateEnumFpp
 # -------------------------------------------------------------------------------          
         def stateEnumFpp(self, smname: str, namespace: str, stateList: List[str]):
-            template = Template("""
-
-    enum $(smname)States {
-    #set $counter = 0
-    #for $state in $stateList
-        $(state) = $counter
-    #set $counter = $counter + 1
-    #end for
-    }
-
-""")
+            template = Template(
+"""enum $(smname)States {
+#set $counter = 0
+#for $state in $stateList
+    $(state) = $counter
+#set $counter = $counter + 1
+#end for
+}"""
+)
             template.smname = smname
             template.namespace = namespace
             template.stateList = stateList

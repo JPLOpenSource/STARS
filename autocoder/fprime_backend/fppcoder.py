@@ -186,7 +186,7 @@ def getStateMachineMethods(xmiModel: XmiModel):
 # -----------------------------------------------------------------------  
 def generateCode(xmiModel: XmiModel):
 
-    xmiModel.print()
+    #xmiModel.print()
 
     stateMachine = xmiModel.tree.stateMachine
 
@@ -204,7 +204,7 @@ def generateCode(xmiModel: XmiModel):
 
     moveTransitions(xmiModel)
 
-    xmiModel.print()
+    #xmiModel.print()
 
     fppFile.write(f"state machine {xmiModel.tree.stateMachine} {{\n\n")
 
