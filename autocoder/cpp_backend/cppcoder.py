@@ -352,22 +352,6 @@ def printSmCode(node: Node, xmiModel: XmiModel, cFile: TextIO, level: int = 4):
         cFile.write(codeTemplate.stateMachineState(state))
 
         for child in PreOrderIter(xmiModel.tree):
-            #if child.name == "INITIAL":
-                #print(f"parent: {child.parent}")
-                #target = xmiModel.idMap[child.target].stateName
-                #print(target)
-                #doExpr = f" do {{ {getActionNames(child.action, False)} }}" if child.action else ""
-                #cFile.write(f"this->state = {target}\n")
-
-        #if child.name == "JUNCTION":
-            #ifTarget = xmiModel.idMap[child.ifTarget].stateName
-            #elseTarget = xmiModel.idMap[child.elseTarget].stateName
-            #doIfExpr = f" do {{ {getActionNames(child.ifAction, False)} }}" if child.ifAction else ""
-            #doElseExpr = f" do {{ {getActionNames(child.elseAction, False)} }}" if child.elseAction else ""
-            #cFile.write(f"{indent}choice {child.stateName} {{\n")
-            #cFile.write(f"{indent}  if {child.guard}{doIfExpr} enter {ifTarget} else{doElseExpr} enter {elseTarget}\n")
-            #cFile.write(f"{indent}}}\n")
-
             if child.name == "TRANSITION":
                 #print(xmiModel.idMap[child.source])
                 if (xmiModel.idMap[child.source].stateName == state):
@@ -378,29 +362,6 @@ def printSmCode(node: Node, xmiModel: XmiModel, cFile: TextIO, level: int = 4):
 
                     if (action != "" or transition != ""):
                         cFile.write(f"{defaultIndent}case {child.event.upper() + "_SIG:"}{guardExpr}{action}{transition}\n{indent}break;\n")
-
-            #if child.name == "STATE":
-                #if child.stateName in states:
-                #stateName = child.stateName
-                #cFile.write(codeTemplate.stateMachineState(child.stateName))
-                #enterExpr = f" entry do {{ {getActionNames(child.entry, False)} }}" if child.entry else ""
-                #exitExpr = f" exit do {{ {getActionNames(child.exit, False)} }}" if child.exit else ""
-                #cFile.write(f"{indent}state {stateName} {{\n")
-                #if enterExpr:
-                #cFile.write(f"{indent}{enterExpr}\n")
-                #if exitExpr:
-                #cFile.write(f"{indent}{exitExpr}\n")
-
-            #printSmCode(child, xmiModel, cFile, level+1)
-            #cFile.write(f"{indent}}}\n\n")
-        
-    #states = root.iter("state")
-    #for state in states:
-        #cFile.write(codeTemplate.stateMachineState(state.get('name')))
-        #trans = state.findall('tran')
-        #for tran in trans:
-            #printStateTransition(stateMachine, tran, cFile)
-
         
         cFile.write(codeTemplate.stateMachineBreak())
     
