@@ -184,7 +184,7 @@ qmRoot, xmiModel = getQmRoot(args.model)
 checkFaults.checkStateMachine(qmRoot)
 
 if args.backend == "c++":
-    cppcoder.generateCode(qmRoot, args.noImpl)
+    cppcoder.generateCode(xmiModel, args.noImpl)
     
 if args.backend == "c":
     ccoder.generateCode(qmRoot, args.noImpl)

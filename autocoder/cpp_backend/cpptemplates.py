@@ -174,7 +174,7 @@ class $(smname) {
     
     // state machine implementation functions
     #for $function in $implFunctions
-    $function;
+    void $function;
     #end for
 
 };
@@ -192,7 +192,7 @@ class $(smname) {
 # -------------------------------------------------------------------------------
 # stateMachineInit
 # -------------------------------------------------------------------------------           
-        def stateMachineInit(self, smname: str, transition: str) -> str:
+        def stateMachineInit(self, smname: str, initial: str, transition: str) -> str:
             template = Template("""
     
 \#include "stdio.h"
@@ -202,15 +202,16 @@ class $(smname) {
 
 void $(smname)::init()
 {
-$transition
+$initial
 }
 
 
 void $(smname)::update(EventSignal *e)
 {
-    switch (this->state) {
+  switch (this->state) {
     """)
             template.smname = smname
+            template.initial = initial
             template.transition = transition
             return str(template)
         
@@ -219,15 +220,17 @@ void $(smname)::update(EventSignal *e)
 # stateMachineState
 # -------------------------------------------------------------------------------     
         def stateMachineState(self, state: str) -> str:
-            template = Template("""
-            /**
-            * state $state
-            */
-            case $state:
+            template = Template("""/**
+    * state $state
+    */
+                                
+    case $state:
             
-            switch (e->sig) {
-""")
+    switch (e->sig) {
+    """)
+    
             template.state = state
+
             return str(template)
         
         
@@ -236,10 +239,11 @@ void $(smname)::update(EventSignal *e)
 # -------------------------------------------------------------------------------       
         def stateMachineBreak(self) -> str:
             template = Template("""
-                default:
-                    break;
-            }
-            break;
+        default:
+          break;
+    }
+    break;
+                                
     """)  
             return str(template)
         

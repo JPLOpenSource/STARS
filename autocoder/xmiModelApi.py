@@ -7,7 +7,7 @@
 # mypy: ignore-errors
 
 from lxml import etree
-from anytree import Node, RenderTree
+from anytree import Node, RenderTree, PreOrderIter
 import anytree
 import sys
 from copy import deepcopy
@@ -181,6 +181,103 @@ class XmiModel:
             thisList = thisList + self.getStatesList(node)
 
         return thisList
+    
+    def flattenModel(self):
+        flattenedTransitions = set()
+        rootNode = self.tree
+
+        #self.addState("State 7", rootNode, None, None, 7)
+
+        for child in rootNode.children:
+            if child.name == "STATE":
+                if (self.isSuperstate(child)):
+                    self.flattenSuperstate(child, flattenedTransitions)
+
+                    print("break loop")
+
+                    break
+    
+    def flattenSuperstate(self, superstate: Node, flattenedTransitions: set):
+        initial = self.getSuperstateInitial(superstate)
+
+        self.retargetAllTransitionsToSuperstate(initial, superstate)
+
+        for child in superstate.children:
+            if child.name == "TRANSITION":
+                if (child.target == None):
+                    flattenedTransitions.add(child)
+            if child.name == "STATE":
+                if (self.isSuperstate(child)):
+                    print(f"{superstate.stateName} is a superstate. Moving transitions.")
+
+                    self.flattenSuperstate(child, flattenedTransitions)
+                else:
+                    print(f"{child.stateName} is innermost state of {superstate.stateName}")
+
+                    for transition in superstate.children:
+                        if transition.name == "TRANSITION":
+                            if transition.target == None:
+                                if (self.inheritTransition(child, transition)):
+                                    self.addTransition(child.id, None, transition.event, transition.guard, transition.action, transition.kind, child)
+                            elif transition.source == superstate.id:
+                                self.addTransition(child.id, transition.target, transition.event, transition.guard, transition.action, transition.kind, child)
+
+                    child.parent = superstate.parent
+
+                    #self.resolveSuperstateTransitions(initial)
+                
+        print(f"Removing superstate: {superstate.stateName}")
+
+        superstate.parent = None
+
+    def retargetAllTransitionsToSuperstate(self, initialTransition: Node, superstate: Node):
+        target = superstate.id
+
+        for child in PreOrderIter(self.tree):
+            if child.name == "TRANSITION":
+                if child.target == target:
+                    child.target = initialTransition.target
+    
+    def inheritTransition(self, state: Node, transition: Node):
+        for child in state.children:
+            if child.name == "TRANSITION":
+                if (child.event == transition.event):
+                    return False
+        
+        return True
+
+    def getSuperstateInitial(self, node: Node):
+        for child in node.children:
+            if child.name == "INITIAL":
+                return child
+            
+    def resolveSuperstateTransitions(self, node: Node):
+        flattenedTransitions = set()
+        target = node.target
+
+        for child in PreOrderIter(self.tree):
+            if child.name == "TRANSITION":
+                if child.target == target:
+                    flattenedTransitions.add(child)
+
+    def isSuperstate(self, node: Node):
+        if node == None:
+            print("Node is none. Cannot evaluate children")
+
+            return False
+        else:
+            if node.name == "STATE":
+                for child in node.children:
+                    if child.name == "STATE":
+                        print(f"Substate of {node.stateName} is {child.stateName}")
+
+                        return True
+            else:
+                print("Node is not a state. Children cannot be evaluated")
+
+                return False
+
+
 
    # --------------------------------------------------------
     # print
