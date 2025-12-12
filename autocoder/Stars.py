@@ -190,7 +190,7 @@ if args.backend == "c":
     ccoder.generateCode(qmRoot, args.noImpl)
     
 if args.backend == "qf":
-    qfcoder.generateCode(qmRoot, args.noImpl, args.noSignals)
+    qfcoder.generateCode(xmiModel, args.noImpl, args.noSignals)
 
 if args.backend == "test":
     testcoder.generateCode(qmRoot)

@@ -182,6 +182,17 @@ class XmiModel:
 
         return thisList
     
+    def getStates(self):
+        stateList = []
+
+        for child in PreOrderIter(self.tree):
+            if child.name == "STATE":
+                stateList.append(child.stateName)
+
+        print(stateList)
+
+        return stateList
+    
     def flattenModel(self):
         flattenedTransitions = set()
         rootNode = self.tree
