@@ -14,7 +14,7 @@ state S2 {
 }
 
 S1 --> S2: EV1[g1(e)]
-S2 --> S1: EV1/a1(); a2(e); foo()
 S1 --> S2: EV2[g2()]
+S2 --> S1: EV1/a1(e); a2(); foo()
 
 @enduml

@@ -13,20 +13,11 @@ autocode:
 	$(BASE_DIR)autocoder/Stars.py -backend $(BACK-END) -namespace $(NAMESPACE) -model ../$(MODEL)
 
 build:
-	@printf "**** Building an executable model ****\n"
-	g++ -c -Wall $(MODEL_BASE).cpp $(INCLUDEDIRS) -o $(MODEL_BASE).o
-	g++ -c -Wall testDrv.cpp $(INCLUDEDIRS) -o testDrv.o
-	g++ -c -Wall sendEvent.cpp $(INCLUDEDIRS) -o sendEvent.o
-	g++ -c -Wall SignalGen.cpp $(INCLUDEDIRS) -o SignalGen.o
-	g++ -Wall main.cpp $(INCLUDEDIRS) $(MODEL_BASE).o testDrv.o sendEvent.o SignalGen.o -o test
 
 run:
-	@printf "**** Running the executable model ****\n"
-	./test
 
 ut:
-	@./$(BASE_DIR)autocoder/test/run.py $(MODEL) $(GOLDY) $(BACK-END)
-
+	@../../checkfpp.sh $(basename $(MODEL))
 
 clean:
 	rm -rf test
@@ -34,3 +25,6 @@ clean:
 	rm -rf *.hpp
 	rm -rf *.cpp
 	rm -rf *.h
+	rm -rf *.fpp
+	rm -rf *.fppi
+	rm -rf *.trans

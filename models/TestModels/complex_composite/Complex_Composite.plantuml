@@ -12,12 +12,12 @@ state S1 {
         S11:Entry: s11Entry()
         S11:Exit: s11Exit()
         state S111 {
-            [*] -> S1111
+            [*] -> s1111
             S111:Entry: s111Entry()
             S111:Exit: s111Exit()
-            state S1111 {
-                S1111:Entry: s1111Entry()
-                S1111:Exit: s1111Exit()
+            state s1111 {
+                s1111:Entry: s1111Entry()
+                s1111:Exit: s1111Exit()
             }
         }
     }
@@ -30,8 +30,8 @@ state S1 {
             S121:Exit: s121Exit()
         }
     }
-    S1111 --> S21 : Ev2
-    S1111 --> S121 : Ev3
+    s1111 --> S21 : Ev2
+    s1111 --> S121 : Ev3
     S121 --> S111 : Ev4
     S12 --> S11 : Ev2
     S111 --> S12 : Ev1

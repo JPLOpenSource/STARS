@@ -19,8 +19,6 @@ from qf_backend.qftemplates import QFTemplate
 from qf_backend.qfUnitTestTemplates import QFUnitTestTemplate
 from qf_backend.qfImplTemplates import QFImplTemplate
 from qmlib import ElementTreeType
-from anytree import Node, PreOrderIter
-from xmiModelApi import XmiModel
     
 # ---------------------------------------------------------------------------
 # formatTarget
@@ -315,10 +313,9 @@ def printUnitCode(smname, root):
 #
 # Recursively change state names to include the names of the parent states
 # -----------------------------------------------------------------------
-def changeStateNames(xmiModel: XmiModel, root: Node, parentName):
+def changeStateNames(root, parentName):
     stateNames = []
-    print(xmiModel.getStatesList())
-    states = ""
+    states = root.findall('state')
     for state in states:
         if parentName is not None:
             newName = parentName + '_' + state.get('name')
@@ -332,7 +329,7 @@ def changeStateNames(xmiModel: XmiModel, root: Node, parentName):
 #
 # Print the state-machine C file
 # ----------------------------------------------------------------------- 
-def generateCode(xmiModel: XmiModel, noImpl: bool, noSignals: bool):
+def generateCode(qmRoot: ElementTreeType, noImpl: bool, noSignals: bool):
     global backend
     global cFile
     global hFile
@@ -341,13 +338,10 @@ def generateCode(xmiModel: XmiModel, noImpl: bool, noSignals: bool):
     global unitTestTemplate
     global codeImplTemplate
     
-    qmRoot = xmiModel.tree
-    smname = qmRoot.stateMachine
-
-    print(f"{qmRoot.name}\n{type(qmRoot.name)}")
+    qmRoot, smname = qmlib.get_state_machine(qmRoot)
 
     # Change the state names in the xml to reflect the state hierarchy
-    changeStateNames(xmiModel, qmRoot, None)
+    changeStateNames(qmRoot, None)
     
     
     backend = "C Quantum Framework"

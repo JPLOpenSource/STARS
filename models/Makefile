@@ -27,6 +27,19 @@ ut: simple-ut \
 	string_guards-ut \
 	transitions-ut 
 
+clean: simple-clean \
+	actions-clean \
+	arg_actions-clean \
+	cameo-clean \
+	cases-clean \
+	complex_composite-clean \
+	complex_junction-clean \
+	multiple_actions-clean \
+	simple_composite-clean \
+	simple_junction-clean \
+	string_guards-clean \
+	transitions-clean 
+
 
 # ---------------
 # All targets
@@ -110,4 +123,43 @@ string_guards-ut:
 
 transitions-ut:
 	cd TestModels/transitions && make ut
+
+# ---------------
+# clean targets
+# ---------------
+simple-clean:
+	cd TestModels/simple && make clean
+
+actions-clean:
+	cd TestModels/actions && make clean
+
+arg_actions-clean:
+	cd TestModels/arg_actions && make clean
+
+cameo-clean:
+	cd TestModels/cameo && make clean
+
+cases-clean:
+	cd TestModels/cases && make clean
+
+complex_composite-clean:
+	cd TestModels/complex_composite && make clean
+
+complex_junction-clean:
+	cd TestModels/complex_junction && make clean
+
+multiple_actions-clean:
+	cd TestModels/multiple_actions && make clean
+
+simple_composite-clean:
+	cd TestModels/simple_composite && make clean
+
+simple_junction-clean:
+	cd TestModels/simple_junction && make clean
+
+string_guards-clean:
+	cd TestModels/string_guards && make clean
+
+transitions-clean:
+	cd TestModels/transitions && make clean
 

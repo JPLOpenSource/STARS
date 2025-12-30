@@ -184,13 +184,13 @@ qmRoot, xmiModel = getQmRoot(args.model)
 checkFaults.checkStateMachine(qmRoot)
 
 if args.backend == "c++":
-    cppcoder.generateCode(xmiModel, args.noImpl)
+    cppcoder.generateCode(qmRoot, args.noImpl)
     
 if args.backend == "c":
     ccoder.generateCode(qmRoot, args.noImpl)
     
 if args.backend == "qf":
-    qfcoder.generateCode(xmiModel, args.noImpl, args.noSignals)
+    qfcoder.generateCode(qmRoot, args.noImpl, args.noSignals)
 
 if args.backend == "test":
     testcoder.generateCode(qmRoot)
@@ -201,7 +201,7 @@ if args.backend == 'fprime':
         exit(0)
     else:
             fppcoder.generateCode(xmiModel)
-            fprimecoder.generateCode(qmRoot, args.noImpl, args.namespace)
+            #fprimecoder.generateCode(qmRoot, args.noImpl, args.namespace)
 
             
         

@@ -3,16 +3,6 @@
 
 [*] --> OFF
 
-state OFF {
-    [*] --> Diag
-    OFF:Entry: OFFENTRY()
-    OFF:Exit: offexit()
-    state Diag {
-        Diag:Entry: DiagEntry()
-        Diag:Exit: DiagExit()
-    }
-}
-
 state on {
     [*] --> Init
     on:Entry: OnEntry()
@@ -20,6 +10,16 @@ state on {
     state Init {
         Init:Entry: InitEntry()
         Init:Exit: InitExit()
+    }
+}
+
+state OFF {
+    [*] --> Diag
+    OFF:Entry: OFFENTRY()
+    OFF:Exit: offexit()
+    state Diag {
+        Diag:Entry: DiagEntry()
+        Diag:Exit: DiagExit()
     }
 }
 

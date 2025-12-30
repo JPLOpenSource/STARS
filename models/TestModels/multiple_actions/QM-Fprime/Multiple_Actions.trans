@@ -1,2 +1,0 @@
-InitialState = S1, Event = EV1, guard = g1(), action = s1Exit(); s1Exit2();s2Entry(); s2Entry2(), TargetState = S2
-InitialState = S2, Event = EV1, guard = None, action = a1(); a2();s2Exit(); s2Exit2();s1Entry(); s1Entry2(), TargetState = S1

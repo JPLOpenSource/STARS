@@ -9,7 +9,7 @@ all: UML-C-depend \
      Cameo-QF-depend \
      Cameo-Fprime-depend
 
-ut:  UML-C-ut \
+ut: UML-C-ut \
      UML-CPP-ut \
      UML-QF-ut \
      UML-Fprime-ut \
@@ -17,6 +17,15 @@ ut:  UML-C-ut \
      Cameo-CPP-ut \
      Cameo-QF-ut \
      Cameo-Fprime-ut
+
+clean: UML-C-clean \
+     UML-CPP-clean \
+     UML-QF-clean \
+     UML-Fprime-clean \
+     Cameo-C-clean \
+     Cameo-CPP-clean \
+     Cameo-QF-clean \
+     Cameo-Fprime-clean
 
 # ---------------
 # All targets
@@ -60,7 +69,7 @@ UML-QF-ut:
 	@cd UML-QF && make ut
 
 UML-Fprime-ut:
-	@cd UML-Fprime && make ut && make checkfpp
+	@cd UML-Fprime && make ut
 
 Cameo-C-ut:
 	@cd Cameo-C && make ut
@@ -72,5 +81,33 @@ Cameo-QF-ut:
 	@cd Cameo-QF && make ut
 
 Cameo-Fprime-ut:
-	@cd Cameo-Fprime && make ut && make checkfpp
+	@cd Cameo-Fprime && make ut
+
+# ---------------
+# Clean targets
+# ---------------
+
+UML-C-clean:
+	@cd UML-C && make clean
+
+UML-CPP-clean:
+	@cd UML-CPP && make clean
+
+UML-QF-clean:
+	@cd UML-QF && make clean
+
+UML-Fprime-clean:
+	@cd UML-Fprime && make clean
+
+Cameo-C-clean:
+	@cd Cameo-C && make clean
+
+Cameo-CPP-clean:
+	@cd Cameo-CPP && make clean
+
+Cameo-QF-clean:
+	@cd Cameo-QF && make clean
+
+Cameo-Fprime-clean:
+	@cd Cameo-Fprime && make clean
 

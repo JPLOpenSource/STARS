@@ -5,7 +5,7 @@
   <class name="Arg_Actions" superclass="qpc::QHsm">
    <statechart properties="0x01">
     <initial target="../1">
-     <initial_glyph conn="49,39,5,0,7,6">
+     <initial_glyph conn="49,39,5,0,7,5">
       <action box="0,-2,10,2"/>
      </initial_glyph>
     </initial>
@@ -15,28 +15,28 @@
      <tran trig="EV1">
       <choice target="../../../2">
        <guard brief="g1(e)"/>
-       <choice_glyph conn="84,50,5,3,27">
+       <choice_glyph conn="84,49,5,3,25,1,2">
         <action box="8,-3,20,3"/>
        </choice_glyph>
       </choice>
-      <tran_glyph conn="70,50,1,-1,14">
+      <tran_glyph conn="70,49,1,-1,14">
        <action box="4,-3,21,4"/>
       </tran_glyph>
      </tran>
      <tran trig="EV2">
       <choice target="../../../2">
        <guard brief="g2()"/>
-       <choice_glyph conn="88,66,5,2,36,-5">
+       <choice_glyph conn="88,65,5,2,36,-4">
         <action box="13,0,27,6"/>
        </choice_glyph>
       </choice>
-      <tran_glyph conn="60,59,2,-1,7,28">
+      <tran_glyph conn="60,58,2,-1,7,28">
        <action box="8,4,19,5"/>
       </tran_glyph>
      </tran>
-     <state_glyph node="35,45,35,14">
-      <entry box="1,2,30,4"/>
-      <exit box="1,6,30,7"/>
+     <state_glyph node="35,44,35,14">
+      <entry box="1,2,34,4"/>
+      <exit box="1,6,34,7"/>
      </state_glyph>
     </state>
     <state name="S2">
@@ -44,13 +44,13 @@
      <exit brief="s2Exit(); s2Exit2()"/>
      <tran trig="EV1" target="../../1">
       <action brief="a1(e); a2(); foo()"/>
-      <tran_glyph conn="111,55,3,1,-41">
-       <action box="-28,-3,33,3"/>
+      <tran_glyph conn="111,55,3,1,-39,-1,-2">
+       <action box="-34,-3,41,4"/>
       </tran_glyph>
      </tran>
      <state_glyph node="111,46,37,15">
-      <entry box="1,2,35,6"/>
-      <exit box="1,8,32,6"/>
+      <entry box="1,2,36,6"/>
+      <exit box="1,8,36,6"/>
      </state_glyph>
     </state>
     <state_diagram size="258,137"/>

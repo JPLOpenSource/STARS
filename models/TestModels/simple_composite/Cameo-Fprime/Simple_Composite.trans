@@ -1,4 +1,0 @@
-InitialState = S11, Event = Ev1, guard = None, action = s11Exit();s12Entry(), TargetState = S12
-InitialState = S12, Event = Ev2, guard = None, action = s12Exit();s11Entry(), TargetState = S11
-InitialState = S12, Event = Ev1, guard = None, action = s12Exit();s1Exit();s2Entry(), TargetState = S2
-InitialState = S2, Event = Ev1, guard = None, action = s2Exit();s1Entry();s11Entry(), TargetState = S11

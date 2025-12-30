@@ -10,19 +10,38 @@ from xmiModelApi import XmiModel
 from typing import TextIO
 
 
-def getActionNames(input_string: str, fullSpecifier: bool):
-    if input_string is None:
+def format_funcs(s: str, fullSpecifier: bool) -> str:
+    if s is None:
         return None
+    parts = [p.strip() for p in s.split(';') if p.strip()]
+    result = []
 
-    # Use regex to find all procedural names before the '(' and ignore everything after
-    procedural_names = re.findall(r'\b\w+(?=\()', input_string)
-    # Join the names with commas
-    output_string = ', '.join(procedural_names)
+    for part in parts:
+        m = re.match(r'(\w+)\s*\(\s*(.*?)\s*\)', part)
+        if not m:
+            continue
 
-    if fullSpecifier:
-        output_string = output_string + getActionDataType(input_string)
+        name, arg = m.groups()
+        if arg and fullSpecifier:
+            result.append(f"{name}: {arg}")
+        else:
+            result.append(name)
 
-    return output_string
+    return ", ".join(result)
+
+def dedupe_events(values: set[str]) -> set[str]:
+    best = {}
+
+    for v in values:
+        if ':' in v:
+            name, arg = v.split(':', 1)
+            best[name.strip()] = f"{name.strip()}: {arg.strip()}"
+        else:
+            name = v.strip()
+            # only keep bare name if we haven't seen a version with arg
+            best.setdefault(name, name)
+
+    return set(best.values())
 
 def getActionDataType(inputString: str):
     if inputString is None:
@@ -58,28 +77,28 @@ def processNode(node: Node,
 
         if child.name == "INITIAL":
             target = xmiModel.idMap[child.target].stateName
-            doExpr = f" do {{ {getActionNames(child.action, False)} }}" if child.action else ""
+            doExpr = f" do {{ {format_funcs(child.action, False)} }}" if child.action else ""
             fppFile.write(f"{indent}initial{doExpr} enter {target}\n")
 
         if child.name == "JUNCTION":
             ifTarget = xmiModel.idMap[child.ifTarget].stateName
             elseTarget = xmiModel.idMap[child.elseTarget].stateName
-            doIfExpr = f" do {{ {getActionNames(child.ifAction, False)} }}" if child.ifAction else ""
-            doElseExpr = f" do {{ {getActionNames(child.elseAction, False)} }}" if child.elseAction else ""
+            doIfExpr = f" do {{ {format_funcs(child.ifAction, False)} }}" if child.ifAction else ""
+            doElseExpr = f" do {{ {format_funcs(child.elseAction, False)} }}" if child.elseAction else ""
             fppFile.write(f"{indent}choice {child.stateName} {{\n")
             fppFile.write(f"{indent}  if {child.guard}{doIfExpr} enter {ifTarget} else{doElseExpr} enter {elseTarget}\n")
             fppFile.write(f"{indent}}}\n")
 
         if child.name == "TRANSITION":
-            guardExpr = f" if {getActionNames(child.guard, False)}" if child.guard else ""
+            guardExpr = f" if {format_funcs(child.guard, False)}" if child.guard else ""
             enterExpr = f" enter {xmiModel.idMap[child.target].stateName}" if child.kind is None else ""
-            doExpr = f" do {{ {getActionNames(child.action, False)} }}" if child.action else ""
+            doExpr = f" do {{ {format_funcs(child.action, False)} }}" if child.action else ""
             fppFile.write(f"{indent}on {child.event}{guardExpr}{doExpr}{enterExpr}\n")
 
         if child.name == "STATE":
             stateName = child.stateName
-            enterExpr = f" entry do {{ {getActionNames(child.entry, False)} }}" if child.entry else ""
-            exitExpr = f" exit do {{ {getActionNames(child.exit, False)} }}" if child.exit else ""
+            enterExpr = f" entry do {{ {format_funcs(child.entry, False)} }}" if child.entry else ""
+            exitExpr = f" exit do {{ {format_funcs(child.exit, False)} }}" if child.exit else ""
             fppFile.write(f"{indent}state {stateName} {{\n")
             if enterExpr:
                 fppFile.write(f"{indent}{enterExpr}\n")
@@ -153,31 +172,28 @@ def getStateMachineMethods(xmiModel: XmiModel):
     for child in PreOrderIter(xmiModel.tree):
         #print(child.name)
         if child.name == "STATE":
-            actionSet.add(getActionNames(child.entry, True))
-            actionSet.add(getActionNames(child.exit, True))
+            actionSet.add(format_funcs(child.entry, True))
+            actionSet.add(format_funcs(child.exit, True))
         if child.name == "TRANSITION":
-            actionSet.add(getActionNames(child.action, True))
-            guardSet.add(getActionNames(child.guard, False))
+            actionSet.add(format_funcs(child.action, True))
+            guardSet.add(format_funcs(child.guard, False))
             signalSet.add((child.event + getActionDataType(child.action)))
         if child.name == "JUNCTION":
-            actionSet.add(getActionNames(child.ifAction, True))
-            actionSet.add(getActionNames(child.elseAction, True))
+            actionSet.add(format_funcs(child.ifAction, True))
+            actionSet.add(format_funcs(child.elseAction, True))
             guardSet.add(child.guard)
         if child.name == "INITIAL":
-            actionSet.add(getActionNames(child.action, True))
+            actionSet.add(format_funcs(child.action, True))
 
     # Remove empty strings
     actionSet = {item for item in actionSet if item}
     guardSet = {item for item in guardSet if item}
     signalSet = {item for item in signalSet if item}
 
-    #for item in guardSet:
-        #print("item: " + str(item))
-
     flatActions = {a.strip() for action in actionSet for a in action.split(',')}
 
 
-    return (flatActions, guardSet, signalSet)
+    return (flatActions, guardSet, dedupe_events(signalSet))
 
 # -----------------------------------------------------------------------
 # printFpp
@@ -186,8 +202,6 @@ def getStateMachineMethods(xmiModel: XmiModel):
 # -----------------------------------------------------------------------  
 def generateCode(xmiModel: XmiModel):
 
-    #xmiModel.print()
-
     stateMachine = xmiModel.tree.stateMachine
 
     print ("Generating " + stateMachine + "_State_Machine.fpp")
@@ -195,7 +209,7 @@ def generateCode(xmiModel: XmiModel):
     fppFile = open(stateMachine +"_State_Machine.fpp", "w")
 
     currentNode = xmiModel.tree
-
+ 
     getInitTransitions(xmiModel)
 
     getJunctions(xmiModel)
@@ -203,8 +217,6 @@ def generateCode(xmiModel: XmiModel):
     (actions, guards, signals) = getStateMachineMethods(xmiModel)
 
     moveTransitions(xmiModel)
-
-    xmiModel.print()
 
     fppFile.write(f"state machine {xmiModel.tree.stateMachine} {{\n\n")
 

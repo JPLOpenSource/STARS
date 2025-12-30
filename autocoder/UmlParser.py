@@ -192,7 +192,7 @@ def createStateIdMap(parseList: ParserElement) -> Dict[str, int]:
     stateIdMap = {}
     createStateList(parseList, stateList)
     stateList = nodups(stateList)
-    stateId = 1
+    stateId = 0
     for state in stateList:
         stateIdMap[state] = stateId
         stateId = stateId + 1

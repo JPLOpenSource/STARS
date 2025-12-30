@@ -15,8 +15,8 @@ state S1 {
         S12:Entry: s12Entry()
         S12:Exit: s12Exit()
     }
-    S11 --> S12 : EV1
-    S12 --> S11 : EV2
+    S11 --> S12 : Ev1
+    S12 --> S11 : Ev2
 }
 
 state S2 {
@@ -24,6 +24,6 @@ state S2 {
     S2:Exit: s2Exit()
 }
 
-S1 --> S2 : EV1
-S2 --> S1 : EV1
+S1 --> S2 : Ev1
+S2 --> S1 : Ev1
 @enduml
