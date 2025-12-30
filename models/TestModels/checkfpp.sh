@@ -10,7 +10,7 @@ if [ -z "$1" ]; then
 fi
 
 # Assign the base file name
-base_file="$1_State_Machine.fpp"
+base_file="$1_State_Machine.fppi"
 ref_file="$1.fpp.ref"
 
 # Check if both files exist
