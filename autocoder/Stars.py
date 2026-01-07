@@ -187,7 +187,7 @@ if args.backend == "c++":
     cppcoder.generateCode(xmiModel, args.noImpl)
     
 if args.backend == "c":
-    ccoder.generateCode(qmRoot, args.noImpl)
+    ccoder.generateCode(xmiModel, args.noImpl)
     
 if args.backend == "qf":
     qfcoder.generateCode(xmiModel, args.noImpl, args.noSignals)

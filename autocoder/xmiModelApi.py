@@ -151,6 +151,56 @@ class XmiModel:
             thisList = thisList + self.getTransitionsList(node)
 
         return thisList
+    
+    # -----------------------------------------------------------------------
+    # getInitTranstions
+    #
+    # Update the xmi model to add Initial Transitions from Transitions
+    # -----------------------------------------------------------------------  
+    def getInitTransitions(self):
+        for trans in PreOrderIter(self.tree):
+            if trans.name == "TRANSITION":
+                # If the transition source is a psuedostate and no other transition goes into that psuedostate
+                if (trans.source in self.psuedoStateList) and (trans.source not in self.transTargets):
+                    self.addInitial(trans)
+    
+    # -----------------------------------------------------------------------
+    # getJunctions
+    #
+    # Update the xmi model to add Junctions
+    # -----------------------------------------------------------------------  
+    def getJunctions(self):
+        for ps in PreOrderIter(self.tree):
+            if ps.name == "PSUEDOSTATE":
+                psId = ps.id
+                transList = []
+                for child in PreOrderIter(self.tree):
+                    # Get the transitions that exit this psuedo state
+                    if child.name == "TRANSITION":
+                        if psId == child.source:
+                            transList.append(child)
+                if len(transList) == 2:
+                    self.addJunction(transList, ps)
+
+    # -----------------------------------------------------------------------
+    # moveTransitions
+    #
+    # Transitions that start from a state are to be moved under that state
+    # -----------------------------------------------------------------------  
+    def moveTransitions(self):
+        for child in PreOrderIter(self.tree):
+            if child.name == "TRANSITION": 
+                # Look up where this transition is supposed to go
+                state = self.idMap[child.source]
+                # Move the transition under the source state
+                self.moveTransition(child, state)
+
+            if child.name == "JUNCTION":
+                for sourceTransition in PreOrderIter(self.tree):
+                    if (sourceTransition.name == "TRANSITION") and (sourceTransition.target == child.id):
+                        #state = xmiModel.idMap[parentState.source]
+                        child.parent = sourceTransition.parent.parent
+                        # Move the transition under the source state
 
     # --------------------------------------------------------
     # getPsuedoStateList
@@ -204,7 +254,7 @@ class XmiModel:
                 if (self.isSuperstate(child)):
                     self.flattenSuperstate(child, flattenedTransitions)
 
-                    print("break loop")
+                    #print("break loop")
 
                     break
     
@@ -219,11 +269,11 @@ class XmiModel:
                     flattenedTransitions.add(child)
             if child.name == "STATE":
                 if (self.isSuperstate(child)):
-                    print(f"{superstate.stateName} is a superstate. Moving transitions.")
+                    #print(f"{superstate.stateName} is a superstate. Moving transitions.")
 
                     self.flattenSuperstate(child, flattenedTransitions)
                 else:
-                    print(f"{child.stateName} is innermost state of {superstate.stateName}")
+                    #print(f"{child.stateName} is innermost state of {superstate.stateName}")
 
                     for transition in superstate.children:
                         if transition.name == "TRANSITION":
@@ -237,7 +287,7 @@ class XmiModel:
 
                     #self.resolveSuperstateTransitions(initial)
                 
-        print(f"Removing superstate: {superstate.stateName}")
+        #print(f"Removing superstate: {superstate.stateName}")
 
         superstate.parent = None
 
@@ -280,7 +330,7 @@ class XmiModel:
             if node.name == "STATE":
                 for child in node.children:
                     if child.name == "STATE":
-                        print(f"Substate of {node.stateName} is {child.stateName}")
+                        #print(f"Substate of {node.stateName} is {child.stateName}")
 
                         return True
             else:

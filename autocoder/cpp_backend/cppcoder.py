@@ -94,22 +94,6 @@ def printSmHeader(xmiModel: XmiModel):
     
     hFile.write(codeTemplate.fileHeader(stateMachine, states, signals, actions))
 
-# -----------------------------------------------------------------------
-# getInitTranstions
-#
-# Update the xmi model to add Initial Transitions from Transitions
-# -----------------------------------------------------------------------  
-def getInitTransitions(xmiModel: XmiModel):
-
-    psuedoStateList = xmiModel.psuedoStateList
-    transTargetSet = xmiModel.transTargets
-
-    for trans in PreOrderIter(xmiModel.tree):
-        if trans.name == "TRANSITION":
-            # If the transition source is a psuedostate and no other transition goes into that psuedostate
-            if (trans.source in psuedoStateList) and (trans.source not in transTargetSet):
-                xmiModel.addInitial(trans)
-
 def getActionNames(input_string: str, fullSpecifier: bool):
     if input_string is None:
         return None
@@ -250,46 +234,6 @@ def printTransition(smname: str, tran: ElementTreeType):
     #print(f"transition {rstr}")
 
     return rstr
-
-# -----------------------------------------------------------------------
-# getJunctions
-#
-# Update the xmi model to add Junctions
-# -----------------------------------------------------------------------  
-def getJunctions(xmiModel: XmiModel):
-
-    for ps in PreOrderIter(xmiModel.tree):
-        if ps.name == "PSUEDOSTATE":
-            psId = ps.id
-            transList = []
-            for child in PreOrderIter(xmiModel.tree):
-                # Get the transitions that exit this psuedo state
-                if child.name == "TRANSITION":
-                    if psId == child.source:
-                        transList.append(child)
-            if len(transList) == 2:
-                xmiModel.addJunction(transList, ps)
-
-# -----------------------------------------------------------------------
-# moveTransitions
-#
-# Transitions that start from a state are to be moved under that state
-# -----------------------------------------------------------------------  
-def moveTransitions(xmiModel: XmiModel):
-    for child in PreOrderIter(xmiModel.tree):
-        if child.name == "TRANSITION": 
-            # Look up where this transition is supposed to go
-            state = xmiModel.idMap[child.source]
-            # Move the transition under the source state
-            xmiModel.moveTransition(child, state)
-
-        if child.name == "JUNCTION":
-            for sourceTransition in PreOrderIter(xmiModel.tree):
-                if (sourceTransition.name == "TRANSITION") and (sourceTransition.target == child.id):
-                    #state = xmiModel.idMap[parentState.source]
-                    child.parent = sourceTransition.parent.parent
-                    # Move the transition under the source state
-
   
 # ---------------------------------------------------------------------------
 # printStateTransition
@@ -355,13 +299,13 @@ def printSmCode(node: Node, xmiModel: XmiModel, cFile: TextIO, level: int = 4):
             if child.name == "TRANSITION":
                 #print(xmiModel.idMap[child.source])
                 if (xmiModel.idMap[child.source].stateName == state):
-                    print(f"State match with {state}")
+                    #print(f"State match with {state}")
                     guardExpr = f" if {getActionNames(child.guard, False)}" if child.guard else ""
                     transition = f"\n{indent}this->state = {resolveTransition(xmiModel, child, states)};" if child.kind is None else ""
                     action = f"\n{indent}{getActionNames(child.action, False)}();" if child.action else ""
 
                     if (action != "" or transition != ""):
-                        cFile.write(f"{defaultIndent}case {child.event.upper() + "_SIG:"}{guardExpr}{action}{transition}\n{indent}break;\n")
+                        cFile.write(f"{defaultIndent}case {child.event.upper() + "_SIG: "}{guardExpr}{action}{transition}\n{indent}break;\n")
         
         cFile.write(codeTemplate.stateMachineBreak())
     
@@ -484,15 +428,15 @@ def generateCode(xmiModel: XmiModel, noImpl: bool):
 
     cFile = open(f"{stateMachine}.cpp", "w")
 
-    getInitTransitions(xmiModel)
+    xmiModel.getInitTransitions()
 
-    getJunctions(xmiModel)
+    xmiModel.getJunctions()
 
     (actions, guards, signals) = getStateMachineMethods(xmiModel)
 
-    moveTransitions(xmiModel)
+    xmiModel.moveTransitions()
 
-    xmiModel.print()
+    #xmiModel.print()
 
     #initialCode = qmlib.format_C(printTransition(stateMachine, currentNode), 4)
     #cFile.write(codeTemplate.stateMachineInit(stateMachine, initialCode))
@@ -543,7 +487,7 @@ def generateCode(xmiModel: XmiModel, noImpl: bool):
 
     xmiModel.flattenModel()
 
-    xmiModel.print()
+    #xmiModel.print()
 
     #initialCode = qmlib.format_C(printTransition(stateMachine, Node), 4)
     cFile.write(codeTemplate.stateMachineInit(stateMachine, initialCode, ""))
