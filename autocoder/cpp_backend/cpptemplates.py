@@ -174,7 +174,7 @@ class $(smname) {
     
     // state machine implementation functions
     #for $function in $implFunctions
-    $function;
+    virtual $function;
     #end for
 
 };
