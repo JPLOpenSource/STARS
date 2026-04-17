@@ -1,88 +1,103 @@
 # STARS Pytest Testing Framework
 
-This is a prototype pytest-based testing framework for the STARS autocoder, currently supporting the `simple` model.
+## Introduction
 
-## Quick Start
+The STARS (State Autocoding for Real-time Systems) Pytest Testing Framework provides a robust, efficient way to test the STARS autocoder across multiple models, input formats, and backend code generators. This framework replaces the traditional Makefile-based approach with a more flexible, maintainable pytest solution.
+
+This document serves as a comprehensive guide for both users who want to run tests and developers who need to extend the framework with new models or features.
+
+## Overview
+
+STARS transforms state-machine models into efficient code for embedded real-time applications. The testing framework validates that:
+
+1. The autocoder correctly processes different input formats (QM, PlantUML, Cameo)
+2. The generated code compiles successfully for different backends (C, C++, QF, F´)
+3. The compiled code produces expected outputs when executed
+
+## For Users: Running Tests
+
+### Quick Start
 
 ```bash
-# Run all tests (12 combinations for simple model)
-cd /home/watney/STARS/models/TestModels
-source /home/watney/visar-venv/bin/activate
+# Navigate to the project root directory
+cd STARS
+
+# Install dependencies if needed
+pip install -r requirements.txt
+
+# Navigate to the TestModels directory
+cd models/TestModels
+
+# Run all tests
 pytest -v
 
-# Results: 12 passed in 4.00s
-# (No need to specify tests/ - pytest.ini has testpaths = tests)
+# Expected output: Tests passed (multiple combinations across models)
 ```
 
-## What Was Created
+**Dependencies:** The testing framework requires the following Python packages (specified in requirements.txt):
+- anytree
+- Cheetah3
+- lxml
+- pyparsing
+- plantuml
+- pydantic
+- pytest (for running the tests)
 
-```
-models/TestModels/
-├── pytest.ini                   # Pytest configuration
-├── tests/
-│   ├── __init__.py
-│   ├── test_config.yaml         # Test metadata (easy to add new models)
-│   ├── conftest.py              # Pytest fixtures and custom options
-│   ├── utils.py                 # Build functions (replaces Makefile logic)
-│   └── test_autocoder.py        # Main test file (~165 lines)
-└── golden/
-    └── simple/
-        ├── c.txt                # Golden file for C backend
-        ├── cpp.txt              # Golden file for C++ backend
-        ├── qf.txt               # Golden file for QF backend
-        └── fprime.fppi          # Golden file for Fprime backend
-```
+### Filtering Tests
 
-## Key Features
+You can easily filter tests to focus on specific models, backends, or input formats:
 
-### 1. Filter by Model
+#### Filter by Model
 ```bash
+# Test only the Simple model
 pytest -k simple
+
+# Test only the Complex_Junction model
+pytest -k complex_junction
 ```
 
-### 2. Filter by Backend
+#### Filter by Backend
 ```bash
 # Test only C backend
 pytest -k c
 
-# Test only Fprime backend
+# Test only F´ (fprime) backend
 pytest -k fprime
 ```
 
-### 3. Filter by Input Format
+#### Filter by Input Format
 ```bash
-# Test only QM input
+# Test only QM input format
 pytest -k qm
 
-# Test only PlantUML input
+# Test only PlantUML input format
 pytest -k plantuml
+
+# Test only Cameo input format
+pytest -k cameo
 ```
 
-### 4. Combine Filters
+#### Combine Filters
 ```bash
-# Test simple model with C backend
+# Test Simple model with C backend
 pytest -k "simple and c"
 
-# Test QM input with Fprime backend
+# Test QM input with F´ backend
 pytest -k "qm and fprime"
+
+# Test Transitions model with PlantUML input and C++ backend
+pytest -k "transitions and plantuml and c++"
 ```
 
-### 5. Run in Parallel (if pytest-xdist installed)
+### Advanced Options
+
+#### Run Tests in Parallel
 ```bash
-# Run with 4 parallel workers
+# Run with 4 parallel workers (requires pytest-xdist)
 pytest -n 4
 ```
 
-### 6. Update Golden Files
-```bash
-# Update specific golden file after verifying change is correct
-pytest -k "simple and c" --update-golden
-
-# Update all golden files (use carefully!)
-pytest --update-golden
-```
-
-### 7. Verbose Output
+#### Verbose Output
 ```bash
 # Show detailed test output
 pytest -vv
@@ -91,70 +106,79 @@ pytest -vv
 pytest -s
 ```
 
-## How It Works
+## For Developers: Framework Structure
 
-Each test:
-1. **Runs autocoder** via subprocess (replaces `make autocode`)
-2. **Compiles code** via subprocess.run(["gcc", ...]) (replaces `make build`)
-3. **Runs executable** and captures stdout (replaces `make run`)
-4. **Compares with golden file** using Python difflib
+### Directory Structure
 
-**No Makefiles needed!** The gcc commands are in Python functions in `tests/utils.py`.
+```
+models/TestModels/
+├── pytest.ini                   # Pytest configuration and markers
+├── tests/
+│   ├── __init__.py
+│   ├── test_config.yaml         # Test configuration (models, inputs, backends)
+│   ├── conftest.py              # Pytest fixtures and custom options
+│   ├── utils.py                 # Build functions (replaces Makefile logic)
+│   └── test_autocoder.py        # Main test implementation
+└── golden/
+    └── model_name/              # One directory per model
+        ├── c.txt                # Golden file for C backend
+        ├── cpp.txt              # Golden file for C++ backend
+        ├── qf.txt               # Golden file for QF backend
+        └── fprime.fppi          # Golden file for F´ backend
+```
+
+### How Tests Work
+
+Each test follows this process:
+
+1. **Configuration**: Reads test parameters from `test_config.yaml`
+2. **Autocoding**: Runs STARS autocoder on the model file via subprocess
+3. **Compilation**: For C/C++/QF backends, compiles the generated code
+4. **Execution**: Runs the compiled executable and captures output
+5. **Verification**: Compares output with golden file using Python's difflib
+
+### Golden Files
+
+Golden files contain the expected output for each test combination. They serve as the reference for validating test results.
+
+#### Updating Golden Files
+
+```bash
+# Update golden file for a specific test
+pytest -k "simple and c" --update-golden
+
+# Update all golden files (use carefully!)
+pytest --update-golden
+```
 
 ## Adding a New Model
 
-To add a new model (e.g., "actions"), just:
+To add a new model for testing:
 
 1. **Add entry to test_config.yaml:**
 ```yaml
 models:
-  simple:
-    # ... existing config ...
+  # Existing models...
   
-  actions:  # New model
+  new_model_name:  # Your new model
     inputs:
-      qm: Actions.qm
-      plantuml: Actions.plantuml
-      cameo: Actions.xml
+      qm: NewModel.qm
+      plantuml: NewModel.plantuml
+      cameo: NewModel.xml
     backends: [c, c++, qf, fprime]
     test_driver: testDrv.txt
     golden:
-      c: actions/c.txt
-      c++: actions/cpp.txt
-      qf: actions/qf.txt
-      fprime: actions/fprime.fppi
+      c: new_model_name/c.txt
+      c++: new_model_name/cpp.txt
+      qf: new_model_name/qf.txt
+      fprime: new_model_name/fprime.fppi
 ```
 
 2. **Generate golden files:**
 ```bash
-pytest -k actions --update-golden
+pytest -k new_model_name --update-golden
 ```
 
-3. **Done!** You now have 12 new tests.
+3. **Done!** You now have new tests for your model.
 
 No directories to create, no Makefiles to write.
-
-## Comparison: Old vs New
-
-### Old Way (Make-based)
-- **Files:** 13 Makefiles per model (156 total for 12 models)
-- **Adding model:** Create 12 directories, write 13 Makefiles (~20 minutes)
-- **Running tests:** `make ut` (sequential, ~5 minutes)
-- **Updating golden:** Manually copy files
-- **Filtering:** Not possible, must run all or edit Makefile
-
-### New Way (Pytest-based)
-- **Files:** 5 Python files total, 1 YAML config
-- **Adding model:** Add 10 lines to YAML (~2 minutes)
-- **Running tests:** `pytest` (parallel-capable, ~4 seconds)
-- **Updating golden:** `pytest --update-golden -k model_name`
-- **Filtering:** `pytest -k "model and backend"` (built-in)
-
-## Next Steps
-
-To expand this to all models:
-1. Copy golden files from `models/*/goldy*.txt` to `golden/*/`
-2. Add each model to `test_config.yaml` (10 lines per model)
-3. Run `pytest` to verify all tests pass
-
-That's it! No more Makefile management.
