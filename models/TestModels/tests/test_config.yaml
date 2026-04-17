@@ -1,0 +1,35 @@
+# Paths are relative to TestModels/ directory
+base_dir: ..                     # STARS root: /home/watney/STARS
+models_dir: .                    # TestModels directory itself
+golden_dir: golden               # golden/ subdirectory
+
+models:
+  simple:
+    # Model files are in: models_dir/simple/
+    # Full path: /home/watney/STARS/models/TestModels/simple/
+    inputs:
+      qm: Simple.qm              # simple/Simple.qm
+      plantuml: Simple.plantuml  # simple/Simple.plantuml
+      cameo: Simple.xml          # simple/Simple.xml
+    backends: [c, c++, qf, fprime]
+    test_driver: testDrv.txt     # simple/testDrv.txt
+    golden:
+      c: simple/c.txt            # golden/simple/c.txt
+      c++: simple/cpp.txt        # golden/simple/cpp.txt
+      qf: simple/qf.txt          # golden/simple/qf.txt
+      fprime: simple/fprime.fppi # golden/simple/fprime.fppi
+  
+  simple_composite:
+    # Model files are in: models_dir/simple_composite/
+    # Full path: /home/watney/STARS/models/TestModels/simple_composite/
+    inputs:
+      qm: Simple_Composite.qm              # simple_composite/Simple_Composite.qm
+      plantuml: Simple_Composite.plantuml  # simple_composite/Simple_Composite.plantuml
+      cameo: Simple_Composite.xml          # simple_composite/Simple_Composite.xml
+    backends: [c, c++, qf, fprime]
+    test_driver: testDrv.txt               # simple_composite/testDrv.txt
+    golden:
+      c: simple_composite/c.txt            # golden/simple_composite/c.txt
+      c++: simple_composite/cpp.txt        # golden/simple_composite/cpp.txt
+      qf: simple_composite/qf.txt          # golden/simple_composite/qf.txt
+      fprime: simple_composite/fprime.fppi # golden/simple_composite/fprime.fppi
