@@ -3,33 +3,171 @@ base_dir: ..                     # STARS root: /home/watney/STARS
 models_dir: .                    # TestModels directory itself
 golden_dir: golden               # golden/ subdirectory
 
+# Template for model configuration
+# model_name: The name of the model (e.g., Simple, Simple_Composite)
+model_template: &model_template
+  # inputs section defines the input files for each format
+  inputs:
+    qm: "${model_name}.qm"              # ${model_name}/${model_name}.qm
+    plantuml: "${model_name}.plantuml"  # ${model_name}/${model_name}.plantuml
+    cameo: "${model_name}.xml"          # ${model_name}/${model_name}.xml
+  backends: [c, c++, qf, fprime]
+  test_driver: testDrv.txt               # ${model_name}/testDrv.txt
+  golden:
+    c: "${model_name}/c.txt"            # golden/${model_name}/c.txt
+    c++: "${model_name}/cpp.txt"        # golden/${model_name}/cpp.txt
+    qf: "${model_name}/qf.txt"          # golden/${model_name}/qf.txt
+    fprime: "${model_name}/fprime.fppi" # golden/${model_name}/fprime.fppi
+
+# Models configuration
 models:
-  simple:
-    # Model files are in: models_dir/simple/
-    # Full path: /home/watney/STARS/models/TestModels/simple/
-    inputs:
-      qm: Simple.qm              # simple/Simple.qm
-      plantuml: Simple.plantuml  # simple/Simple.plantuml
-      cameo: Simple.xml          # simple/Simple.xml
-    backends: [c, c++, qf, fprime]
-    test_driver: testDrv.txt     # simple/testDrv.txt
-    golden:
-      c: simple/c.txt            # golden/simple/c.txt
-      c++: simple/cpp.txt        # golden/simple/cpp.txt
-      qf: simple/qf.txt          # golden/simple/qf.txt
-      fprime: simple/fprime.fppi # golden/simple/fprime.fppi
+  # Simple model
+  Simple:
+    <<: *model_template
+    # Any model-specific overrides can be added here
   
-  simple_composite:
-    # Model files are in: models_dir/simple_composite/
-    # Full path: /home/watney/STARS/models/TestModels/simple_composite/
-    inputs:
-      qm: Simple_Composite.qm              # simple_composite/Simple_Composite.qm
-      plantuml: Simple_Composite.plantuml  # simple_composite/Simple_Composite.plantuml
-      cameo: Simple_Composite.xml          # simple_composite/Simple_Composite.xml
-    backends: [c, c++, qf, fprime]
-    test_driver: testDrv.txt               # simple_composite/testDrv.txt
+  # Simple_Composite model
+  Simple_Composite:
+    <<: *model_template
+    # Any model-specific overrides can be added here
+
+  # Actions model
+  Actions:
+    <<: *model_template
+    # Any model-specific overrides can be added here
+  
+  # Arg_Actions model
+  Arg_Actions:
+    <<: *model_template
+    # Any model-specific overrides can be added here
+
+ # Complex_Composite model
+  Complex_Composite:
+    <<: *model_template
+    # Format-specific golden files for fprime backend
     golden:
-      c: simple_composite/c.txt            # golden/simple_composite/c.txt
-      c++: simple_composite/cpp.txt        # golden/simple_composite/cpp.txt
-      qf: simple_composite/qf.txt          # golden/simple_composite/qf.txt
-      fprime: simple_composite/fprime.fppi # golden/simple_composite/fprime.fppi
+      c: "${model_name}/c.txt"          
+      c++: "${model_name}/cpp.txt"   
+      qf: "${model_name}/qf.txt"      
+      fprime:
+        qm: "${model_name}/fprime-qm.fppi"     
+        plantuml: "${model_name}/fprime-plantuml.fppi"  
+        cameo: "${model_name}/fprime-cameo.fppi"  
+
+  # Cases model
+  Cases:
+    <<: *model_template
+    # Format-specific golden files for fprime backend
+    golden:
+      c: "${model_name}/c.txt"          
+      c++: "${model_name}/cpp.txt"   
+      qf: "${model_name}/qf.txt"      
+      fprime:
+        qm: "${model_name}/fprime-qm.fppi"     
+        plantuml: "${model_name}/fprime-plantuml.fppi"  
+        cameo: "${model_name}/fprime-cameo.fppi"  
+
+  # Complex_Junction model
+  Complex_Junction:
+    <<: *model_template
+    # Format-specific golden files for fprime backend
+    golden:
+      c: "${model_name}/c.txt"          
+      c++: "${model_name}/cpp.txt"   
+      qf: "${model_name}/qf.txt"      
+      fprime:
+        qm: "${model_name}/fprime-qm.fppi"     
+        plantuml: "${model_name}/fprime-plantuml.fppi"  
+        cameo: "${model_name}/fprime-cameo.fppi"
+
+  # Multiple_Actions model
+  Multiple_Actions:
+    <<: *model_template
+    # Format-specific golden files for fprime backend
+    golden:
+      c: "${model_name}/c.txt"          
+      c++: "${model_name}/cpp.txt"   
+      qf: "${model_name}/qf.txt"      
+      fprime:
+        qm: "${model_name}/fprime-qm.fppi"     
+        plantuml: "${model_name}/fprime-plantuml.fppi"  
+        cameo: "${model_name}/fprime-cameo.fppi"
+
+  # Transitions model
+  Transitions:
+    <<: *model_template
+    # Format-specific golden files for all backends
+    golden:
+      c:
+        qm: "${model_name}/c-qm.txt"
+        plantuml: "${model_name}/c-plantuml.txt"
+        cameo: "${model_name}/c-cameo.txt"
+      c++:
+        qm: "${model_name}/cpp-qm.txt"
+        plantuml: "${model_name}/cpp-plantuml.txt"
+        cameo: "${model_name}/cpp-cameo.txt"
+      qf:
+        qm: "${model_name}/qf-qm.txt"
+        plantuml: "${model_name}/qf-plantuml.txt"
+        cameo: "${model_name}/qf-cameo.txt"
+      fprime:
+        qm: "${model_name}/fprime-qm.fppi"     
+        plantuml: "${model_name}/fprime-plantuml.fppi"  
+        cameo: "${model_name}/fprime-cameo.fppi"
+        
+  # String_Guards model
+  String_Guards:
+    <<: *model_template
+    # Format-specific golden files for all backends
+    golden:
+      c:
+        qm: "${model_name}/c-qm.txt"
+        plantuml: "${model_name}/c-plantuml.txt"
+        cameo: "${model_name}/c-cameo.txt"
+      c++:
+        qm: "${model_name}/cpp-qm.txt"
+        plantuml: "${model_name}/cpp-plantuml.txt"
+        cameo: "${model_name}/cpp-cameo.txt"
+      qf:
+        qm: "${model_name}/qf-qm.txt"
+        plantuml: "${model_name}/qf-plantuml.txt"
+        cameo: "${model_name}/qf-cameo.txt"
+      fprime:
+        qm: "${model_name}/fprime-qm.fppi"     
+        plantuml: "${model_name}/fprime-plantuml.fppi"  
+        cameo: "${model_name}/fprime-cameo.fppi"
+        
+  # Cameo model
+  Cameo:
+    # Cameo model only has plantuml and cameo formats (no qm)
+    inputs:
+      plantuml: "${model_name}.plantuml"
+      cameo: "${model_name}.xml"
+    backends: [c, c++, qf, fprime]
+    test_driver: testDrv.txt
+    golden:
+      c:
+        plantuml: "${model_name}/c-plantuml.txt"
+        cameo: "${model_name}/c-cameo.txt"
+      c++:
+        plantuml: "${model_name}/cpp-plantuml.txt"
+        cameo: "${model_name}/cpp-cameo.txt"
+      qf:
+        plantuml: "${model_name}/qf-plantuml.txt"
+        cameo: "${model_name}/qf-cameo.txt"
+      fprime:
+        plantuml: "${model_name}/fprime-plantuml.fppi"  
+        cameo: "${model_name}/fprime-cameo.fppi"
+
+  # Simple_Junction model
+  Simple_Junction:
+    <<: *model_template
+    # Format-specific golden files for fprime backend
+    golden:
+      c: "${model_name}/c.txt"          
+      c++: "${model_name}/cpp.txt"  
+      qf: "${model_name}/qf.txt"  
+      fprime:
+        qm: "${model_name}/fprime-qm.fppi" 
+        plantuml: "${model_name}/fprime-plantuml.fppi"  
+        cameo: "${model_name}/fprime-cameo.fppi" 

@@ -68,10 +68,26 @@ def test_autocoder(model_name, input_format, backend, test_config, base_dir, tmp
     """
     # Get test configuration
     model_config = test_config['models'][model_name]
-    model_file = model_config['inputs'][input_format]
+    
+    # Process template variables
+    def substitute_vars(value):
+        if isinstance(value, str):
+            return value.replace("${model_name}", model_name)
+        return value
+    
+    # Get model file with variable substitution
+    model_file = substitute_vars(model_config['inputs'][input_format])
     model_path = test_config['models_dir'] / model_name / model_file
     test_driver_path = test_config['models_dir'] / model_name / model_config['test_driver']
-    golden_file_rel = model_config['golden'][backend]
+    
+    # Handle format-specific golden files (for fprime backend)
+    if isinstance(model_config['golden'][backend], dict):
+        # Format-specific golden file
+        golden_file_rel = substitute_vars(model_config['golden'][backend][input_format])
+    else:
+        # Single golden file for all formats
+        golden_file_rel = substitute_vars(model_config['golden'][backend])
+        
     golden_file = test_config['golden_dir'] / golden_file_rel
     
     # Get model base name (e.g., "Simple" from "Simple.qm")
