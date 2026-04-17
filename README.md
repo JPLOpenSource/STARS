@@ -126,7 +126,7 @@ The full users guide is here:
 https://www.state-machine.com/qm/bm_diagram.html
 
 But the quick approach is to to open up an existing model 
-i.e. Open up [Simple.qm](models/TestModels/simple/Simple.qm) and just rename the model.
+i.e. Open up [Simple.qm](models/TestModels/Simple/Simple.qm) and just rename the model.
 
 Otherwise this is the procedure:
 - From the File pull down menu, select 'New Model'
@@ -143,18 +143,18 @@ Otherwise this is the procedure:
 
 Here are some examples of QM state machine models that are parsed correctly by this Autocoder:
 
-- [Simple.qm](models/TestModels/simple/Simple.qm)
-- [Simple_Composite.qm](models/TestModels/simple_composite/Simple_Composite.qm)
-- [Cases.qm](models/TestModels/cases/Cases.qm)
+- [Simple.qm](models/TestModels/Simple/Simple.qm)
+- [Simple_Composite.qm](models/TestModels/Simple_Composite/Simple_Composite.qm)
+- [Cases.qm](models/TestModels/Cases/Cases.qm)
 - [Cameo.qm](models/TestModels/Cameo/Cameo.qm)
-- [Actions.qm](models/TestModels/actions/Actions.qm)
-- [Complex_Junction.qm](models/TestModels/complex_junction/Complex_Junction.qm)
-- [Simple_Junction.qm](models/TestModels/simple_junction/Simple_Junction.qm)
-- [Multiple_Actions.qm](models/TestModels/multiple_actions/Multiple_Actions.qm)
-- [Arg_Actions.qm](models/TestModels/arg_actions/Arg_Actions.qm)
-- [Transitions.qm](models/TestModels/transitions/Transitions.qm)
-- [String_Guards.qm](models/TestModels/string_guards/String_Guards.qm)
-- [Simple_Junction.qm](models/TestModels/simple_junction/Simple_Junction.qm)
+- [Actions.qm](models/TestModels/Actions/Actions.qm)
+- [Complex_Junction.qm](models/TestModels/Complex_Junction/Complex_Junction.qm)
+- [Simple_Junction.qm](models/TestModels/Simple_Junction/Simple_Junction.qm)
+- [Multiple_Actions.qm](models/TestModels/Multiple_Actions/Multiple_Actions.qm)
+- [Arg_Actions.qm](models/TestModels/Arg_Actions/Arg_Actions.qm)
+- [Transitions.qm](models/TestModels/Transitions/Transitions.qm)
+- [String_Guards.qm](models/TestModels/String_Guards/String_Guards.qm)
+- [Simple_Junction.qm](models/TestModels/Simple_Junction/Simple_Junction.qm)
 
 ### PlantUML
 
@@ -164,18 +164,18 @@ For using the PlantUML, see the users guide:
 
 Here are some examples of PlantUML state machine models that are parsed correctly by this Autocoder:
 
-- [Simple.plantuml](models/TestModels/simple/Simple.plantuml)
-- [Simple_Composite.plantuml](models/TestModels/simple_composite/Simple_Composite.plantuml)
-- [Cases.plantuml](models/TestModels/cases/Cases.plantuml)
+- [Simple.plantuml](models/TestModels/Simple/Simple.plantuml)
+- [Simple_Composite.plantuml](models/TestModels/Simple_Composite/Simple_Composite.plantuml)
+- [Cases.plantuml](models/TestModels/Cases/Cases.plantuml)
 - [Cameo.plantuml](models/TestModels/Cameo/Cameo.plantuml)
-- [Actions.plantuml](models/TestModels/actions/Actions.plantuml)
-- [Complex_Junction.plantuml](models/TestModels/complex_junction/Complex_Junction.plantuml)
-- [Simple_Junction.plantuml](models/TestModels/simple_junction/Simple_Junction.plantuml)
-- [Multiple_Actions.plantuml](models/TestModels/multiple_actions/Multiple_Actions.plantuml)
-- [Arg_Actions.plantuml](models/TestModels/arg_actions/Arg_Actions.plantuml)
-- [Transitions.plantuml](models/TestModels/transitions/Transitions.plantuml)
-- [String_Guards.plantuml](models/TestModels/string_guards/String_Guards.plantuml)
-- [Simple_Junction.plantuml](models/TestModels/simple_junction/Simple_Junction.plantuml)
+- [Actions.plantuml](models/TestModels/Actions/Actions.plantuml)
+- [Complex_Junction.plantuml](models/TestModels/Complex_Junction/Complex_Junction.plantuml)
+- [Simple_Junction.plantuml](models/TestModels/Simple_Junction/Simple_Junction.plantuml)
+- [Multiple_Actions.plantuml](models/TestModels/Multiple_Actions/Multiple_Actions.plantuml)
+- [Arg_Actions.plantuml](models/TestModels/Arg_Actions/Arg_Actions.plantuml)
+- [Transitions.plantuml](models/TestModels/Transitions/Transitions.plantuml)
+- [String_Guards.plantuml](models/TestModels/String_Guards/String_Guards.plantuml)
+- [Simple_Junction.plantuml](models/TestModels/Simple_Junction/Simple_Junction.plantuml)
 
 Diagrams can be generated from PlantUML models:
 Example:
@@ -210,18 +210,18 @@ Will generate the following graphic:
 MagicDraw is not a free tool. If you have a license then you should also have the documentation.
 MagicDraw is a complex tool and there are many ways to specify a state machine that looks correct but
 will not be parsed correctly by this Autocoder. Here are some example models that do parse correctly:
-- models/TestModels/simple/Simple.xml
-- models/TestModels/simple_composite/Simple_Composite.xml
-- models/TestModels/cases/Cases.xml
+- models/TestModels/Simple/Simple.xml
+- models/TestModels/Simple_Composite/Simple_Composite.xml
+- models/TestModels/Cases/Cases.xml
 - models/TestModels/Cameo/Cameo.xml
-- models/TestModels/actions/Actions.xml
-- models/TestModels/complex_junction/Complex_Junction.xml
-- models/TestModels/simple_junction/Simple_Junction.xml
-- models/TestModels/multiple_actions/Multiple_Actions.xml
-- models/TestModels/arg_actions/Arg_Actions.xml
-- models/TestModels/transitions/Transitions.xml
-- models/TestModels/string_guards/String_Guards.xml
-- models/TestModels/simple_junction/Simple_Junction.xml
+- models/TestModels/Actions/Actions.xml
+- models/TestModels/Complex_Junction/Complex_Junction.xml
+- models/TestModels/Simple_Junction/Simple_Junction.xml
+- models/TestModels/Multiple_Actions/Multiple_Actions.xml
+- models/TestModels/Arg_Actions/Arg_Actions.xml
+- models/TestModels/Transitions/Transitions.xml
+- models/TestModels/String_Guards/String_Guards.xml
+- models/TestModels/Simple_Junction/Simple_Junction.xml
 
 
 ## Command Syntax
@@ -280,7 +280,7 @@ A graphical rendering of the state machine is updated to animate the state machi
 ### Example 
 
 - `cd testharness`
-- `cp ../models/TestModels/complex_junction/Complex_Junction.plantuml .`
+- `cp ../models/TestModels/Complex_Junction/Complex_Junction.plantuml .`
 - `ipython`
 - `%run test_harness.py`
 - `set_model("Complex_Junction.plantuml")`
