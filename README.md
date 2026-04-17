@@ -55,19 +55,19 @@ You can easily filter tests to focus on specific models, backends, or input form
 #### Filter by Model
 ```bash
 # Test only the Simple model
-pytest -k simple
+pytest -m Simple
 
 # Test only the Complex_Junction model
-pytest -k complex_junction
+pytest -m Complex_Junction
 ```
 
 #### Filter by Backend
 ```bash
 # Test only C backend
-pytest -k c
+pytest -m c
 
 # Test only F' (fprime) backend
-pytest -k fprime
+pytest -m fprime
 ```
 
 #### Filter by Input Format
@@ -85,14 +85,16 @@ pytest -k cameo
 #### Combine Filters
 ```bash
 # Test Simple model with C backend
-pytest -k "simple and c"
+pytest -k "Simple and c"
 
 # Test QM input with F' backend
 pytest -k "qm and fprime"
 
 # Test Transitions model with PlantUML input and C++ backend
-pytest -k "transitions and plantuml and c++"
+pytest -k "Transitions and plantuml and c++"
 ```
+
+> **Note:** The `-k` option matches substrings in test names, which include the model name, input format, and backend. This makes it easy to combine filters with logical operators like `and`.
 
 ### Advanced Testing Options
 

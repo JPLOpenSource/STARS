@@ -3,3 +3,17 @@
 .settings
 .pydevproject
 .DS_Store
+
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+*.egg-info/
+*.egg
+
+# Virtual environments
+venv/
+env/
+.env/
