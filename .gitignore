@@ -17,3 +17,10 @@ __pycache__/
 venv/
 env/
 .env/
+
+# Debug directory generated files
+debug/*.qm
+debug/*.plantuml
+debug/*.xml
+debug/*.png
+debug/test.json

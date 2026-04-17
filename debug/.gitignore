@@ -1,0 +1,30 @@
+# Generated code files
+c/*.c
+c/*.h
+c/*.o
+c/test
+cpp/*.cpp
+cpp/*.hpp
+cpp/*.o
+cpp/test
+qf/*.c
+qf/*.h
+qf/*.o
+qf/test
+fprime/*.cpp
+fprime/*.hpp
+fprime/*.fppi
+fprime/*.xml
+
+# Test harness files
+test.json
+*.png
+
+# Model files (user copies these in)
+*.qm
+*.plantuml
+*.xml
+
+# Backup files
+*~
+*.bak
