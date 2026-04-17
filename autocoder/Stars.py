@@ -21,7 +21,6 @@
 #   -model MODEL          QM state-machine model file: <model>.qm
 #   -noImpl               Don't generate the Impl files
 #   -noSignals            Don't generate the Signals header file
-#   -namespace NAMESPACE  Fprime namespace
 #   -debug                prints out the models
 #   -smbase               Generates the component state-machine base class
 # 
@@ -31,7 +30,7 @@
 #        Blinky.h
 #        Blinky.c
 #
-#     ./Stars.py -backend fprime -noImpl -namespace Components -model Blinky.qm
+#     ./Stars.py -backend fprime -noImpl -model Blinky.qm
 #     This will output the following files:
 #        Blinky.cpp
 #        Blinky.h
@@ -168,7 +167,6 @@ parser.add_argument("-backend", type=str, choices=['c', 'qf', 'c++', 'fprime', '
 parser.add_argument("-model", help="state-machine model file")
 parser.add_argument("-noImpl", help="Don't generate the Impl files", action="store_true")
 parser.add_argument("-noSignals", help="Don't generate the Signals header file", action="store_true")
-parser.add_argument("-namespace", help="Fprime namespace")
 parser.add_argument("-debug", help="prints out the models", action = "store_true")
 
 
@@ -196,12 +194,7 @@ if args.backend == "test":
     testcoder.generateCode(qmRoot)
     
 if args.backend == 'fprime':
-    if (args.namespace is None):
-        print("*** Error - missing namespace argument for the fprime backend")
-        exit(0)
-    else:
             fppcoder.generateCode(xmiModel)
-            #fprimecoder.generateCode(qmRoot, args.noImpl, args.namespace)
 
             
         

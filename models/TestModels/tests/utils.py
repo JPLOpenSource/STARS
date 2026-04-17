@@ -8,7 +8,7 @@ import subprocess
 from pathlib import Path
 
 
-def run_autocoder(model_file, backend, output_dir, namespace="Ref", base_dir=None):
+def run_autocoder(model_file, backend, output_dir,  base_dir=None):
     """
     Run Stars.py autocoder.
     Equivalent to 'autocode' target in Makefiles.
@@ -17,7 +17,6 @@ def run_autocoder(model_file, backend, output_dir, namespace="Ref", base_dir=Non
         model_file: Path to model file (.qm, .plantuml, or .xml)
         backend: Backend type (c, cpp, qf, fprime)
         output_dir: Directory to generate code into
-        namespace: Namespace for fprime backend
         base_dir: Base directory (defaults to STARS root)
     
     Returns:
@@ -30,9 +29,6 @@ def run_autocoder(model_file, backend, output_dir, namespace="Ref", base_dir=Non
     autocoder = base_dir / "autocoder" / "Stars.py"
     
     cmd = [str(autocoder), "-backend", backend, "-model", str(model_file)]
-    
-    if backend == "fprime":
-        cmd.extend(["-namespace", namespace])
     
     result = subprocess.run(
         cmd,

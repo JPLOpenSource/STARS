@@ -228,7 +228,7 @@ will not be parsed correctly by this Autocoder. Here are some example models tha
 The Python state-machine Autocoder command syntax:
 
 ```
-usage: Stars.py [-h] [-backend {c,qf,c++,fprime}] [-model MODEL] [-noImpl] [-noSignals] [-namespace NAMESPACE] [-debug] [-smbase]
+usage: Stars.py [-h] [-backend {c,qf,c++,fprime}] [-model MODEL] [-noImpl] [-noSignals] [-debug] [-smbase]
 ```
 
 State-machine Autocoder.
@@ -240,7 +240,6 @@ State-machine Autocoder.
 | -model | MODEL | QM state-machine model file: <model>.qm |
 | -noImpl | | Don't generate the Impl files |
 | -noSignals | | Don't generate the Signals header file |
-| -namespace | NAMESPACE | Fprime namespace |
 | -debug | | prints out the models |
 | -smbase | | Generates the component state-machine base class |
 
@@ -258,10 +257,10 @@ cd autocoder
 `./Stars.py -backend qf -noImpl -model ../models/Blinky/Blinky.qm`
 
 ### PlantUML Model - fprime backend
-`./Stars.py -backend fprime -noImpl -namespace BLINKY -model ../models/Blinky/Blinky.plantuml`
+`./Stars.py -backend fprime -noImpl model ../models/Blinky/Blinky.plantuml`
 
 ### Cameo Model - fprime backend
-`./Stars.py -backend fprime -noImpl -namespace BLINKY -model ../models/Blinky/Blinky.xml`
+`./Stars.py -backend fprime -noImpl -model ../models/Blinky/Blinky.xml`
 
 ### Generate F' state machine base classes and other F' artifacts
 `./Stars.py -smbase`
