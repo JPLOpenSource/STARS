@@ -272,18 +272,42 @@ For other examples see:
 
 ## Test Harness
 
-The test harness provides the capability to test a state machine model by setting guard states and sending events.
+The test harness provides the capability to test a PlantUML state machine model by setting guard states and sending events.
 A graphical rendering of the state machine is updated to animate the state machine.
 
 ![STARS Interfaces](TestHarness.png)
 
 ### Example 
 
-- `cd testharness`
-- `cp ../models/TestModels/Complex_Junction/Complex_Junction.plantuml .`
-- `ipython`
-- `%run test_harness.py`
-- `set_model("Complex_Junction.plantuml")`
-  (Open and view `Complex_Junction.png`)
-- `set_guard("g3", "True")`
-- `send_event("Ev1")`
+```bash
+# Navigate to the debug directory
+cd debug
+
+# Copy a PlantUML model
+cp ../models/TestModels/Complex_Junction/Complex_Junction.plantuml .
+
+# Launch the test harness
+make harness
+```
+
+In the interactive Python session:
+```python
+# Load the model
+set_model("Complex_Junction.plantuml")
+
+# Open and view Complex_Junction.png to see the state machine diagram
+
+# Set guard conditions
+set_guard("g3", "True")
+
+# Send events to transition the state machine
+send_event("Ev1")
+
+# The diagram will update to show the current state highlighted in gold
+```
+
+Available commands in the test harness:
+- `set_model("<model>.plantuml")` - Load a PlantUML model
+- `send_event("<event>")` - Send an event to the state machine
+- `set_guard("<guard>", "True"|"False")` - Set a guard condition
+- `commands()` - Display available commands
