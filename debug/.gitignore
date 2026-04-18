@@ -25,6 +25,9 @@ test.json
 *.plantuml
 *.xml
 
+# Test driver (user copies from model directory)
+testDrv.txt
+
 # Backup files
 *~
 *.bak

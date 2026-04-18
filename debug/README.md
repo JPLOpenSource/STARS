@@ -25,11 +25,14 @@ debug/
 
 ## Quick Start
 
-### 1. Copy a Model
+### 1. Copy a Model and Test Driver
 ```bash
 cd debug
 cp ../models/TestModels/Simple/Simple.qm .
+cp ../models/TestModels/Simple/testDrv.txt .
 ```
+
+**Important:** Always copy the `testDrv.txt` file from the model directory. This file defines the event sequences for testing and must match the events in your model.
 
 ### 2. Run Complete Workflow
 ```bash
@@ -102,6 +105,7 @@ make clean-fprime   # Clean F' backend only
 ```bash
 cd debug
 cp ../models/TestModels/Simple/Simple.qm .
+cp ../models/TestModels/Simple/testDrv.txt .
 make all-c MODEL=Simple.qm
 ```
 
@@ -109,6 +113,7 @@ make all-c MODEL=Simple.qm
 ```bash
 cd debug
 cp ../models/TestModels/Complex_Junction/Complex_Junction.plantuml .
+cp ../models/TestModels/Complex_Junction/testDrv.txt .
 make autocode-cpp MODEL=Complex_Junction.plantuml
 # Review generated code in cpp/ directory
 # Modify model if needed
@@ -119,6 +124,7 @@ make autocode-cpp MODEL=Complex_Junction.plantuml
 ```bash
 cd debug
 cp ../models/TestModels/Actions/Actions.qm .
+cp ../models/TestModels/Actions/testDrv.txt .
 make autocode-c MODEL=Actions.qm
 make autocode-cpp MODEL=Actions.qm
 make autocode-qf MODEL=Actions.qm
@@ -133,11 +139,12 @@ make run-qf
 ### Example 4: Custom Test Driver
 ```bash
 cd debug
-# Edit testDrv.txt with your event sequence:
+cp ../models/TestModels/Transitions/Transitions.qm .
+cp ../models/TestModels/Transitions/testDrv.txt .
+# Edit testDrv.txt with your custom event sequence:
 # EV1
 # EV2
 # EV1
-cp ../models/TestModels/Transitions/Transitions.qm .
 make all-c MODEL=Transitions.qm
 ```
 
@@ -161,6 +168,7 @@ send_event("EV2")
 ```bash
 cd debug
 cp ../models/TestModels/Simple/Simple.qm .
+cp ../models/TestModels/Simple/testDrv.txt .
 make autocode-fprime MODEL=Simple.qm
 # Check fprime/ directory for generated .fppi files
 ls -l fprime/
