@@ -55,7 +55,7 @@ def pytest_generate_tests(metafunc):
         )
 
 
-def test_autocoder(model_name, input_format, backend, test_config, base_dir, tmp_path, update_golden):
+def test_autocoder(model_name, input_format, backend, test_config, base_dir, tmp_path, update_golden, qhsm_library):
     """
     Test autocoder for a specific model/input/backend combination.
     
@@ -65,6 +65,9 @@ def test_autocoder(model_name, input_format, backend, test_config, base_dir, tmp
     3. For Fprime: read generated .fppi file
     4. Compare output with golden file
     5. Optionally update golden file if --update-golden flag is set
+    
+    Args:
+        qhsm_library: Ensures libqhsm.a is built before QF backend tests
     """
     # Get test configuration
     model_config = test_config['models'][model_name]
@@ -131,7 +134,7 @@ def test_autocoder(model_name, input_format, backend, test_config, base_dir, tmp
         
     elif backend == 'qf':
         print("Building QF executable...")
-        build_qf_backend(tmp_path, model_base, base_dir)
+        build_qf_backend(tmp_path, model_base, base_dir, qhsm_library)
         print("Running test executable...")
         output = run_test_executable(tmp_path)
         

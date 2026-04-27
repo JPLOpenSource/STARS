@@ -47,6 +47,56 @@ def base_dir():
     return Path(__file__).parent.parent.parent.parent
 
 
+@pytest.fixture(scope="session")
+def qhsm_library(base_dir):
+    """
+    Build libqhsm.a once per test session for all QF tests.
+    Session-scoped fixture ensures library is built only once.
+    
+    Equivalent to running 'make' in QHsm/ directory:
+    - gcc -c -Wall hsm_qf.c -o hsm_qf.o
+    - gcc -c -Wall log_event.c -o log_event.o
+    - ar rs libqhsm.a hsm_qf.o log_event.o
+    """
+    import subprocess
+    
+    qhsm_dir = base_dir / "QHsm"
+    lib_path = qhsm_dir / "libqhsm.a"
+    
+    # Check if library already exists and is up-to-date
+    source_files = [qhsm_dir / "hsm_qf.c", qhsm_dir / "log_event.c"]
+    
+    needs_build = not lib_path.exists()
+    if not needs_build:
+        lib_mtime = lib_path.stat().st_mtime
+        needs_build = any(f.stat().st_mtime > lib_mtime for f in source_files)
+    
+    if needs_build:
+        print(f"\nBuilding libqhsm.a...")
+        
+        # Compile object files
+        subprocess.run(
+            ["gcc", "-c", "-Wall", "hsm_qf.c", "-o", "hsm_qf.o"],
+            cwd=qhsm_dir, check=True, capture_output=True
+        )
+        subprocess.run(
+            ["gcc", "-c", "-Wall", "log_event.c", "-o", "log_event.o"],
+            cwd=qhsm_dir, check=True, capture_output=True
+        )
+        
+        # Create static library
+        subprocess.run(
+            ["ar", "rs", "libqhsm.a", "hsm_qf.o", "log_event.o"],
+            cwd=qhsm_dir, check=True, capture_output=True
+        )
+        
+        print(f"✓ Built libqhsm.a")
+    else:
+        print(f"\n✓ Using existing libqhsm.a")
+    
+    return lib_path
+
+
 def pytest_configure(config):
     """Configure pytest with custom markers."""
     config.addinivalue_line(

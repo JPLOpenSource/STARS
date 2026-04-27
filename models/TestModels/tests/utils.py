@@ -114,7 +114,7 @@ def build_cpp_backend(tmp_path, model_base, base_dir):
         raise RuntimeError(f"Linking failed: {' '.join(link_cmd)}\n{result.stderr}")
 
 
-def build_qf_backend(tmp_path, model_base, base_dir):
+def build_qf_backend(tmp_path, model_base, base_dir, qhsm_library):
     """
     Build QF backend executable.
     Equivalent to Common_QF_Makefile build target.
@@ -123,6 +123,7 @@ def build_qf_backend(tmp_path, model_base, base_dir):
         tmp_path: Temporary directory containing generated code
         model_base: Base name of model (e.g., "Simple")
         base_dir: Base directory for includes
+        qhsm_library: Path to libqhsm.a (ensures library is built)
     
     Raises:
         RuntimeError: If compilation or linking fails
