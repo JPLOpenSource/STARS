@@ -1,0 +1,30 @@
+name: PR
+
+on:
+    push:
+        branches: [ "main" ]
+    pull_request:
+        branches: [ "main" ]
+
+jobs:
+    PR:
+        name: Unit test
+        runs-on: ubuntu-latest
+        steps:
+        - uses: actions/checkout@v4
+
+        - name: Install Python
+          uses: actions/setup-python@v5
+          with:
+              python-version: '3.11'
+
+        - name: Setup Python
+          run: |
+              python3 -m pip install --upgrade pip
+              python3 -m pip install pytest
+              python3 -m pip install -r requirements.txt
+
+        - name: Unit test
+          run: |
+              cd models/TestModels
+              python3 -m pytest -v
