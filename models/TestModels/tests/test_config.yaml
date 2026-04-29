@@ -65,7 +65,12 @@ models:
   Complex_Junction:
     <<: *model_template
     # Format-specific golden files for fprime backend
-   
+
+  # String_Guards model
+  String_Guards:
+    <<: *model_template
+    # Format-specific golden files for all backends
+
   # Transitions model
   Transitions:
     <<: *model_template
@@ -73,36 +78,15 @@ models:
     golden:
       c:
         qm: "${model_name}/c-qm.txt"
-        plantuml: "${model_name}/c-plantuml.txt"
-        cameo: "${model_name}/c-cameo.txt"
+        plantuml: "${model_name}/c.txt"
+        cameo: "${model_name}/c.txt"
       c++:
         qm: "${model_name}/cpp-qm.txt"
-        plantuml: "${model_name}/cpp-plantuml.txt"
-        cameo: "${model_name}/cpp-cameo.txt"
-      qf:
-        qm: "${model_name}/qf-qm.txt"
-        plantuml: "${model_name}/qf-plantuml.txt"
-        cameo: "${model_name}/qf-cameo.txt"
+        plantuml: "${model_name}/cpp.txt"
+        cameo: "${model_name}/cpp.txt"
+      qf: "${model_name}/qf.txt"
       fprime: "${model_name}/fprime.fppi"
         
-  # String_Guards model
-  String_Guards:
-    <<: *model_template
-    # Format-specific golden files for all backends
-    golden:
-      c:
-        qm: "${model_name}/c-qm.txt"
-        plantuml: "${model_name}/c-plantuml.txt"
-        cameo: "${model_name}/c-cameo.txt"
-      c++:
-        qm: "${model_name}/cpp-qm.txt"
-        plantuml: "${model_name}/cpp-plantuml.txt"
-        cameo: "${model_name}/cpp-cameo.txt"
-      qf:
-        qm: "${model_name}/qf-qm.txt"
-        plantuml: "${model_name}/qf-plantuml.txt"
-        cameo: "${model_name}/qf-cameo.txt"
-      fprime: "${model_name}/fprime.fppi"
         
   # Cameo model
   Cameo:
@@ -112,17 +96,9 @@ models:
       cameo: "${model_name}.xml"
     backends: [c, c++, qf, fprime]
     test_driver: testDrv.txt
-    golden:
-      c:
-        plantuml: "${model_name}/c-plantuml.txt"
-        cameo: "${model_name}/c-cameo.txt"
-      c++:
-        plantuml: "${model_name}/cpp-plantuml.txt"
-        cameo: "${model_name}/cpp-cameo.txt"
-      qf:
-        plantuml: "${model_name}/qf-plantuml.txt"
-        cameo: "${model_name}/qf-cameo.txt"
-      fprime: "${model_name}/fprime.fppi" 
-
- 
+    golden: 
+      c: "${model_name}/c.txt"
+      c++: "${model_name}/cpp.txt"
+      qf: "${model_name}/qf.txt"
+      fprime: "${model_name}/fprime.fppi"
    
