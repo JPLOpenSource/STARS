@@ -23,15 +23,15 @@ state machine Cameo {
   signal Ev4
   signal Ev5
 
-  state StateS1 {
-   entry do { S1Entry }
-   exit do { S1Exit }
-    on Ev2 do { a2 } enter Running
-  }
-
+  initial enter J0
   state Running {
    entry do { runningEntry }
    exit do { runningExit }
+    initial enter J2
+    on Ev1 if guard2 do { a1 } enter StateS1
+    on Ev3 enter J1
+    on Ev4 do { a4 } enter J1
+    on Ev5 enter Running
     state StateS2 {
      entry do { s2Entry }
      exit do { s2Exit }
@@ -42,21 +42,21 @@ state machine Cameo {
      exit do { s3Exit }
     }
 
-    initial enter J4
-    choice J4 {
+    choice J2 {
       if guard4() enter StateS3 else enter StateS2
     }
-    on Ev5 enter Running
-    on Ev4 do { a4 } enter J6
-    on Ev3 enter J6
-    on Ev1 if guard2 do { a1 } enter StateS1
   }
 
-  initial enter J5
-  choice J5 {
+  state StateS1 {
+   entry do { S1Entry }
+   exit do { S1Exit }
+    on Ev2 do { a2 } enter Running
+  }
+
+  choice J0 {
     if guard() enter StateS1 else enter Running
   }
-  choice J6 {
+  choice J1 {
     if guard3() enter StateS1 else do { a2 } enter Running
   }
 }

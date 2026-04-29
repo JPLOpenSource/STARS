@@ -1,45 +1,46 @@
-state machine Simple_Junction {
+state machine Cases {
 
+  action A1
   action DiagEntry
   action DiagExit
   action InitEntry
   action InitExit
-  action OffEntry
-  action OffExit
+  action OFFENTRY
   action OnEntry
   action OnExit
-  action a1
+  action offexit
 
-  guard g1()
+  guard G1()
 
-  signal Ev1
+  signal EV1
+  signal ev2
 
+  initial enter OFF
   state OFF {
-   entry do { OffEntry }
-   exit do { OffExit }
+   entry do { OFFENTRY }
+   exit do { offexit }
+    initial enter Diag
+    on EV1 enter J0
     state Diag {
      entry do { DiagEntry }
      exit do { DiagExit }
     }
 
-    initial enter Diag
-    on Ev1 enter J7
   }
 
-  state ON {
+  state on {
    entry do { OnEntry }
    exit do { OnExit }
+    initial enter Init
+    on ev2 enter OFF
     state Init {
      entry do { InitEntry }
      exit do { InitExit }
     }
 
-    initial enter Init
-    on Ev1 enter OFF
   }
 
-  initial enter OFF
-  choice J7 {
-    if g1() enter OFF else do { a1 } enter ON
+  choice J0 {
+    if G1() enter OFF else do { A1 } enter on
   }
 }

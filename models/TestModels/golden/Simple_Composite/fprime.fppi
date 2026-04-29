@@ -13,9 +13,12 @@ state machine Simple_Composite {
   signal Ev1
   signal Ev2
 
+  initial enter S1
   state S1 {
    entry do { s1Entry }
    exit do { s1Exit }
+    initial enter S11
+    on Ev1 enter S2
     state S11 {
      entry do { s11Entry }
      exit do { s11Exit }
@@ -28,8 +31,6 @@ state machine Simple_Composite {
       on Ev2 enter S11
     }
 
-    initial enter S11
-    on Ev1 enter S2
   }
 
   state S2 {
@@ -38,5 +39,4 @@ state machine Simple_Composite {
     on Ev1 enter S1
   }
 
-  initial enter S1
 }

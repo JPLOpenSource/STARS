@@ -73,39 +73,47 @@ def processNode(node: Node,
 
     indent = "  " * level
 
-    for child in node.children:
+    # Separate children by type for consistent ordering
+    initials = [child for child in node.children if child.name == "INITIAL"]
+    junctions = [child for child in node.children if child.name == "JUNCTION"]
+    transitions = [child for child in node.children if child.name == "TRANSITION"]
+    states = [child for child in node.children if child.name == "STATE"]
 
-        if child.name == "INITIAL":
-            target = xmiModel.idMap[child.target].stateName
-            doExpr = f" do {{ {format_funcs(child.action, False)} }}" if child.action else ""
-            fppFile.write(f"{indent}initial{doExpr} enter {target}\n")
+    # Process INITIAL children (typically only one, maintain order)
+    for child in initials:
+        target = xmiModel.idMap[child.target].stateName
+        doExpr = f" do {{ {format_funcs(child.action, False)} }}" if child.action else ""
+        fppFile.write(f"{indent}initial{doExpr} enter {target}\n")
 
-        if child.name == "JUNCTION":
-            ifTarget = xmiModel.idMap[child.ifTarget].stateName
-            elseTarget = xmiModel.idMap[child.elseTarget].stateName
-            doIfExpr = f" do {{ {format_funcs(child.ifAction, False)} }}" if child.ifAction else ""
-            doElseExpr = f" do {{ {format_funcs(child.elseAction, False)} }}" if child.elseAction else ""
-            fppFile.write(f"{indent}choice {child.stateName} {{\n")
-            fppFile.write(f"{indent}  if {child.guard}{doIfExpr} enter {ifTarget} else{doElseExpr} enter {elseTarget}\n")
-            fppFile.write(f"{indent}}}\n")
+    # Process TRANSITION children in sorted order by event name for consistency
+    for child in sorted(transitions, key=lambda t: t.event if t.event else ""):
+        guardExpr = f" if {format_funcs(child.guard, False)}" if child.guard else ""
+        enterExpr = f" enter {xmiModel.idMap[child.target].stateName}" if child.kind is None else ""
+        doExpr = f" do {{ {format_funcs(child.action, False)} }}" if child.action else ""
+        fppFile.write(f"{indent}on {child.event}{guardExpr}{doExpr}{enterExpr}\n")
 
-        if child.name == "TRANSITION":
-            guardExpr = f" if {format_funcs(child.guard, False)}" if child.guard else ""
-            enterExpr = f" enter {xmiModel.idMap[child.target].stateName}" if child.kind is None else ""
-            doExpr = f" do {{ {format_funcs(child.action, False)} }}" if child.action else ""
-            fppFile.write(f"{indent}on {child.event}{guardExpr}{doExpr}{enterExpr}\n")
+    # Process STATE children in sorted (alphabetical) order for consistency
+    for child in sorted(states, key=lambda s: s.stateName):
+        stateName = child.stateName
+        enterExpr = f" entry do {{ {format_funcs(child.entry, False)} }}" if child.entry else ""
+        exitExpr = f" exit do {{ {format_funcs(child.exit, False)} }}" if child.exit else ""
+        fppFile.write(f"{indent}state {stateName} {{\n")
+        if enterExpr:
+            fppFile.write(f"{indent}{enterExpr}\n")
+        if exitExpr:
+            fppFile.write(f"{indent}{exitExpr}\n")
+        processNode(child, xmiModel, fppFile, level+1)
+        fppFile.write(f"{indent}}}\n\n")
 
-        if child.name == "STATE":
-            stateName = child.stateName
-            enterExpr = f" entry do {{ {format_funcs(child.entry, False)} }}" if child.entry else ""
-            exitExpr = f" exit do {{ {format_funcs(child.exit, False)} }}" if child.exit else ""
-            fppFile.write(f"{indent}state {stateName} {{\n")
-            if enterExpr:
-                fppFile.write(f"{indent}{enterExpr}\n")
-            if exitExpr:
-                fppFile.write(f"{indent}{exitExpr}\n")
-            processNode(child, xmiModel, fppFile, level+1)
-            fppFile.write(f"{indent}}}\n\n")
+    # Process JUNCTION children last (maintain order, typically referenced by transitions)
+    for child in junctions:
+        ifTarget = xmiModel.idMap[child.ifTarget].stateName
+        elseTarget = xmiModel.idMap[child.elseTarget].stateName
+        doIfExpr = f" do {{ {format_funcs(child.ifAction, False)} }}" if child.ifAction else ""
+        doElseExpr = f" do {{ {format_funcs(child.elseAction, False)} }}" if child.elseAction else ""
+        fppFile.write(f"{indent}choice {child.stateName} {{\n")
+        fppFile.write(f"{indent}  if {child.guard}{doIfExpr} enter {ifTarget} else{doElseExpr} enter {elseTarget}\n")
+        fppFile.write(f"{indent}}}\n")
        
 # -----------------------------------------------------------------------
 # getInitTranstions
@@ -217,6 +225,11 @@ def generateCode(xmiModel: XmiModel):
     (actions, guards, signals) = getStateMachineMethods(xmiModel)
 
     moveTransitions(xmiModel)
+    
+    # Renumber junctions for consistent output across input formats
+    junctions = [node for node in PreOrderIter(xmiModel.tree) if node.name == "JUNCTION"]
+    for idx, junction in enumerate(sorted(junctions, key=lambda j: (j.parent.stateName if hasattr(j.parent, 'stateName') else "", j.guard or ""))):
+        junction.stateName = f"J{idx}"
 
     fppFile.write(f"state machine {xmiModel.tree.stateMachine} {{\n\n")
 

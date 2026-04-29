@@ -24,38 +24,38 @@ state machine String_Guards {
   signal Ev1
   signal Ev2
 
+  initial do { initialAction } enter OFF
   state OFF {
+    initial enter Far
+    on Ev1 enter J0
+    on Ev2 if g4 do { a5 } enter J3
     state Far {
      entry do { farEntry }
      exit do { farExit }
     }
 
-    initial enter Far
-    on Ev1 enter J4
-    on Ev2 if g4 do { a5 } enter J7
   }
 
   state ON {
+    initial enter Bar
+    on Ev2 enter OFF
     state Bar {
      entry do { barEntry }
      exit do { barExit }
     }
 
-    initial enter Bar
-    on Ev2 enter OFF
   }
 
-  initial do { initialAction } enter OFF
-  choice J4 {
-    if g1() do { b2 } enter J5 else do { a1 } enter OFF
+  choice J0 {
+    if g1() do { b2 } enter J1 else do { a1 } enter OFF
   }
-  choice J5 {
-    if g2() do { b3 } enter J6 else do { a2 } enter OFF
+  choice J1 {
+    if g2() do { b3 } enter J2 else do { a2 } enter OFF
   }
-  choice J6 {
+  choice J2 {
     if g3() do { b4 } enter ON else do { a3 } enter OFF
   }
-  choice J7 {
+  choice J3 {
     if g5() do { a4 } enter OFF else do { a6 } enter ON
   }
 }

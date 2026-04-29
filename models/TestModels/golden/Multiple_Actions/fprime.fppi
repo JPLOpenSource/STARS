@@ -15,6 +15,7 @@ state machine Multiple_Actions {
 
   signal EV1
 
+  initial enter S1
   state S1 {
    entry do { s1Entry, s1Entry2 }
    exit do { s1Exit, s1Exit2 }
@@ -27,5 +28,4 @@ state machine Multiple_Actions {
     on EV1 do { a1, a2 } enter S1
   }
 
-  initial enter S1
 }

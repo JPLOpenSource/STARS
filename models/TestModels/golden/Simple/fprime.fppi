@@ -5,6 +5,7 @@ state machine Simple {
 
   signal EV1
 
+  initial enter S1
   state S1 {
    entry do { s1Entry }
     on EV1 enter S2
@@ -14,5 +15,4 @@ state machine Simple {
     on EV1 enter S1
   }
 
-  initial enter S1
 }
