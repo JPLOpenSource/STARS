@@ -1,4 +1,4 @@
-state machine Simple_Junction {
+state machine Complex_Junction {
 
   action DiagEntry
   action DiagExit
@@ -9,8 +9,15 @@ state machine Simple_Junction {
   action OnEntry
   action OnExit
   action a1
+  action a2
+  action a3
+  action a4
+  action a5
+  action a6
 
   guard g1()
+  guard g2()
+  guard g3()
 
   signal Ev1
 
@@ -19,7 +26,7 @@ state machine Simple_Junction {
    entry do { OffEntry }
    exit do { OffExit }
     initial enter Diag
-    on Ev1 enter J4
+    on Ev1 enter J0
     state Diag {
      entry do { DiagEntry }
      exit do { DiagExit }
@@ -39,7 +46,13 @@ state machine Simple_Junction {
 
   }
 
-  choice J4 {
-    if g1() enter OFF else do { a1 } enter ON
+  choice J0 {
+    if g1() do { a1 } enter OFF else do { a2 } enter J1
+  }
+  choice J1 {
+    if g2() do { a5 } enter ON else do { a3 } enter J2
+  }
+  choice J2 {
+    if g3() do { a6 } enter ON else do { a4 } enter OFF
   }
 }

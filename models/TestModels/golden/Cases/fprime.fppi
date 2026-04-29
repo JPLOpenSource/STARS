@@ -20,7 +20,7 @@ state machine Cases {
    entry do { OFFENTRY }
    exit do { offexit }
     initial enter Diag
-    on EV1 enter J4
+    on EV1 enter J0
     state Diag {
      entry do { DiagEntry }
      exit do { DiagExit }
@@ -40,7 +40,7 @@ state machine Cases {
 
   }
 
-  choice J4 {
+  choice J0 {
     if G1() enter OFF else do { A1 } enter on
   }
 }

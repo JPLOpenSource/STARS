@@ -45,48 +45,27 @@ models:
   Complex_Composite:
     <<: *model_template
     # Format-specific golden files for fprime backend
-    golden:
-      c: "${model_name}/c.txt"          
-      c++: "${model_name}/cpp.txt"   
-      qf: "${model_name}/qf.txt"      
-      fprime: "${model_name}/fprime.fppi"
 
   # Cases model
   Cases:
     <<: *model_template
     # Format-specific golden files for fprime backend
-    golden:
-      c: "${model_name}/c.txt"          
-      c++: "${model_name}/cpp.txt"   
-      qf: "${model_name}/qf.txt"      
-      fprime:
-        qm: "${model_name}/fprime-qm.fppi"     
-        plantuml: "${model_name}/fprime-plantuml.fppi"  
-        cameo: "${model_name}/fprime-cameo.fppi"  
-
-  # Complex_Junction model
-  Complex_Junction:
+  
+  # Simple_Junction model
+  Simple_Junction:
     <<: *model_template
     # Format-specific golden files for fprime backend
-    golden:
-      c: "${model_name}/c.txt"          
-      c++: "${model_name}/cpp.txt"   
-      qf: "${model_name}/qf.txt"      
-      fprime:
-        qm: "${model_name}/fprime-qm.fppi"     
-        plantuml: "${model_name}/fprime-plantuml.fppi"  
-        cameo: "${model_name}/fprime-cameo.fppi"
 
   # Multiple_Actions model
   Multiple_Actions:
     <<: *model_template
     # Format-specific golden files for fprime backend
-    golden:
-      c: "${model_name}/c.txt"          
-      c++: "${model_name}/cpp.txt"   
-      qf: "${model_name}/qf.txt"      
-      fprime: "${model_name}/fprime.fppi"
 
+  # Complex_Junction model
+  Complex_Junction:
+    <<: *model_template
+    # Format-specific golden files for fprime backend
+   
   # Transitions model
   Transitions:
     <<: *model_template
@@ -123,10 +102,7 @@ models:
         qm: "${model_name}/qf-qm.txt"
         plantuml: "${model_name}/qf-plantuml.txt"
         cameo: "${model_name}/qf-cameo.txt"
-      fprime:
-        qm: "${model_name}/fprime-qm.fppi"     
-        plantuml: "${model_name}/fprime-plantuml.fppi"  
-        cameo: "${model_name}/fprime-cameo.fppi"
+      fprime: "${model_name}/fprime.fppi"
         
   # Cameo model
   Cameo:
@@ -146,19 +122,7 @@ models:
       qf:
         plantuml: "${model_name}/qf-plantuml.txt"
         cameo: "${model_name}/qf-cameo.txt"
-      fprime:
-        plantuml: "${model_name}/fprime-plantuml.fppi"  
-        cameo: "${model_name}/fprime-cameo.fppi"
+      fprime: "${model_name}/fprime.fppi" 
 
-  # Simple_Junction model
-  Simple_Junction:
-    <<: *model_template
-    # Format-specific golden files for fprime backend
-    golden:
-      c: "${model_name}/c.txt"          
-      c++: "${model_name}/cpp.txt"  
-      qf: "${model_name}/qf.txt"  
-      fprime:
-        qm: "${model_name}/fprime-qm.fppi" 
-        plantuml: "${model_name}/fprime-plantuml.fppi"  
-        cameo: "${model_name}/fprime-cameo.fppi" 
+ 
+   

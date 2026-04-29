@@ -225,6 +225,11 @@ def generateCode(xmiModel: XmiModel):
     (actions, guards, signals) = getStateMachineMethods(xmiModel)
 
     moveTransitions(xmiModel)
+    
+    # Renumber junctions for consistent output across input formats
+    junctions = [node for node in PreOrderIter(xmiModel.tree) if node.name == "JUNCTION"]
+    for idx, junction in enumerate(sorted(junctions, key=lambda j: (j.parent.stateName if hasattr(j.parent, 'stateName') else "", j.guard or ""))):
+        junction.stateName = f"J{idx}"
 
     fppFile.write(f"state machine {xmiModel.tree.stateMachine} {{\n\n")
 
