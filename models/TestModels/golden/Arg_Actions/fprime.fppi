@@ -18,6 +18,7 @@ state machine Arg_Actions {
   signal EV1: e
   signal EV2
 
+  initial enter S1
   state S1 {
    entry do { s1Entry, s1Entry2, foo }
    exit do { s1Exit, s1Exit2, foo }
@@ -31,5 +32,4 @@ state machine Arg_Actions {
     on EV1 do { a1, a2, foo } enter S1
   }
 
-  initial enter S1
 }

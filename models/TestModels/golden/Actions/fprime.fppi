@@ -10,6 +10,7 @@ state machine Actions {
 
   signal EV1
 
+  initial enter S1
   state S1 {
    entry do { s1Entry }
    exit do { s1Exit }
@@ -22,5 +23,4 @@ state machine Actions {
     on EV1 do { a2 } enter S1
   }
 
-  initial enter S1
 }

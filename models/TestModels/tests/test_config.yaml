@@ -49,10 +49,7 @@ models:
       c: "${model_name}/c.txt"          
       c++: "${model_name}/cpp.txt"   
       qf: "${model_name}/qf.txt"      
-      fprime:
-        qm: "${model_name}/fprime-qm.fppi"     
-        plantuml: "${model_name}/fprime-plantuml.fppi"  
-        cameo: "${model_name}/fprime-cameo.fppi"  
+      fprime: "${model_name}/fprime.fppi"
 
   # Cases model
   Cases:
@@ -88,10 +85,7 @@ models:
       c: "${model_name}/c.txt"          
       c++: "${model_name}/cpp.txt"   
       qf: "${model_name}/qf.txt"      
-      fprime:
-        qm: "${model_name}/fprime-qm.fppi"     
-        plantuml: "${model_name}/fprime-plantuml.fppi"  
-        cameo: "${model_name}/fprime-cameo.fppi"
+      fprime: "${model_name}/fprime.fppi"
 
   # Transitions model
   Transitions:
@@ -110,10 +104,7 @@ models:
         qm: "${model_name}/qf-qm.txt"
         plantuml: "${model_name}/qf-plantuml.txt"
         cameo: "${model_name}/qf-cameo.txt"
-      fprime:
-        qm: "${model_name}/fprime-qm.fppi"     
-        plantuml: "${model_name}/fprime-plantuml.fppi"  
-        cameo: "${model_name}/fprime-cameo.fppi"
+      fprime: "${model_name}/fprime.fppi"
         
   # String_Guards model
   String_Guards:

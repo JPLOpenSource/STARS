@@ -14,31 +14,31 @@ state machine Simple_Junction {
 
   signal Ev1
 
+  initial enter OFF
   state OFF {
    entry do { OffEntry }
    exit do { OffExit }
+    initial enter Diag
+    on Ev1 enter J7
     state Diag {
      entry do { DiagEntry }
      exit do { DiagExit }
     }
 
-    initial enter Diag
-    on Ev1 enter J7
   }
 
   state ON {
    entry do { OnEntry }
    exit do { OnExit }
+    initial enter Init
+    on Ev1 enter OFF
     state Init {
      entry do { InitEntry }
      exit do { InitExit }
     }
 
-    initial enter Init
-    on Ev1 enter OFF
   }
 
-  initial enter OFF
   choice J7 {
     if g1() enter OFF else do { a1 } enter ON
   }

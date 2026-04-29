@@ -15,31 +15,31 @@ state machine Cases {
   signal EV1
   signal ev2
 
-  state on {
-   entry do { OnEntry }
-   exit do { OnExit }
-    state Init {
-     entry do { InitEntry }
-     exit do { InitExit }
-    }
-
-    initial enter Init
-    on ev2 enter OFF
-  }
-
+  initial enter OFF
   state OFF {
    entry do { OFFENTRY }
    exit do { offexit }
+    initial enter Diag
+    on EV1 enter J7
     state Diag {
      entry do { DiagEntry }
      exit do { DiagExit }
     }
 
-    initial enter Diag
-    on EV1 enter J7
   }
 
-  initial enter OFF
+  state on {
+   entry do { OnEntry }
+   exit do { OnExit }
+    initial enter Init
+    on ev2 enter OFF
+    state Init {
+     entry do { InitEntry }
+     exit do { InitExit }
+    }
+
+  }
+
   choice J7 {
     if G1() enter OFF else do { A1 } enter on
   }
