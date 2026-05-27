@@ -1,0 +1,9 @@
+    //! Handler implementation for schedIn
+    void schedIn_handler(FwIndexType portNum,  //!< The port number
+                         U32 context           //!< The call order
+                         ) override;
+
+    //! Handler implementation for schedIn2
+    void schedIn2_handler(FwIndexType portNum,  //!< The port number
+                          U32 context           //!< The call order
+                          ) override;
