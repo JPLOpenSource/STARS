@@ -1,6 +1,6 @@
-state machine Arg_Actions {
+state machine Arg_Actions_FP {
 
-  action a1: e
+  action a1: U16
   action a2
   action foo
   action s1Entry
@@ -15,7 +15,7 @@ state machine Arg_Actions {
   guard g1
   guard g2
 
-  signal EV1: e
+  signal EV1: U16
   signal EV2
 
   initial enter S1

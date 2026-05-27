@@ -15,9 +15,9 @@ state machine Complex_Junction {
   action a5
   action a6
 
-  guard g1()
-  guard g2()
-  guard g3()
+  guard g1
+  guard g2
+  guard g3
 
   signal Ev1
 
@@ -26,33 +26,33 @@ state machine Complex_Junction {
    entry do { OffEntry }
    exit do { OffExit }
     initial enter Diag
-    on Ev1 enter J0
     state Diag {
      entry do { DiagEntry }
      exit do { DiagExit }
     }
 
+    on Ev1 enter J0
   }
 
   state ON {
    entry do { OnEntry }
    exit do { OnExit }
     initial enter Init
-    on Ev1 enter OFF
     state Init {
      entry do { InitEntry }
      exit do { InitExit }
     }
 
+    on Ev1 enter OFF
   }
 
   choice J0 {
-    if g1() do { a1 } enter OFF else do { a2 } enter J1
+    if g1 do { a1 } enter OFF else do { a2 } enter J1
   }
   choice J1 {
-    if g2() do { a5 } enter ON else do { a3 } enter J2
+    if g2 do { a5 } enter ON else do { a3 } enter J2
   }
   choice J2 {
-    if g3() do { a6 } enter ON else do { a4 } enter OFF
+    if g3 do { a6 } enter ON else do { a4 } enter OFF
   }
 }

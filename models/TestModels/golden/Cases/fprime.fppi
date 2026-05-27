@@ -10,7 +10,7 @@ state machine Cases {
   action OnExit
   action offexit
 
-  guard G1()
+  guard G1
 
   signal EV1
   signal ev2
@@ -20,27 +20,27 @@ state machine Cases {
    entry do { OFFENTRY }
    exit do { offexit }
     initial enter Diag
-    on EV1 enter J0
     state Diag {
      entry do { DiagEntry }
      exit do { DiagExit }
     }
 
+    on EV1 enter J0
   }
 
-  state on {
+  state on_state {
    entry do { OnEntry }
    exit do { OnExit }
     initial enter Init
-    on ev2 enter OFF
     state Init {
      entry do { InitEntry }
      exit do { InitExit }
     }
 
+    on ev2 enter OFF
   }
 
   choice J0 {
-    if G1() enter OFF else do { A1 } enter on
+    if G1 enter OFF else do { A1 } enter on_state
   }
 }

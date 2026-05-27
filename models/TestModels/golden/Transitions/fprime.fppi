@@ -30,18 +30,18 @@ state machine Transitions {
    entry do { s1Entry }
    exit do { s1Exit }
     initial enter S11
-    on Ev1 enter S1
-    on Ev2 do { a1 }
-    on Ev3 if g1 do { a2 }
-    on Ev5 if g2 enter S1
-    on Ev6 if g3 do { a4 } enter S1
-    on Ev7 enter S2
     state S11 {
      entry do { s11Entry }
      exit do { s11Exit }
       on Ev4 do { a3 } enter S1
     }
 
+    on Ev1 enter S1
+    on Ev2 do { a1 }
+    on Ev3 if g1 do { a2 }
+    on Ev5 if g2 enter S1
+    on Ev6 if g3 do { a4 } enter S1
+    on Ev7 enter S2
   }
 
   state S2 {

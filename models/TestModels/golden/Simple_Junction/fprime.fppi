@@ -10,7 +10,7 @@ state machine Simple_Junction {
   action OnExit
   action a1
 
-  guard g1()
+  guard g1
 
   signal Ev1
 
@@ -19,27 +19,27 @@ state machine Simple_Junction {
    entry do { OffEntry }
    exit do { OffExit }
     initial enter Diag
-    on Ev1 enter J0
     state Diag {
      entry do { DiagEntry }
      exit do { DiagExit }
     }
 
+    on Ev1 enter J0
   }
 
   state ON {
    entry do { OnEntry }
    exit do { OnExit }
     initial enter Init
-    on Ev1 enter OFF
     state Init {
      entry do { InitEntry }
      exit do { InitExit }
     }
 
+    on Ev1 enter OFF
   }
 
   choice J0 {
-    if g1() enter OFF else do { a1 } enter ON
+    if g1 enter OFF else do { a1 } enter ON
   }
 }
