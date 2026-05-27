@@ -98,7 +98,9 @@ void Arg_Actions_Component ::Components_Arg_Actions_FP_action_s2Exit2(SmId smId,
 // ----------------------------------------------------------------------
 
 bool Arg_Actions_Component ::Components_Arg_Actions_FP_guard_g1(SmId smId,
-                                                                Components_Arg_Actions_FP::Signal signal) const {
+                                                                Components_Arg_Actions_FP::Signal signal,
+                                                                U16 value) const {
+    printf("---- g1 value = %d\n", value);
     return m_g1Value;
 }
 

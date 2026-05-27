@@ -12,7 +12,7 @@ state machine Arg_Actions_FP {
   action s2Exit
   action s2Exit2
 
-  guard g1
+  guard g1: U16
   guard g2
 
   signal EV1: U16

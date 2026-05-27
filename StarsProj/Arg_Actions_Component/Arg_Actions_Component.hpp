@@ -107,7 +107,8 @@ class Arg_Actions_Component final : public Arg_Actions_ComponentComponentBase {
 
     //! Implementation for guard g1 of state machine Components_Arg_Actions_FP
     bool Components_Arg_Actions_FP_guard_g1(SmId smId,                                //!< The state machine id
-                                            Components_Arg_Actions_FP::Signal signal  //!< The signal
+                                            Components_Arg_Actions_FP::Signal signal, //!< The signal
+                                            U16 value                                 //!< The value
     ) const override;
 
     //! Implementation for guard g2 of state machine Components_Arg_Actions_FP
