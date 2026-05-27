@@ -257,12 +257,12 @@ def getStateMachineMethods(xmiModel: XmiModel):
             actionSet.add(format_funcs(child.exit, True))
         if child.name == "TRANSITION":
             actionSet.add(format_funcs(child.action, True))
-            guardSet.add(format_funcs(child.guard, False))
+            guardSet.add(format_funcs(child.guard, True))
             signalSet.add((child.event + getActionDataType(child.action)))
         if child.name == "JUNCTION":
             actionSet.add(format_funcs(child.ifAction, True))
             actionSet.add(format_funcs(child.elseAction, True))
-            guardSet.add(format_funcs(child.guard, False))
+            guardSet.add(format_funcs(child.guard, True))
         if child.name == "INITIAL":
             actionSet.add(format_funcs(child.action, True))
 
@@ -312,7 +312,7 @@ def generateCode(xmiModel: XmiModel):
     fppFile.write("\n")
 
     for guard in sorted(guards):
-        escaped_guard = escape_fpp_keyword(guard)
+        escaped_guard = escape_fpp_keyword(guard.split(':')[0].strip()) + (f": {guard.split(':', 1)[1].strip()}" if ':' in guard else "")
         fppFile.write(f"  guard {escaped_guard}\n")
     fppFile.write("\n")
 
