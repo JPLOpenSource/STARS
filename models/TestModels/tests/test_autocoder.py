@@ -12,7 +12,8 @@ from .utils import (
     build_c_backend,
     build_cpp_backend,
     build_qf_backend,
-    run_test_executable
+    run_test_executable,
+    validate_fpp_file
 )
 
 
@@ -143,6 +144,14 @@ def test_autocoder(model_name, input_format, backend, test_config, base_dir, tmp
         output_file = tmp_path / f"{model_base}_State_Machine.fppi"
         if not output_file.exists():
             pytest.fail(f"Fprime output file not found: {output_file}")
+        
+        # Validate FPP syntax with fpp-check
+        print("Running fpp-check...")
+        try:
+            validate_fpp_file(output_file)
+        except RuntimeError as e:
+            pytest.fail(str(e))
+        
         output = output_file.read_text()
     
     else:

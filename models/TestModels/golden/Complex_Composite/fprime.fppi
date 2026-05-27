@@ -29,7 +29,6 @@ state machine Complex_Composite {
    entry do { s1Entry }
    exit do { s1Exit }
     initial enter S11
-    on Ev1 enter S2
     state S11 {
      entry do { s11Entry }
      exit do { s11Exit }
@@ -38,14 +37,14 @@ state machine Complex_Composite {
        entry do { s111Entry }
        exit do { s111Exit }
         initial enter s1111
-        on Ev1 enter S12
         state s1111 {
          entry do { s1111Entry }
          exit do { s1111Exit }
-          on Ev2 enter S21
-          on Ev3 enter S121
+          on Ev2 enter S2.S21
+          on Ev3 enter S12.S121
         }
 
+        on Ev1 enter S12
       }
 
     }
@@ -54,27 +53,28 @@ state machine Complex_Composite {
      entry do { s12Entry }
      exit do { s12Exit }
       initial enter S121
-      on Ev2 enter S11
       state S121 {
        entry do { s121Entry }
        exit do { s121Exit }
-        on Ev4 enter S111
+        on Ev4 enter S11.S111
       }
 
+      on Ev2 enter S11
     }
 
+    on Ev1 enter S2
   }
 
   state S2 {
    entry do { s2Entry }
    exit do { s2Exit }
     initial enter S21
-    on Ev1 enter S1
     state S21 {
      entry do { s21Entry }
      exit do { s21Exit }
     }
 
+    on Ev1 enter S1
   }
 
 }

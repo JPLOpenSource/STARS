@@ -40,6 +40,21 @@ models:
   Arg_Actions:
     <<: *model_template
     # Any model-specific overrides can be added here
+    backends: [c, c++, qf]
+    test_driver: testDrv.txt               # ${model_name}/testDrv.txt
+    golden:
+      c: "${model_name}/c.txt"            # golden/${model_name}/c.txt
+      c++: "${model_name}/cpp.txt"        # golden/${model_name}/cpp.txt
+      qf: "${model_name}/qf.txt"          # golden/${model_name}/qf.txt
+
+  # Arg_Actions_FP model
+  Arg_Actions_FP:
+    inputs:
+      plantuml: "${model_name}.plantuml"  # ${model_name}/${model_name}.plantuml
+    backends: [fprime]
+    test_driver: testDrv.txt               # ${model_name}/testDrv.txt
+    golden:
+      fprime: "${model_name}/fprime.fppi" # golden/${model_name}/fprime.fppi
 
  # Complex_Composite model
   Complex_Composite:

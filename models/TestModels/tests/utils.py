@@ -175,3 +175,29 @@ def run_test_executable(tmp_path):
         text=True
     )
     return result.stdout
+
+
+def validate_fpp_file(fppi_file):
+    """
+    Run fpp-check on a generated .fppi file to validate syntax.
+    
+    Args:
+        fppi_file: Path to the .fppi file to check
+    
+    Raises:
+        RuntimeError: If fpp-check fails with validation errors
+    """
+    result = subprocess.run(
+        ["fpp-check", str(fppi_file)],
+        capture_output=True,
+        text=True
+    )
+    
+    if result.returncode != 0:
+        raise RuntimeError(
+            f"fpp-check validation failed for {fppi_file.name}\n"
+            f"stdout: {result.stdout}\n"
+            f"stderr: {result.stderr}"
+        )
+    
+    print(f"✓ fpp-check passed for {fppi_file.name}")
