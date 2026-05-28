@@ -20,6 +20,16 @@ module Components {
         event a1Event(value: U16) severity activity high id 8 format "a1 action with value {}"
         event a2Event() severity activity high id 9 format "a2 Event"
         event fooEvent() severity activity high id 10 format "foo Event"
+        event g1GuardEvent(value: U16) severity activity high id 11 format "g1 guard called with value {}"
+
+        @ Command to set a test value
+        async command TEST_CMD(value: U16) opcode 0
+
+        @ Command to set guard g1 value
+        async command SET_G1(value: bool) opcode 1
+
+        @ Command to set guard g2 value
+        async command SET_G2(value: bool) opcode 2
 
         ###############################################################################
         # Standard AC Ports: Required for Channels, Events, Commands, and Parameters  #

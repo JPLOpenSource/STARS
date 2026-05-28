@@ -16,6 +16,11 @@ TEST(Nominal, testEV2Transitions) {
     tester.testEV2Transitions();
 }
 
+TEST(Nominal, testDataCommand) {
+    Components::Arg_Actions_ComponentTester tester;
+    tester.testDataCommand();
+}
+
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();

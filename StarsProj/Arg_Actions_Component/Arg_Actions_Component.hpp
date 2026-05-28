@@ -41,6 +41,35 @@ class Arg_Actions_Component final : public Arg_Actions_ComponentComponentBase {
 
   private:
     // ----------------------------------------------------------------------
+    // Handler implementations for commands
+    // ----------------------------------------------------------------------
+
+    //! Handler implementation for command TEST_CMD
+    //!
+    //! Command to set a test value
+    void TEST_CMD_cmdHandler(FwOpcodeType opCode,  //!< The opcode
+                             U32 cmdSeq,           //!< The command sequence number
+                             U16 value             //!< The value
+                             ) override;
+
+    //! Handler implementation for command SET_G1
+    //!
+    //! Command to set guard g1 value
+    void SET_G1_cmdHandler(FwOpcodeType opCode,  //!< The opcode
+                           U32 cmdSeq,           //!< The command sequence number
+                           bool value            //!< The value
+                           ) override;
+
+    //! Handler implementation for command SET_G2
+    //!
+    //! Command to set guard g2 value
+    void SET_G2_cmdHandler(FwOpcodeType opCode,  //!< The opcode
+                           U32 cmdSeq,           //!< The command sequence number
+                           bool value            //!< The value
+                           ) override;
+
+  private:
+    // ----------------------------------------------------------------------
     // Implementations for internal state machine actions
     // ----------------------------------------------------------------------
 

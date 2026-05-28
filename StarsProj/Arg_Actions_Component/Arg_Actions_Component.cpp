@@ -23,16 +23,33 @@ Arg_Actions_Component ::~Arg_Actions_Component() {}
 
 void Arg_Actions_Component ::schedIn_handler(FwIndexType portNum, U32 context) {
     // Send EV1 signal with incrementing U16 parameter
-    // Alternate g1 value to test guard behavior
-    m_g1Value = !m_g1Value;
     argActionsState_sendSignal_EV1(static_cast<U16>(m_evCount++));
 }
 
 void Arg_Actions_Component ::schedIn2_handler(FwIndexType portNum, U32 context) {
     // Send EV2 signal to test g2 guard
-    // Alternate g2 value to test guard behavior
-    m_g2Value = !m_g2Value;
     argActionsState_sendSignal_EV2();
+}
+
+// ----------------------------------------------------------------------
+// Handler implementations for commands
+// ----------------------------------------------------------------------
+
+void Arg_Actions_Component ::TEST_CMD_cmdHandler(FwOpcodeType opCode, U32 cmdSeq, U16 value) {
+    argActionsState_sendSignal_EV1(value);
+    
+    // Send command response
+    this->cmdResponse_out(opCode, cmdSeq, Fw::CmdResponse::OK);
+}
+
+void Arg_Actions_Component ::SET_G1_cmdHandler(FwOpcodeType opCode, U32 cmdSeq, bool value) {
+    m_g1Value = value;
+    this->cmdResponse_out(opCode, cmdSeq, Fw::CmdResponse::OK);
+}
+
+void Arg_Actions_Component ::SET_G2_cmdHandler(FwOpcodeType opCode, U32 cmdSeq, bool value) {
+    m_g2Value = value;
+    this->cmdResponse_out(opCode, cmdSeq, Fw::CmdResponse::OK);
 }
 
 // ----------------------------------------------------------------------
@@ -100,7 +117,7 @@ void Arg_Actions_Component ::Components_Arg_Actions_FP_action_s2Exit2(SmId smId,
 bool Arg_Actions_Component ::Components_Arg_Actions_FP_guard_g1(SmId smId,
                                                                 Components_Arg_Actions_FP::Signal signal,
                                                                 U16 value) const {
-    printf("---- g1 value = %d\n", value);
+    const_cast<Arg_Actions_Component*>(this)->log_ACTIVITY_HI_g1GuardEvent(value);
     return m_g1Value;
 }
 

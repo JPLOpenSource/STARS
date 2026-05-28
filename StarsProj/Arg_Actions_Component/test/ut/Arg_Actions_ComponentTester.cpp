@@ -27,13 +27,42 @@ Arg_Actions_ComponentTester ::~Arg_Actions_ComponentTester() {
 // Tests
 // ----------------------------------------------------------------------
 
-void Arg_Actions_ComponentTester ::testTransitions() {
+    void Arg_Actions_ComponentTester::testDataCommand() {
+        this->sendCmd_SET_G1(0, 0, true);
+        this->sendCmd_TEST_CMD(0, 0, 1234);
+        dispatchAll();
+        ASSERT_EQ(component.argActionsState_getState(), Components::Arg_Actions_FP_State::S2);
+        ASSERT_EVENTS_g1GuardEvent_SIZE(1);
+        ASSERT_EVENTS_g1GuardEvent(0, 1234);
+        ASSERT_EVENTS_s2EntryEvent_SIZE(1);
+        ASSERT_EVENTS_s2Entry2Event_SIZE(1);
+        ASSERT_EVENTS_fooEvent_SIZE(3);
+
+        this->sendCmd_TEST_CMD(0, 0, 4567);
+        dispatchAll();
+        ASSERT_EQ(component.argActionsState_getState(), Components::Arg_Actions_FP_State::S1);
+        ASSERT_EVENTS_a1Event(0, 4567);
+    }
+
+    void Arg_Actions_ComponentTester ::testTransitions() {
     // Initial state should be S1 after initialization
     dispatchAll();
     ASSERT_EQ(component.argActionsState_getState(), Components::Arg_Actions_FP_State::S1);
     ASSERT_EVENTS_s1EntryEvent_SIZE(1);
+    clearHistory();
 
-    // Send EV1 (g1 toggles to true, guard passes, S1->S2)
+    // Set g1=false, send EV1 (guard fails, should stay in S1)
+    this->sendCmd_SET_G1(0, 0, false);
+    dispatchAll();
+    invoke_to_schedIn(0, 0);
+    dispatchAll();
+    ASSERT_EQ(component.argActionsState_getState(), Components::Arg_Actions_FP_State::S1);
+    ASSERT_EVENTS_s2EntryEvent_SIZE(0);  // Should not transition
+    clearHistory();
+
+    // Set g1=true, send EV1 (guard passes, S1->S2)
+    this->sendCmd_SET_G1(0, 1, true);
+    dispatchAll();
     invoke_to_schedIn(0, 0);
     dispatchAll();
     ASSERT_EQ(component.argActionsState_getState(), Components::Arg_Actions_FP_State::S2);
@@ -43,19 +72,20 @@ void Arg_Actions_ComponentTester ::testTransitions() {
     invoke_to_schedIn(0, 0);
     dispatchAll();
     ASSERT_EQ(component.argActionsState_getState(), Components::Arg_Actions_FP_State::S1);
-    ASSERT_EVENTS_s1EntryEvent_SIZE(2);
+    clearHistory();
 
-    // Send EV1 again (g1 toggles to true, guard passes, S1->S2)
+    // Set g1=true, send EV1 again (guard passes, S1->S2)
+    this->sendCmd_SET_G1(0, 2, true);
+    dispatchAll();
     invoke_to_schedIn(0, 0);
     dispatchAll();
     ASSERT_EQ(component.argActionsState_getState(), Components::Arg_Actions_FP_State::S2);
-    ASSERT_EVENTS_s2EntryEvent_SIZE(2);
+    ASSERT_EVENTS_s2EntryEvent_SIZE(1);
 
     // Send EV1 from S2 (transition S2->S1)
     invoke_to_schedIn(0, 0);
     dispatchAll();
     ASSERT_EQ(component.argActionsState_getState(), Components::Arg_Actions_FP_State::S1);
-    ASSERT_EVENTS_s1EntryEvent_SIZE(3);
 }
 
 void Arg_Actions_ComponentTester ::testEV2Transitions() {
@@ -64,7 +94,9 @@ void Arg_Actions_ComponentTester ::testEV2Transitions() {
     ASSERT_EQ(component.argActionsState_getState(), Components::Arg_Actions_FP_State::S1);
     clearHistory();
 
-    // Send EV2 (g2 toggles to true, guard passes, S1->S2)
+    // Set g2=true, send EV2 (guard passes, S1->S2)
+    this->sendCmd_SET_G2(0, 0, true);
+    dispatchAll();
     invoke_to_schedIn2(0, 0);
     dispatchAll();
     ASSERT_EQ(component.argActionsState_getState(), Components::Arg_Actions_FP_State::S2);
@@ -76,13 +108,17 @@ void Arg_Actions_ComponentTester ::testEV2Transitions() {
     ASSERT_EQ(component.argActionsState_getState(), Components::Arg_Actions_FP_State::S1);
     clearHistory();
 
-    // Send EV2 with g2=false (should stay in S1)
+    // Set g2=false, send EV2 (guard fails, should stay in S1)
+    this->sendCmd_SET_G2(0, 1, false);
+    dispatchAll();
     invoke_to_schedIn2(0, 0);
     dispatchAll();
     ASSERT_EQ(component.argActionsState_getState(), Components::Arg_Actions_FP_State::S1);
     ASSERT_EVENTS_s2EntryEvent_SIZE(0);  // Should not have entered S2
 
-    // Send EV2 with g2=true again (should transition to S2)
+    // Set g2=true, send EV2 (guard passes, should transition to S2)
+    this->sendCmd_SET_G2(0, 2, true);
+    dispatchAll();
     invoke_to_schedIn2(0, 0);
     dispatchAll();
     ASSERT_EQ(component.argActionsState_getState(), Components::Arg_Actions_FP_State::S2);

@@ -49,6 +49,8 @@ class Arg_Actions_ComponentTester final : public Arg_Actions_ComponentGTestBase 
     //! Test state transitions with EV2
     void testEV2Transitions();
 
+    void testDataCommand();
+
   private:
     // ----------------------------------------------------------------------
     // Helper functions
