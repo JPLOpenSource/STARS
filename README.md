@@ -311,3 +311,251 @@ Available commands in the test harness:
 - `send_event("<event>")` - Send an event to the state machine
 - `set_guard("<guard>", "True"|"False")` - Set a guard condition
 - `commands()` - Display available commands
+
+## Wrapping a State Machine in an F Prime Component
+
+This section explains how to integrate a STARS state machine into an F Prime (F´) component using the Simple_Component example from `StarsProj/Simple_Component`.
+
+### Overview
+
+To wrap a state machine model in an F Prime component, you need to:
+1. Generate the `.fppi` file from your state machine model using STARS
+2. Create an FPP component definition that includes the state machine
+3. Implement action handlers and signal triggers in C++
+4. Build and test the component
+
+### Step-by-Step Guide
+
+#### 1. Create Your State Machine Model
+
+First, create your state machine model using QM, PlantUML, or Cameo. For this example, we use a simple two-state machine (`Simple.qm`):
+
+```xml
+<statechart>
+  <initial target="S1"/>
+  <state name="S1">
+    <entry brief="s1Entry()"/>
+    <tran trig="EV1" target="S2"/>
+  </state>
+  <state name="S2">
+    <tran trig="EV1" target="S1"/>
+  </state>
+</statechart>
+```
+
+This defines a state machine with two states (S1 and S2) that toggle on event EV1, with an entry action on S1.
+
+#### 2. Generate the State Machine FPP File
+
+Create an `autocode.sh` script to generate the `.fppi` file:
+
+```bash
+#!/bin/bash
+../../autocoder/Stars.py -backend fprime -noImpl -model Simple.qm
+```
+
+Run the script to generate `Simple_State_Machine.fppi`:
+
+```bash
+chmod +x autocode.sh
+./autocode.sh
+```
+
+The generated `.fppi` file contains the FPP state machine definition:
+
+```fpp
+state machine Simple {
+  action s1Entry
+  signal EV1
+  
+  initial enter S1
+  state S1 {
+    entry do { s1Entry }
+    on EV1 enter S2
+  }
+  state S2 {
+    on EV1 enter S1
+  }
+}
+```
+
+#### 3. Create the Component FPP Definition
+
+Create `Simple_Component.fpp` to wrap the state machine in an F Prime component:
+
+```fpp
+module Components {
+  include "Simple_State_Machine.fppi"
+  
+  @ Component wrapper for Simple state machine
+  active component Simple_Component {
+    
+    # State machine instance
+    state machine instance simpleState: Simple 
+    
+    # Input port to trigger state transitions
+    async input port schedIn: Svc.Sched
+    
+    # Events for state machine actions
+    event s1EntryEvent() severity activity high id 0 format "s1Entry Event"
+    
+    # Standard F Prime ports
+    time get port timeCaller
+    import Fw.Command
+    import Fw.Event
+  }
+}
+```
+
+Key elements:
+- **`include "Simple_State_Machine.fppi"`**: Imports the generated state machine definition
+- **`state machine instance simpleState: Simple`**: Creates an instance named `simpleState`
+- **`event s1EntryEvent()`**: Defines an EVR (Event Report) for the s1Entry action
+- **Input/output ports**: Connects the component to the F Prime framework
+
+#### 4. Implement the Component Header
+
+Create `Simple_Component.hpp`:
+
+```cpp
+#include "Simple_Component/Simple_ComponentComponentAc.hpp"
+
+namespace Components {
+
+class Simple_Component final : public Simple_ComponentComponentBase {
+  public:
+    Simple_Component(const char* const compName);
+    ~Simple_Component();
+
+  private:
+    // Port handler - triggers state transitions
+    void schedIn_handler(FwIndexType portNum, U32 context) override;
+    
+    // State machine action handler
+    void Components_Simple_action_s1Entry(
+      SmId smId,
+      Components_Simple::Signal signal
+    ) override;
+};
+
+}
+```
+
+**Important**: Action handler names follow the pattern `Components_<StateMachineName>_action_<actionName>` and use the signal type `Components_<StateMachineName>::Signal`.
+
+#### 5. Implement the Component Logic
+
+Create `Simple_Component.cpp`:
+
+```cpp
+#include "Simple_Component/Simple_Component.hpp"
+
+namespace Components {
+
+Simple_Component::Simple_Component(const char* const compName) 
+  : Simple_ComponentComponentBase(compName) {}
+
+Simple_Component::~Simple_Component() {}
+
+// Port handler - sends signal to state machine
+void Simple_Component::schedIn_handler(FwIndexType portNum, U32 context) {
+  simpleState_sendSignal_EV1();  // Trigger state transition
+}
+
+// Action handler - logs event when s1Entry action executes
+void Simple_Component::Components_Simple_action_s1Entry(
+  SmId smId,
+  Components_Simple::Signal signal
+) {
+  this->log_ACTIVITY_HI_s1EntryEvent();
+}
+
+}
+```
+
+Key implementation details:
+- **Sending signals**: Use `<instanceName>_sendSignal_<SignalName>()` to trigger transitions
+- **Logging events**: Use `log_ACTIVITY_HI_<eventName>()` in action handlers
+- **State queries**: Use `<instanceName>_getState()` to check current state
+
+#### 6. Create the Build Configuration
+
+Create `CMakeLists.txt`:
+
+```cmake
+set(SOURCE_FILES
+  "${CMAKE_CURRENT_LIST_DIR}/Simple_Component.fpp"
+)
+
+register_fprime_module()
+
+register_fprime_library(
+  AUTOCODER_INPUTS
+    "${CMAKE_CURRENT_LIST_DIR}/Simple_Component.fpp"
+  SOURCES
+    "${CMAKE_CURRENT_LIST_DIR}/Simple_Component.cpp"
+)
+```
+
+#### 7. Build and Test
+
+Build the component:
+
+```bash
+cd StarsProj/Simple_Component
+fprime-util build
+```
+
+Run unit tests:
+
+```bash
+fprime-util check
+```
+
+### Advanced Features
+
+For more complex examples, see:
+- **`Arg_Actions_Component`**: State machine actions with parameters and guard conditions
+- **`Complex_Composite_Component`**: Hierarchical state machines with nested composite states
+
+### Common Patterns
+
+**Sending commands to trigger events:**
+```fpp
+async command SEND_EV1() opcode 0
+```
+
+```cpp
+void Simple_Component::SEND_EV1_cmdHandler(FwOpcodeType opCode, U32 cmdSeq) {
+  simpleState_sendSignal_EV1();
+  this->cmdResponse_out(opCode, cmdSeq, Fw::CmdResponse::OK);
+}
+```
+
+**Handling guard conditions:**
+Guards defined in the model require parameter passing:
+```cpp
+simpleState_sendSignal_GuardedEvent(guardValue);
+```
+
+**State transitions with parameters:**
+Actions with parameters receive them through the action handler signature as defined in the generated base class.
+
+### Directory Structure
+
+A complete F Prime state machine component includes:
+
+```
+MyComponent/
+├── MyModel.qm                    # State machine model
+├── autocode.sh                   # Autocoder script
+├── MyComponent_State_Machine.fppi # Generated by STARS
+├── MyComponent.fpp               # Component definition
+├── MyComponent.hpp               # Component header
+├── MyComponent.cpp               # Component implementation
+├── CMakeLists.txt                # Build configuration
+└── test/ut/                      # Unit tests
+    ├── MyComponentTester.hpp
+    ├── MyComponentTester.cpp
+    └── MyComponentTestMain.cpp
+```
