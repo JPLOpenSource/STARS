@@ -18,3 +18,4 @@ fprime_setup_included_code()
 # This includes project-wide objects
 add_fprime_subdirectory("${CMAKE_CURRENT_LIST_DIR}/Simple_Component/")
 add_fprime_subdirectory("${CMAKE_CURRENT_LIST_DIR}/Arg_Actions_Component/")
+add_fprime_subdirectory("${CMAKE_CURRENT_LIST_DIR}/Complex_Composite/")
